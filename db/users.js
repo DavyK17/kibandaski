@@ -32,12 +32,22 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
     const { firstName, lastName, email } = req.body;
-    let text = `INSERT INTO users (id, first_name, last_name, email, created_at) VALUES (${parseInt(idGen(7))}, $1, $2, $3, to_timestamp(${Date.now()} / 1000)) RETURNING *`;
-    let values = [firstName, lastName, email];
 
     try {
-        const result = await pool.query(text, values);
-        res.status(201).send(`User added with ID: ${result.rows[0].id}`);
+        const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (result.rows.length > 0) {
+            res.status(409).send("Error: A user with the provided email already exists");
+        } else {
+            let text = `INSERT INTO users (id, first_name, last_name, email, created_at) VALUES (${parseInt(idGen(7))}, $1, $2, $3, to_timestamp(${Date.now()} / 1000)) RETURNING *`;
+            let values = [firstName, lastName, email];
+        
+            try {
+                const result = await pool.query(text, values);
+                res.status(201).send(`User added with ID: ${result.rows[0].id}`);
+            } catch(err) {
+                throw err;
+            }
+        }
     } catch(err) {
         throw err;
     }
