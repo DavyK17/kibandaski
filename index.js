@@ -30,6 +30,23 @@ app.use("/users", usersRouter);
 // const cartRouter = require("./routers/cart");
 // app.use("/cart", cartRouter);
 
+// Error messages
+app.get("*", (req, res) => {
+    res.status(404).send("Error: This operation does not exist");
+});
+
+app.post("*", (req, res) => {
+    res.status(404).send("Error: This operation does not exist");
+});
+
+app.put("*", (req, res) => {
+    res.status(404).send("Error: This operation does not exist");
+});
+
+app.delete("*", (req, res) => {
+    res.status(404).send("Error: This operation does not exist");
+});
+
 // Listener
 app.listen(port, () => {
     console.log(`Server listening on port ${port}.`);
