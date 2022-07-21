@@ -1,9 +1,9 @@
 const express = require("express");
 const db = require("../db/users");
-const usersRouter = express.Router();
+const router = express.Router();
 
-usersRouter.get("/", db.getUsers);
-usersRouter.get("/:id", db.getUserById);
-usersRouter.put("/:id", db.updateUser);
+router.get("/", db.getUsers);
+router.get("/:id", db.getUserById);
+router.put("/:id", db.updateUser);
 
-module.exports = usersRouter;
+module.exports = router;
