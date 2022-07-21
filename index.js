@@ -114,19 +114,19 @@ app.use("/users", usersRouter);
 
 // Error messages
 app.get("*", (req, res) => {
-    res.status(404).send("Error: This operation does not exist");
+    res.status(400).send("Error: This operation does not exist");
 });
 
 app.post("*", (req, res) => {
-    res.status(404).send("Error: This operation does not exist");
+    res.status(400).send("Error: This operation does not exist");
 });
 
 app.put("*", (req, res) => {
-    res.status(404).send("Error: This operation does not exist");
+    res.status(400).send("Error: This operation does not exist");
 });
 
 app.delete("*", (req, res) => {
-    res.status(404).send("Error: This operation does not exist");
+    res.status(400).send("Error: This operation does not exist");
 });
 
 // Listener
