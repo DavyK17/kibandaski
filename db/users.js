@@ -1,7 +1,7 @@
 require("dotenv").config();
 const idGen = require("../util/idGen");
 
-const Pool = require("pg").Pool;
+const { Pool } = require("pg");
 const pool = new Pool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
