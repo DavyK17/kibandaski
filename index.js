@@ -78,6 +78,24 @@ app.get("/", (req, res) => {
     res.json({ info: "Welcome to Kibandaski" });
 });
 
+// User account
+app.get("/account", (req, res) => {
+    res.json({ info: "Login successful" });
+});
+
+// User login
+app.get("/login", (req, res) => {
+    res.json({ info: "Kindly log in with your account details" });
+});
+
+app.post(
+    "/login",
+    passport.authenticate("local", { failureRedirect: "/login" }),
+    (req, res) => {
+        res.redirect("account")
+    }
+);
+
 // User registration
 app.post("/register", db.users.createUser);
 
