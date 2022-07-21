@@ -83,6 +83,13 @@ app.get("/account", (req, res) => {
     res.json({ info: "Login successful" });
 });
 
+// User registration
+app.get("/register", (req, res) => {
+    res.json({ info: "Create a new account" });
+});
+
+app.post("/register", db.users.createUser);
+
 // User login
 app.get("/login", (req, res) => {
     res.json({ info: "Kindly log in with your account details" });
@@ -95,9 +102,6 @@ app.post(
         res.redirect("account")
     }
 );
-
-// User registration
-app.post("/register", db.users.createUser);
 
 // Routers
 const usersRouter = require("./routers/users");
