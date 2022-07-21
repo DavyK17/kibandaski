@@ -36,7 +36,7 @@ app.use(passport.session());
 /* IMPLEMENTATION */
 
 app.get("/", (req, res) => {
-    res.json({ info: "Welcome to Kibandaski" });
+    res.send("Welcome to Kibandaski!");
 });
 
 // Routers
@@ -57,7 +57,7 @@ app.use("/users", usersRouter);
 
 // Error messages
 app.all("*", (req, res) => {
-    res.status(400).send("Error: This operation does not exist");
+    res.status(400).send("Error: This operation does not exist!");
 });
 
 // Listener

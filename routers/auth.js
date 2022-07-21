@@ -63,24 +63,24 @@ router.get("/account", ensureLoggedIn("/login"), (req, res) => {
 
 // User registration
 router.get("/register", (req, res) => {
-    res.json({ info: "Create a new account" });
+    res.send("Create a new account");
 });
 
 router.post("/register", db.users.createUser);
 
 // User login and logout
 router.get("/login", (req, res) => {
-    res.json({ info: "Kindly log in with your account details" });
+    res.send("Kindly log in with your account details");
 });
 
 router.post("/login", passport.authenticate("local", { failureRedirect: "/login" }), (req, res) => {
-    res.json({ info: "Login successful" });
+    res.send("Login successful");
 });
 
 router.get("/logout", ensureLoggedIn("/login"), (req, res, next) => {
     req.logout(err => {
         if (err) return next(err);
-        res.json({ info: "Logout successful" });
+        res.send("Logout successful");
     });
 });
 
