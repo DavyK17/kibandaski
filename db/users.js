@@ -1,5 +1,6 @@
 require("dotenv").config();
 const idGen = require("../util/idGen");
+const bcrypt = require("bcrypt");
 
 const { Pool } = require("pg");
 const pool = new Pool({
@@ -31,11 +32,18 @@ const getUserById = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-    const { firstName, lastName, email } = req.body;
+    const { firstName, lastName, email, password } = req.body;
+    const id = parseInt(idGen(7));
 
     try {
         const result = await pool.query("SELECT email FROM users WHERE email = $1", [email]);
         if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists");
+
+        const salt = await bcrypt.genSalt(17);
+        const passwordHash = await bcrypt.hash(password, salt);
+        
+        let text = `INSERT INTO users (id, first_name, last_name, email, password, created_at) VALUES ($1, $2, $3, $4, $5, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
+        let values = [id, firstName, lastName, email, passwordHash];
         
         const newUser = await pool.query(text, values);
         res.status(201).send(`User created with ID: ${newUser.rows[0].id}`);
