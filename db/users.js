@@ -12,7 +12,7 @@ const pool = new Pool({
 
 const getUsers = async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM users ORDER BY id ASC");
+        const result = await pool.query("SELECT id, first_name, last_name, email FROM users ORDER BY id ASC");
         res.status(200).json(result.rows);
     } catch(err) {
         throw err;
@@ -23,7 +23,7 @@ const getUserById = async (req, res) => {
     const id = parseInt(req.params.id);
 
     try {
-        const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+        const result = await pool.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
         res.status(200).json(result.rows);
     } catch(err) {
         throw err;
@@ -34,7 +34,7 @@ const createUser = async (req, res) => {
     const { firstName, lastName, email } = req.body;
 
     try {
-        const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        const result = await pool.query("SELECT email FROM users WHERE email = $1", [email]);
         if (result.rows.length > 0) {
             res.status(409).send("Error: A user with the provided email already exists");
         } else {
