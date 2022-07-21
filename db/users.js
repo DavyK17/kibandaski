@@ -36,9 +36,11 @@ const createUser = async (req, res) => {
     const id = parseInt(idGen(7));
 
     try {
+        // Send error if email already exists in database
         const result = await pool.query("SELECT email FROM users WHERE email = $1", [email]);
         if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists!");
 
+        // Create user
         const salt = await bcrypt.genSalt(17);
         const passwordHash = await bcrypt.hash(password, salt);
         
