@@ -2,8 +2,7 @@
 
 // General
 require("dotenv").config();
-const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const db = require("../db/index");
 

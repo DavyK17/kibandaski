@@ -1,6 +1,5 @@
-const express = require("express");
+const router = require("express").Router();
 const db = require("../db/users");
-const router = express.Router();
 const { ensureLoggedIn } = require("connect-ensure-login");
 
 router.get("/", db.getUsers);
