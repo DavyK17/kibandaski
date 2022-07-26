@@ -87,7 +87,8 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         // Delete user's cart
-        let result = await pool.query("DELETE FROM carts WHERE user_id = $1", [req.user.id]);
+        let result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
+        result = await pool.query("DELETE FROM carts WHERE id = $1", [req.user.cartId]);
 
         // Delete user
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
