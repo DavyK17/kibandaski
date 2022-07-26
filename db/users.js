@@ -86,8 +86,18 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        // Delete user's cart
-        let result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
+        // Delete orders
+        let orders = [];
+        let result = await pool.query("SELECT id FROM orders WHERE user_id = $1", [req.user.id]);
+        result.rows.forEach(row => orders.push(row.id));
+
+        orders.forEach(async (id) => {
+            result = await pool.query("DELETE FROM order_items WHERE order_id = $1", [id]);
+            result = await pool.query("DELETE FROM orders WHERE id = $1", [id]);
+        });
+
+        // Delete cart
+        result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
         result = await pool.query("DELETE FROM carts WHERE id = $1", [req.user.cartId]);
 
         // Delete user
