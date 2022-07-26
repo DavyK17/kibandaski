@@ -53,8 +53,8 @@ app.use("/users", usersRouter);
 const productsRouter = require("./routers/products");
 app.use("/products", productsRouter);
 
-// const ordersRouter = require("./routers/orders");
-// app.use("/orders", ordersRouter);
+const ordersRouter = require("./routers/orders");
+app.use("/orders", ordersRouter);
 
 /// Login required
 const accountRouter = require("./routers/account");
