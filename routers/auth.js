@@ -6,6 +6,9 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const db = require("../db/index");
 
+// connect-ensure-login
+const login = require("connect-ensure-login").ensureLoggedIn("/login");
+
 // node-postgres
 const { Pool } = require("pg");
 const pool = new Pool({
@@ -71,9 +74,9 @@ router.post("/login", passport.authenticate("local", { failureRedirect: "/login"
     res.send("Login successful");
 });
 
-router.get("/logout", ensureLoggedIn("/login"), (req, res, next) => {
+router.get("/logout", login, (req, res) => {
     req.logout(err => {
-        if (err) return next(err);
+        if (err) return res.status(500).send(`Error: ${err.detail}`);
         res.send("Logout successful");
     });
 });
