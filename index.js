@@ -6,6 +6,7 @@ const app = require("express")();
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const port = process.env.PORT || 8000;
+const { ensureLoggedIn } = require("connect-ensure-login");
 
 // Express session
 const session = require("express-session");
@@ -44,7 +45,7 @@ const authRouter = require("./routers/auth");
 app.use("/", authRouter);
 
 const accountRouter = require("./routers/account");
-app.use("/account", accountRouter);
+app.use("/account", ensureLoggedIn("/login"), accountRouter);
 
 const usersRouter = require("./routers/users");
 app.use("/users", usersRouter);
