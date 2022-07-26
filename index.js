@@ -56,8 +56,8 @@ app.use("/products", productsRouter);
 // const ordersRouter = require("./routers/orders");
 // app.use("/orders", ordersRouter);
 
-// const cartRouter = require("./routers/cart");
-// app.use("/cart", cartRouter);
+const cartRouter = require("./routers/cart");
+app.use("/cart", ensureLoggedIn("/login"), cartRouter);
 
 // Error messages
 app.all("*", (req, res) => {
