@@ -16,7 +16,7 @@ const getUsers = async (req, res) => {
         let result = await pool.query("SELECT id, first_name, last_name, email FROM users ORDER BY id ASC");
         res.status(200).json(result.rows);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -27,7 +27,7 @@ const getUserById = async (req, res) => {
         let result = await pool.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
         res.status(200).json(result.rows);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -39,7 +39,7 @@ const createUser = async (req, res) => {
     try {
         // Send error if email already exists in database
         let result = await pool.query("SELECT email FROM users WHERE email = $1", [email]);
-        if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists!");
+        if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists.");
 
         // Create user
         const salt = await bcrypt.genSalt(17);
@@ -57,7 +57,7 @@ const createUser = async (req, res) => {
 
         result = await pool.query(text, values);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -80,7 +80,7 @@ const updateUser = async (req, res) => {
         result = await pool.query(text, values);
         res.status(200).send(`User modified with ID: ${result.rows[0].id}`);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -93,7 +93,7 @@ const deleteUser = async (req, res) => {
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
         res.status(204).send(`User deleted with ID: ${result.rows[0].id}`);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 

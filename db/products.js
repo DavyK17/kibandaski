@@ -19,14 +19,14 @@ const getProducts = async (req, res) => {
             let result = await pool.query("SELECT id, name, price FROM products WHERE category = $1 ORDER BY id ASC", [category]);
             res.status(200).json(result.rows);
         } catch(err) {
-            res.status(500).send(err);
+            res.status(500).send(`Error: ${err.detail}`);
         }
     } else { // Get all products
         try {
             let result = await pool.query("SELECT id, name, price, category FROM products ORDER BY id ASC");
             res.status(200).json(result.rows);
         } catch(err) {
-            res.status(500).send(err);
+            res.status(500).send(`Error: ${err.detail}`);
         }
     }
 }
@@ -38,7 +38,7 @@ const getProductById = async (req, res) => {
         let result = await pool.query("SELECT id, name, price, category FROM products WHERE id = $1", [id]);
         res.status(200).json(result.rows);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -54,7 +54,7 @@ const createProduct = async (req, res) => {
         let result = await pool.query(text, values);
         res.status(201).send(`Product created with ID: ${result.rows[0].id}`);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -76,7 +76,7 @@ const updateProduct = async (req, res) => {
         result = await pool.query(text, values);
         res.status(200).send(`Product modified with ID: ${result.rows[0].id}`);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
@@ -87,7 +87,7 @@ const deleteProduct = async (req, res) => {
         let result = await pool.query("DELETE FROM products WHERE id = $1 RETURNING id", [id]);
         res.status(204).send(`Product created with ID: ${result.rows[0].id}`);
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
