@@ -25,13 +25,13 @@ passport.use(new LocalStrategy(
     { usernameField: "email" },
     async (email, password, done) => {
         try {
-            const result = await pool.query("SELECT id, email, password FROM users WHERE email = $1", [email]);
+            const result = await pool.query("SELECT id, email, password, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
             if (result.rows.length === 0) return done(null, false);
             
             const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
             if (!passwordMatch) return done(null, false);
 
-            return done(null, { id: result.rows[0].id, email: result.rows[0].email });
+            return done(null, { id: result.rows[0].id, email: result.rows[0].email, cartId: result.rows[0].cart_id });
         } catch(err) {
             return done(err);
         }
