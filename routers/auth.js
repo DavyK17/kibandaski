@@ -8,6 +8,7 @@ const db = require("../db/index");
 
 // connect-ensure-login
 const login = require("connect-ensure-login").ensureLoggedIn("/login");
+const logout = require("connect-ensure-login").ensureLoggedOut("/account");
 
 // node-postgres
 const { Pool } = require("pg");
@@ -22,7 +23,6 @@ const pool = new Pool({
 // Passport.js
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const { ensureLoggedIn } = require("connect-ensure-login");
 
 passport.use(new LocalStrategy(
     { usernameField: "email" },
@@ -70,7 +70,7 @@ router.get("/login", (req, res) => {
     res.send("Kindly log in with your account details");
 });
 
-router.post("/login", passport.authenticate("local", { failureRedirect: "/login" }), (req, res) => {
+router.post("/login", logout, passport.authenticate("local", { failureRedirect: "/login" }), (req, res) => {
     res.send("Login successful");
 });
 
