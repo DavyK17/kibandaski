@@ -55,14 +55,9 @@ const createUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const id = req.params.id;
-
     try {
-        // Send error if current user's ID does not match requested ID
-        if (req.user.id !== id) return res.status(401).send("Error: You are not authorised to update another user's account!");
-
         // Retrieve existing details from database if not provided in body
-        let result = await pool.query("SELECT first_name, last_name, email, password FROM users WHERE id = $1", [id]);
+        let result = await pool.query("SELECT first_name, last_name, email, password FROM users WHERE id = $1", [req.user.id]);
 
         const firstName = req.body.firstName || result.rows[0].first_name;
         const lastName = req.body.lastName || result.rows[0].last_name;
@@ -73,7 +68,7 @@ const updateUser = async (req, res) => {
 
         // Update user details
         let text = "UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5 RETURNING id";
-        let values = [firstName, lastName, email, passwordHash, id];
+        let values = [firstName, lastName, email, passwordHash, req.user.id];
 
         result = await pool.query(text, values);
         res.status(200).send(`User modified with ID: ${result.rows[0].id}`);
@@ -83,14 +78,13 @@ const updateUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    const id = req.params.id;
-
     try {
-        // Send error if current user's ID does not match requested ID
-        if (req.user.id !== id) return res.status(401).send("Error: You are not authorised to delete another user's account!");
+        // Delete user's cart
+        let result = await pool.query("DELETE FROM carts WHERE user_id = $1", [req.user.id]);
+        console.log("Cart deleted successfully");
 
         // Delete user
-        let result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [id]);
+        result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
         res.status(204).send(`User deleted with ID: ${result.rows[0].id}`);
     } catch(err) {
         res.status(500).send(err);
