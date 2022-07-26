@@ -32,7 +32,7 @@ const getProducts = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
 
     try {
         const result = await pool.query("SELECT id, name, price, category FROM products WHERE id = $1", [id]);

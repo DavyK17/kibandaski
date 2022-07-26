@@ -21,7 +21,7 @@ const getUsers = async (req, res) => {
 }
 
 const getUserById = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
 
     try {
         const result = await pool.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
@@ -55,7 +55,7 @@ const createUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
 
     try {
         // Send error if current user's ID does not match requested ID
@@ -83,7 +83,7 @@ const updateUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
 
     try {
         // Send error if current user's ID does not match requested ID
