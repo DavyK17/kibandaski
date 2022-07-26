@@ -55,11 +55,6 @@ passport.deserializeUser(async (id, done) => {
 
 /* IMPLEMENTATION */
 
-// User account
-router.get("/account", ensureLoggedIn("/login"), (req, res) => {
-    res.json(req.user);
-});
-
 // User registration
 router.get("/register", (req, res) => {
     res.send("Create a new account");
