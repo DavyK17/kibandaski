@@ -6,7 +6,9 @@ const app = require("express")();
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const port = process.env.PORT || 8000;
-const { ensureLoggedIn } = require("connect-ensure-login");
+
+// connect-ensure-login
+const login = require("connect-ensure-login").ensureLoggedIn("/login");
 
 // Express session
 const session = require("express-session");
@@ -40,12 +42,10 @@ app.get("/", (req, res) => {
     res.send("Welcome to Kibandaski!");
 });
 
-// Routers
+// ROUTERS
+/// No login
 const authRouter = require("./routers/auth");
 app.use("/", authRouter);
-
-const accountRouter = require("./routers/account");
-app.use("/account", ensureLoggedIn("/login"), accountRouter);
 
 const usersRouter = require("./routers/users");
 app.use("/users", usersRouter);
@@ -56,8 +56,12 @@ app.use("/products", productsRouter);
 // const ordersRouter = require("./routers/orders");
 // app.use("/orders", ordersRouter);
 
+/// Login required
+const accountRouter = require("./routers/account");
+app.use("/account", login, accountRouter);
+
 const cartRouter = require("./routers/cart");
-app.use("/cart", ensureLoggedIn("/login"), cartRouter);
+app.use("/cart", login, cartRouter);
 
 // Error messages
 app.all("*", (req, res) => {
