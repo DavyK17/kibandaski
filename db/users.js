@@ -56,7 +56,6 @@ const createUser = async (req, res) => {
         values = [cartId, userId];
 
         result = await pool.query(text, values);
-        console.log("Cart created successfully");
     } catch(err) {
         res.status(500).send(err);
     }
@@ -89,7 +88,6 @@ const deleteUser = async (req, res) => {
     try {
         // Delete user's cart
         let result = await pool.query("DELETE FROM carts WHERE user_id = $1", [req.user.id]);
-        console.log("Cart deleted successfully");
 
         // Delete user
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
