@@ -33,7 +33,8 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
-    const id = parseInt(idGen(7));
+    const userId = idGen(7);
+    const cartId = idGen(7);
 
     try {
         // Send error if email already exists in database
@@ -45,10 +46,17 @@ const createUser = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, salt);
         
         let text = `INSERT INTO users (id, first_name, last_name, email, password, created_at) VALUES ($1, $2, $3, $4, $5, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
-        let values = [id, firstName, lastName, email, passwordHash];
+        let values = [userId, firstName, lastName, email, passwordHash];
         
         result = await pool.query(text, values);
         res.status(201).send(`User created with ID: ${result.rows[0].id}`);
+
+        // Create cart
+        text = "INSERT INTO carts (id, user_id) VALUES ($1, $2) RETURNING id";
+        values = [cartId, userId];
+
+        result = await pool.query(text, values);
+        console.log("Cart created successfully");
     } catch(err) {
         res.status(500).send(err);
     }
