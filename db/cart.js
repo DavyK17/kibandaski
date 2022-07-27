@@ -15,9 +15,9 @@ const getCart = async (req, res) => {
         let result = await pool.query("SELECT * FROM carts WHERE user_id = $1", [req.user.id]);
         let cart = { id: result.rows[0].id, userId: result.rows[0].user_id, items: [] };
 
-        result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
-        result.rows.forEach(({ product_id, quantity }) => {
-            let item = { productId: product_id, quantity };
+        result = await pool.query("SELECT cart_items.product_id AS product_id, cart_items.quantity AS quantity, (cart_items.quantity * products.price) AS total_cost FROM cart_items JOIN products ON cart_items.product_id = products.id WHERE cart_id = $1", [req.user.cartId]);
+        result.rows.forEach(({ product_id, quantity, total_cost }) => {
+            let item = { productId: product_id, quantity, totalCost: total_cost };
             cart.items.push(item);
         });
 
