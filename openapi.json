@@ -1,0 +1,959 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Kibandaski",
+    "version": "1.0.0",
+    "description": "Codecademy portfolio project: Kibandaski (e-commerce app)",
+    "contact": {
+      "name": "Davy Kamanzi",
+      "url": "https://davyk17.github.io"
+    }
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "description": "Creates a new user account",
+        "requestBody": {
+          "description": "new user's details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/names"
+                  },
+                  {
+                    "$ref": "#/components/schemas/login"
+                  },
+                  {
+                    "required": [
+                      "firstName",
+                      "lastName",
+                      "email",
+                      "password"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A confirmation of the operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "User created with ID: [user ID]"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "An error message (if email already exists in database)",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Error: A user with the provided email already exists."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "description": "Logs in user",
+        "requestBody": {
+          "description": "user's details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/login"
+                  },
+                  {
+                    "required": [
+                      "email",
+                      "password"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A confirmation of the operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Login successful"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Requests user to log in (in case of invalid credentials)",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Kindly log in with your account details"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "Authentication",
+          "Login"
+        ],
+        "description": "Logs out user",
+        "responses": {
+          "200": {
+            "description": "A confirmation of the operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Logout successful"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account": {
+      "get": {
+        "tags": [
+          "Account",
+          "Login"
+        ],
+        "description": "Returns current user's account details",
+        "responses": {
+          "200": {
+            "description": "An object with account data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/account"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Account",
+          "Login"
+        ],
+        "description": "Updates current user's account details",
+        "requestBody": {
+          "description": "details to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/names"
+                  },
+                  {
+                    "$ref": "#/components/schemas/login"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A confirmation of the operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "User modified with ID: [user ID]"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Account",
+          "Login"
+        ],
+        "description": "Deletes current user's account",
+        "responses": {
+          "204": {
+            "description": "A confirmation of the operation"
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": [
+          "Cart",
+          "Login"
+        ],
+        "description": "Return current user's cart",
+        "responses": {
+          "200": {
+            "description": "An object with cart data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cart"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Cart",
+          "Login"
+        ],
+        "description": "Add item to current user's cart",
+        "requestBody": {
+          "description": "product to add to cart",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/cartItem"
+                  },
+                  {
+                    "required": [
+                      "productId"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A confirmation of the operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Added to cart product with ID: [product ID]"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cart",
+          "Login"
+        ],
+        "description": "Empties current user's cart",
+        "responses": {
+          "204": {
+            "description": "A confirmation of the operation"
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders",
+          "Login"
+        ],
+        "description": "Returns a list of current user's orders",
+        "responses": {
+          "200": {
+            "description": "An array of orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/orders"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of the order",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Orders",
+          "Login"
+        ],
+        "description": "Returns a single order",
+        "responses": {
+          "200": {
+            "description": "An object with order data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/order"
+                    },
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/cartItem"
+                              },
+                              {
+                                "properties": {
+                                  "totalCost": {
+                                    "type": "integer",
+                                    "description": "(quantity * product.price)"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "example": {
+                        "items": [
+                          {
+                            "productId": 39998,
+                            "quantity": 3,
+                            "totalCost": 30
+                          },
+                          {
+                            "productId": 6280,
+                            "quantity": 1,
+                            "totalCost": 20
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "An error message (if order belongs to another user or does not exist)",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Error: This order does not exist."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders",
+          "Login"
+        ],
+        "description": "Cancels a single order",
+        "responses": {
+          "200": {
+            "description": "A confirmation of the operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "Order cancelled with ID: [order ID]"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "parameters": [
+        {
+          "name": "category",
+          "in": "query",
+          "description": "category to return (carbohydrates, proteins, vegetables, dishes, or beverages)",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Returns a list of products",
+        "responses": {
+          "200": {
+            "description": "An array of products (category is omitted if included in query)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/products"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of the product",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Returns a single product",
+        "responses": {
+          "200": {
+            "description": "An object with product data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/product"
+                    },
+                    {
+                      "properties": {
+                        "category": {
+                          "type": "string"
+                        }
+                      },
+                      "example": {
+                        "category": "proteins"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns a list of users",
+        "responses": {
+          "200": {
+            "description": "An array of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/users"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of the user",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns a single user",
+        "responses": {
+          "200": {
+            "description": "An object with user data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error message",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "error": {
+        "type": "string",
+        "example": "Error: [error message]"
+      },
+      "names": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "firstName": "Mwenyeji",
+          "lastName": "Mkenya"
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "thisisan@email.com",
+          "password": "$Wagwan2022&"
+        }
+      },
+      "account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "cartId": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "2529575",
+          "email": "thisisan@email.com",
+          "cartId": "8152840"
+        }
+      },
+      "cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/cartItem"
+                },
+                {
+                  "properties": {
+                    "totalCost": {
+                      "type": "integer",
+                      "description": "(quantity * product.price)"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "example": {
+          "id": "8152840",
+          "userId": "2529575",
+          "items": [
+            {
+              "productId": "06280",
+              "quantity": 1,
+              "totalCost": 20
+            },
+            {
+              "productId": "39998",
+              "quantity": 3,
+              "totalCost": 30
+            }
+          ]
+        }
+      },
+      "cartItem": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "default": 1
+          }
+        }
+      },
+      "orders": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/order"
+        },
+        "example": [
+          {
+            "id": "8324346005",
+            "status": "cancelled"
+          },
+          {
+            "id": "1741143697",
+            "status": "pending"
+          }
+        ]
+      },
+      "order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "1741143697",
+          "status": "pending"
+        }
+      },
+      "products": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/product"
+        },
+        "example": [
+          {
+            "id": "06280",
+            "name": "Beans",
+            "price": 20,
+            "category": "proteins"
+          },
+          {
+            "id": "39998",
+            "name": "Chapati",
+            "price": 10,
+            "category": "carbohdyrates"
+          },
+          {
+            "id": "45609",
+            "name": "Pilau",
+            "price": 100,
+            "category": "dishes"
+          },
+          {
+            "id": "53022",
+            "name": "Sukuma wiki",
+            "price": 20,
+            "category": "vegetables"
+          },
+          {
+            "id": "57227",
+            "name": "Soda",
+            "price": 30,
+            "category": "beverages"
+          }
+        ]
+      },
+      "product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "category": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "89410",
+          "name": "Beef stew",
+          "price": 80,
+          "category": "proteins"
+        }
+      },
+      "users": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/user"
+        },
+        "example": [
+          {
+            "id": "2529575",
+            "firstName": "Mwenyeji",
+            "lastName": "Mkenya",
+            "email": "thisisan@email.com"
+          },
+          {
+            "id": "8866068",
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "email": "jane@web.com"
+          }
+        ]
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "example": {
+          "id": "2529575",
+          "firstName": "Mwenyeji",
+          "lastName": "Mkenya",
+          "email": "thisisan@email.com"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Authentication operations"
+    },
+    {
+      "name": "Account",
+      "description": "Account operations"
+    },
+    {
+      "name": "Cart",
+      "description": "Cart operations"
+    },
+    {
+      "name": "Orders",
+      "description": "Order operations"
+    },
+    {
+      "name": "Products",
+      "description": "Product operations"
+    },
+    {
+      "name": "Users",
+      "description": "User operations"
+    },
+    {
+      "name": "Login",
+      "description": "Login required"
+    }
+  ]
+}
