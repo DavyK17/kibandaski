@@ -13,7 +13,15 @@ const pool = new Pool({
 const getCart = async (req, res) => {
     try {
         let result = await pool.query("SELECT * FROM carts WHERE user_id = $1", [req.user.id]);
-        res.status(200).json(result.rows[0]);
+        let cart = { ...result.rows[0], items: [] };
+
+        result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
+        result.rows.forEach(({ product_id, quantity }) => {
+            let item = { productId: product_id, quantity };
+            cart.items.push(item);
+        });
+
+        res.status(200).json(cart);
     } catch(err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
