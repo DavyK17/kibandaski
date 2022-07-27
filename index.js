@@ -10,6 +10,12 @@ const port = process.env.PORT || 8000;
 // connect-ensure-login
 const login = require("connect-ensure-login").ensureLoggedIn("/login");
 
+// Swagger UI Express
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("./openapi.json");
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 // Express session
 const session = require("express-session");
 const store = new session.MemoryStore();
