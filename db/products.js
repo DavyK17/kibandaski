@@ -10,39 +10,39 @@ const pool = new Pool({
     database: process.env.DB_DATABASE
 });
 
-const getProducts = async (req, res) => {
+const getProducts = async(req, res) => {
     // Get products by category
     if (req.query.category) {
         const category = req.query.category;
-    
+
         try {
             let result = await pool.query("SELECT id, name, price FROM products WHERE category = $1 ORDER BY id ASC", [category]);
             res.status(200).json(result.rows);
-        } catch(err) {
+        } catch (err) {
             res.status(500).send(`Error: ${err.detail}`);
         }
     } else { // Get all products
         try {
             let result = await pool.query("SELECT id, name, price, category FROM products ORDER BY id ASC");
             res.status(200).json(result.rows);
-        } catch(err) {
+        } catch (err) {
             res.status(500).send(`Error: ${err.detail}`);
         }
     }
 }
 
-const getProductById = async (req, res) => {
+const getProductById = async(req, res) => {
     const id = req.params.id;
 
     try {
         let result = await pool.query("SELECT id, name, price, category FROM products WHERE id = $1", [id]);
         res.status(200).json(result.rows[0]);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const createProduct = async (req, res) => {
+const createProduct = async(req, res) => {
     const { name, price, category } = req.body;
     const id = idGen(5);
 
@@ -53,12 +53,12 @@ const createProduct = async (req, res) => {
 
         let result = await pool.query(text, values);
         res.status(201).send(`Product created with ID: ${result.rows[0].id}`);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const updateProduct = async (req, res) => {
+const updateProduct = async(req, res) => {
     const id = req.params.id;
 
     try {
@@ -75,18 +75,18 @@ const updateProduct = async (req, res) => {
 
         result = await pool.query(text, values);
         res.status(200).send(`Product modified with ID: ${result.rows[0].id}`);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async(req, res) => {
     const id = req.params.id;
 
     try {
         let result = await pool.query("DELETE FROM products WHERE id = $1 RETURNING id", [id]);
         res.status(204).send(`Product created with ID: ${result.rows[0].id}`);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }

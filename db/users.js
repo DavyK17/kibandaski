@@ -11,7 +11,7 @@ const pool = new Pool({
     database: process.env.DB_DATABASE
 });
 
-const getUsers = async (req, res) => {
+const getUsers = async(req, res) => {
     try {
         let users = [];
 
@@ -22,12 +22,12 @@ const getUsers = async (req, res) => {
         });
 
         res.status(200).json(users);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const getUserById = async (req, res) => {
+const getUserById = async(req, res) => {
     const id = req.params.id;
 
     try {
@@ -40,12 +40,12 @@ const getUserById = async (req, res) => {
             email: result.rows[0].email
         };
         res.status(200).json(user);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const createUser = async (req, res) => {
+const createUser = async(req, res) => {
     const { firstName, lastName, email, password } = req.body;
     const userId = idGen(7);
     const cartId = idGen(7);
@@ -58,10 +58,10 @@ const createUser = async (req, res) => {
         // Create user
         const salt = await bcrypt.genSalt(17);
         const passwordHash = await bcrypt.hash(password, salt);
-        
+
         let text = `INSERT INTO users (id, first_name, last_name, email, password, created_at) VALUES ($1, $2, $3, $4, $5, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
         let values = [userId, firstName, lastName, email, passwordHash];
-        
+
         result = await pool.query(text, values);
         res.status(201).send(`User created with ID: ${result.rows[0].id}`);
 
@@ -70,12 +70,12 @@ const createUser = async (req, res) => {
         values = [cartId, userId];
 
         result = await pool.query(text, values);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const updateUser = async (req, res) => {
+const updateUser = async(req, res) => {
     try {
         // Retrieve existing details from database if not provided in body
         let result = await pool.query("SELECT first_name, last_name, email, password FROM users WHERE id = $1", [req.user.id]);
@@ -93,19 +93,19 @@ const updateUser = async (req, res) => {
 
         result = await pool.query(text, values);
         res.status(200).send(`User modified with ID: ${result.rows[0].id}`);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
-const deleteUser = async (req, res) => {
+const deleteUser = async(req, res) => {
     try {
         // Delete orders
         let orders = [];
         let result = await pool.query("SELECT id FROM orders WHERE user_id = $1", [req.user.id]);
         result.rows.forEach(row => orders.push(row.id));
 
-        orders.forEach(async (id) => {
+        orders.forEach(async(id) => {
             result = await pool.query("DELETE FROM order_items WHERE order_id = $1", [id]);
             result = await pool.query("DELETE FROM orders WHERE id = $1", [id]);
         });
@@ -117,7 +117,7 @@ const deleteUser = async (req, res) => {
         // Delete user
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
         res.status(204).send(`User deleted with ID: ${result.rows[0].id}`);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
 }
