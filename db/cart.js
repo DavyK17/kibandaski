@@ -73,6 +73,9 @@ const checkout = async (req, res) => {
             result = await pool.query(text, values);
         });
 
+        // Empty cart
+        result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 RETURNING cart_id", [req.user.cartId]);
+
         // Confirm order
         res.status(201).send(`Order placed with ID: ${orderId}`);
     } catch(err) {
