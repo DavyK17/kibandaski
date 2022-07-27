@@ -21,7 +21,9 @@ const getOrderById = async (req, res) => {
     const id = req.params.id;
 
     try {
-        let result = await pool.query("SELECT id, status FROM orders WHERE id = $1", [id]);
+        let result = await pool.query("SELECT id, status FROM orders WHERE id = $1 AND user_id = $2", [id, req.user.id]);
+        if (result.rows.length === 0) return res.status(404).send("Error: This order does not exist.");
+        
         let order = { ...result.rows[0], items: [] };
 
         result = await pool.query("SELECT product_id, quantity FROM order_items WHERE order_id = $1", [id]);
