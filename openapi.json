@@ -132,10 +132,14 @@
     "/logout": {
       "get": {
         "tags": [
-          "Authentication",
-          "Login"
+          "Authentication"
         ],
         "description": "Logs out user",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "A confirmation of the operation",
@@ -154,10 +158,14 @@
     "/account": {
       "get": {
         "tags": [
-          "Account",
-          "Login"
+          "Account"
         ],
         "description": "Returns current user's account details",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "An object with account data",
@@ -183,10 +191,14 @@
       },
       "put": {
         "tags": [
-          "Account",
-          "Login"
+          "Account"
         ],
         "description": "Updates current user's account details",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "requestBody": {
           "description": "details to update",
           "content": {
@@ -230,10 +242,14 @@
       },
       "delete": {
         "tags": [
-          "Account",
-          "Login"
+          "Account"
         ],
         "description": "Deletes current user's account",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "204": {
             "description": "A confirmation of the operation"
@@ -254,10 +270,14 @@
     "/cart": {
       "get": {
         "tags": [
-          "Cart",
-          "Login"
+          "Cart"
         ],
         "description": "Return current user's cart",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "An object with cart data",
@@ -283,10 +303,14 @@
       },
       "post": {
         "tags": [
-          "Cart",
-          "Login"
+          "Cart"
         ],
         "description": "Add item to current user's cart",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "requestBody": {
           "description": "product to add to cart",
           "content": {
@@ -332,10 +356,14 @@
       },
       "delete": {
         "tags": [
-          "Cart",
-          "Login"
+          "Cart"
         ],
         "description": "Empties current user's cart",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "204": {
             "description": "A confirmation of the operation"
@@ -356,10 +384,14 @@
     "/orders": {
       "get": {
         "tags": [
-          "Orders",
-          "Login"
+          "Orders"
         ],
         "description": "Returns a list of current user's orders",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "An array of orders",
@@ -398,10 +430,14 @@
       ],
       "get": {
         "tags": [
-          "Orders",
-          "Login"
+          "Orders"
         ],
         "description": "Returns a single order",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "An object with order data",
@@ -478,10 +514,14 @@
       },
       "delete": {
         "tags": [
-          "Orders",
-          "Login"
+          "Orders"
         ],
         "description": "Cancels a single order",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "A confirmation of the operation",
@@ -675,6 +715,12 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
     "schemas": {
       "error": {
         "type": "string",
@@ -950,10 +996,6 @@
     {
       "name": "Users",
       "description": "User operations"
-    },
-    {
-      "name": "Login",
-      "description": "Login required"
     }
   ]
 }
