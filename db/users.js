@@ -25,7 +25,7 @@ const getUserById = async (req, res) => {
 
     try {
         let result = await pool.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
-        res.status(200).json(result.rows);
+        res.status(200).json(result.rows[0]);
     } catch(err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
