@@ -13,8 +13,15 @@ const pool = new Pool({
 
 const getUsers = async (req, res) => {
     try {
+        let users = [];
+
         let result = await pool.query("SELECT id, first_name, last_name, email FROM users ORDER BY id ASC");
-        res.status(200).json(result.rows);
+        result.rows.forEach(({ id, first_name, last_name, email }) => {
+            let user = { id, firstName: first_name, lastName: last_name, email };
+            users.push(user);
+        });
+
+        res.status(200).json(users);
     } catch(err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
@@ -25,7 +32,14 @@ const getUserById = async (req, res) => {
 
     try {
         let result = await pool.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
-        res.status(200).json(result.rows[0]);
+
+        let user = {
+            id: result.rows[0].id,
+            firstName: result.rows[0].first_name,
+            lastName: result.rows[0].last_name,
+            email: result.rows[0].email
+        };
+        res.status(200).json(user);
     } catch(err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
