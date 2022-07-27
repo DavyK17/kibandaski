@@ -13,7 +13,7 @@ const pool = new Pool({
 const getCart = async (req, res) => {
     try {
         let result = await pool.query("SELECT * FROM carts WHERE user_id = $1", [req.user.id]);
-        let cart = { ...result.rows[0], items: [] };
+        let cart = { id: result.rows[0].id, userId: result.rows[0].user_id, items: [] };
 
         result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
         result.rows.forEach(({ product_id, quantity }) => {
