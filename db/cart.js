@@ -29,6 +29,7 @@ const getCart = async (req, res) => {
 
 const addToCart = async (req, res) => {
     let { productId, quantity } = req.body;
+    if (!quantity) quantity = 1;
 
     try {
         // Update quantity if product is already in cart
