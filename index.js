@@ -53,15 +53,15 @@ app.use("/users", usersRouter);
 const productsRouter = require("./routers/products");
 app.use("/products", productsRouter);
 
-const ordersRouter = require("./routers/orders");
-app.use("/orders", ordersRouter);
-
 /// Login required
 const accountRouter = require("./routers/account");
 app.use("/account", login, accountRouter);
 
 const cartRouter = require("./routers/cart");
 app.use("/cart", login, cartRouter);
+
+const ordersRouter = require("./routers/orders");
+app.use("/orders", login, ordersRouter);
 
 // Error messages
 app.all("*", (req, res) => {
