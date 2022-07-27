@@ -26,9 +26,9 @@ const getOrderById = async (req, res) => {
         
         let order = { ...result.rows[0], items: [] };
 
-        result = await pool.query("SELECT product_id, quantity FROM order_items WHERE order_id = $1", [id]);
-        result.rows.forEach(({ product_id, quantity }) => {
-            let item = { productId: product_id, quantity };
+        result = await pool.query("SELECT order_items.product_id AS product_id, order_items.quantity AS quantity, (order_items.quantity * products.price) AS total_cost FROM order_items JOIN products ON order_items.product_id = products.id WHERE order_items.order_id = $1", [id]);
+        result.rows.forEach(({ product_id, quantity, total_cost }) => {
+            let item = { productId: product_id, quantity, totalCost: total_cost };
             order.items.push(item);
         });
 
