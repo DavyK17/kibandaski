@@ -38,7 +38,19 @@ const getOrderById = async (req, res) => {
     }
 }
 
+const cancelOrder = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        let result = await pool.query("UPDATE orders SET status = 'cancelled' WHERE id = $1 AND user_id = $2 RETURNING id", [id, req.user.id]);
+        res.status(200).send(`Order cancelled with ID: ${result.rows[0].id}`);
+    } catch(err) {
+        res.status(500).send(`Error: ${err.detail}`);
+    }
+}
+
 module.exports = {
     getOrders,
-    getOrderById
+    getOrderById,
+    cancelOrder
 }
