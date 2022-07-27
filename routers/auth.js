@@ -22,24 +22,25 @@ const pool = new Pool({
 
 // Passport.js
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const authenticate = async (email, password, done) => {
+    try {
+        const result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
+        if (result.rows.length === 0) return done(null, false);
+        
+        const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
+        if (!passwordMatch) return done(null, false);
 
-passport.use(new LocalStrategy(
-    { usernameField: "email" },
-    async (email, password, done) => {
-        try {
-            const result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
-            if (result.rows.length === 0) return done(null, false);
-            
-            const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
-            if (!passwordMatch) return done(null, false);
-
-            return done(null, { id: result.rows[0].id, email: result.rows[0].email, cartId: result.rows[0].cart_id });
-        } catch(err) {
-            return done(err);
-        }
+        return done(null, { id: result.rows[0].id, email: result.rows[0].email, cartId: result.rows[0].cart_id });
+    } catch(err) {
+        return done(err);
     }
-));
+}
+
+const LocalStrategy = require("passport-local").Strategy;
+passport.use(new LocalStrategy({ usernameField: "email" }, authenticate));
+
+const { BasicStrategy }= require("passport-http");
+passport.use(new BasicStrategy({ usernameField: "email" }, authenticate));
 
 passport.serializeUser((user, done) => {
     return done(null, user.id);
@@ -70,7 +71,7 @@ router.get("/login", (req, res) => {
     res.send("Kindly log in with your account details");
 });
 
-router.post("/login", logout, passport.authenticate("local", { failureRedirect: "/login" }), (req, res) => {
+router.post("/login", logout, passport.authenticate(["local", "basic"], { failureRedirect: "/login" }), (req, res) => {
     res.send("Login successful");
 });
 
