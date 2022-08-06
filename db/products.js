@@ -11,21 +11,16 @@ const pool = new Pool({
 });
 
 const getProducts = async(req, res) => {
-    // Get products by category
-    if (req.query.category) {
-        try {
+    try {
+        if (req.query.category) { // Get products by category
             let result = await pool.query("SELECT id, name, price FROM products WHERE category = $1 ORDER BY id ASC", [req.query.category]);
             res.status(200).json(result.rows);
-        } catch (err) {
-            res.status(500).send(`Error: ${err.detail}`);
-        }
-    } else { // Get all products
-        try {
+        } else { // Get all products
             let result = await pool.query("SELECT id, name, price, category FROM products ORDER BY id ASC");
             res.status(200).json(result.rows);
-        } catch (err) {
-            res.status(500).send(`Error: ${err.detail}`);
         }
+    } catch (err) {
+        res.status(500).send(`Error: ${err.detail}`);
     }
 }
 
