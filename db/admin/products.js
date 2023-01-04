@@ -9,7 +9,7 @@ const createProduct = async(req, res) => {
     try {
         // Create product
         let text = `INSERT INTO products (id, name, price, category, created_at) VALUES ($1, $2, $3, $4, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
-        let values = [id, name, price, category];
+        let values = [id, name, Number(price), category];
 
         let result = await client.query(text, values);
         res.status(201).send(`Product created with ID: ${result.rows[0].id}`);
@@ -29,7 +29,7 @@ const updateProduct = async(req, res) => {
 
         // Update product details
         let text = "UPDATE products SET name = $1, price = $2, category = $3 WHERE id = $4 RETURNING id";
-        let values = [name, price, category, req.params.id];
+        let values = [name, Number(price), category, req.params.id];
 
         result = await client.query(text, values);
         res.status(200).send(`Product modified with ID: ${result.rows[0].id}`);
