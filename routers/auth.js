@@ -6,6 +6,8 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const client = require("../db/client");
 const db = require("../db/index");
+const idGen = require("../util/idGen");
+const requestIP = require("request-ip");
 
 // connect-ensure-login
 const login = require("connect-ensure-login").ensureLoggedIn("/login");
@@ -13,13 +15,26 @@ const logout = require("connect-ensure-login").ensureLoggedOut("/account");
 
 // Passport.js
 const passport = require("passport");
-const authenticate = async(email, password, done) => {
+const authenticate = async(req, email, password, done) => {
+    const ip = requestIP.getClientIp(req);
+    const attemptId = idGen(15);
+
     try {
         let result = await client.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
         if (result.rows.length === 0) return done(null, false);
 
         const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
-        if (!passwordMatch) return done(null, false);
+        if (!passwordMatch) {
+            let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), FALSE)`;
+            let values = [attemptId, ip, email];
+            result = await client.query(text, values);
+
+            return done(null, false);
+        }
+
+        let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), TRUE)`;
+        let values = [attemptId, ip, email];
+        result = await client.query(text, values);
 
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
@@ -28,10 +43,10 @@ const authenticate = async(email, password, done) => {
 }
 
 const LocalStrategy = require("passport-local").Strategy;
-passport.use(new LocalStrategy({ usernameField: "email" }, authenticate));
+passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, authenticate));
 
 const { BasicStrategy } = require("passport-http");
-passport.use(new BasicStrategy({ usernameField: "email" }, authenticate));
+passport.use(new BasicStrategy({ usernameField: "email", passReqToCallback: true }, authenticate));
 
 passport.serializeUser((user, done) => {
     return done(null, user.id);
