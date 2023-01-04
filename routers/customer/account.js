@@ -1,7 +1,6 @@
 const router = require("express").Router();
-const db = require("../db/users");
+const db = require("../../db/index").customer.users;
 
-// User account
 router.get("/", (req, res) => res.json(req.user));
 router.put("/", db.updateUser);
 router.delete("/", db.deleteUser);

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const db = require("../db/products");
+const db = require("../../db/index").customer.products;
 
 router.get("/", db.getProducts);
 router.get("/:id", db.getProductById);
