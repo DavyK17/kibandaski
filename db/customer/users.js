@@ -3,35 +3,16 @@ const bcrypt = require("bcrypt");
 const client = require("./client");
 const idGen = require("../util/idGen");
 
-const getUsers = async(req, res) => {
+const getUser = async(req, res) => {
     try {
-        let users = [];
-
-        let result = await client.query("SELECT id, first_name, last_name, email FROM users ORDER BY id ASC");
-        result.rows.forEach(({ id, first_name, last_name, email }) => {
-            let user = { id, firstName: first_name, lastName: last_name, email };
-            users.push(user);
-        });
-
-        res.status(200).json(users);
-    } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
-    }
-}
-
-const getUserById = async(req, res) => {
-    const id = req.params.id;
-
-    try {
-        let result = await client.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
-
-        let user = {
+        let result = await client.query("SELECT id, first_name, last_name, email, role FROM users WHERE id = $1", [req.user.id]);
+        res.status(200).json({
             id: result.rows[0].id,
             firstName: result.rows[0].first_name,
             lastName: result.rows[0].last_name,
-            email: result.rows[0].email
-        };
-        res.status(200).json(user);
+            email: result.rows[0].email,
+            role: result.rows[0].role
+        });
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
@@ -115,8 +96,7 @@ const deleteUser = async(req, res) => {
 }
 
 module.exports = {
-    getUsers,
-    getUserById,
+    getUser,
     createUser,
     updateUser,
     deleteUser

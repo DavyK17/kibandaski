@@ -1,6 +1,6 @@
 require("dotenv").config();
-const client = require("./client");
-const idGen = require("../util/idGen");
+const client = require("../client");
+const idGen = require("../../util/idGen");
 
 const getCart = async(req, res) => {
     try {
