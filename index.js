@@ -52,26 +52,19 @@ app.get("/", (req, res) => {
     res.send("Welcome to Kibandaski!");
 });
 
-// ROUTERS
-/// No login
+// Routers
 const authRouter = require("./routers/auth");
 app.use("/", authRouter);
 
-const usersRouter = require("./routers/users");
-app.use("/users", usersRouter);
+const adminRouter = require("./routers/admin");
+app.use("/admin", login, (req, res, next) => {
+    // Send error if user is not an admin
+    if (req.user.role !== "admin") return res.status(403).send("Error: You are not authorised to carry out this operation.");
+    next();
+}, adminRouter);
 
-const productsRouter = require("./routers/products");
-app.use("/products", productsRouter);
-
-/// Login required
-const accountRouter = require("./routers/account");
-app.use("/account", login, accountRouter);
-
-const cartRouter = require("./routers/cart");
-app.use("/cart", login, cartRouter);
-
-const ordersRouter = require("./routers/orders");
-app.use("/orders", login, ordersRouter);
+const customerRouter = require("./routers/customer");
+app.use("/customer", customerRouter);
 
 // Error messages
 app.all("*", (req, res) => {
