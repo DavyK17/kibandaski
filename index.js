@@ -4,6 +4,7 @@
 require("dotenv").config();
 const app = require("express")();
 const bodyParser = require("body-parser");
+const helmet = require("helmet");
 const passport = require("passport");
 const port = process.env.PORT || 8000;
 
@@ -23,6 +24,9 @@ const store = new session.MemoryStore();
 // Body Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Helmet
+app.use(helmet());
 
 // Session
 app.use(session({
