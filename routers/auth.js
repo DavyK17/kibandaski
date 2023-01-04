@@ -4,7 +4,7 @@
 require("dotenv").config();
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const client = require("../db/client");
+const pool = require("../db/pool");
 const db = require("../db/index").customer.users;
 const idGen = require("../util/idGen");
 const requestIP = require("request-ip");
@@ -21,11 +21,11 @@ const authenticate = async(req, email, password, done) => {
     const logAttempt = async(success) => {
         let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), ${success})`;
         let values = [attemptId, ip, email];
-        return await client.query(text, values);
+        return await pool.query(text, values);
     }
 
     try {
-        let result = await client.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
+        let result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
         if (result.rows.length === 0) {
             await logAttempt(false);
             return done(null, false);
@@ -56,7 +56,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async(id, done) => {
     try {
-        let result = await client.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [id]);
+        let result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [id]);
         if (result.rows.length === 0) return done(null, false);
 
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
