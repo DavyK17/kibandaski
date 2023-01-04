@@ -5,9 +5,9 @@ const getUsers = async(req, res) => {
     try {
         let users = [];
 
-        let result = await client.query("SELECT id, first_name, last_name, email, role FROM users ORDER BY id ASC");
-        result.rows.forEach(({ id, first_name, last_name, email, role }) => {
-            let user = { id, firstName: first_name, lastName: last_name, email, role };
+        let result = await client.query("SELECT id, first_name, last_name, phone, email, role FROM users ORDER BY id ASC");
+        result.rows.forEach(({ id, first_name, last_name, phone, email, role }) => {
+            let user = { id, firstName: first_name, lastName: last_name, phone, email, role };
             users.push(user);
         });
 
@@ -19,13 +19,15 @@ const getUsers = async(req, res) => {
 
 const getUserById = async(req, res) => {
     try {
-        let result = await client.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [req.params.id]);
+        let result = await client.query("SELECT id, first_name, last_name, phone, email, role FROM users WHERE id = $1", [req.params.id]);
 
         let user = {
             id: result.rows[0].id,
             firstName: result.rows[0].first_name,
             lastName: result.rows[0].last_name,
-            email: result.rows[0].email
+            phone: result.rows[0].phone,
+            email: result.rows[0].email,
+            role: result.rows[0].role
         };
         res.status(200).json(user);
     } catch (err) {
