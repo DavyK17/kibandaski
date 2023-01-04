@@ -54,7 +54,7 @@ app.get("/", (req, res) => {
 
 // Routers
 const authRouter = require("./routers/auth");
-app.use("/", authRouter);
+app.use("/auth", authRouter);
 
 const adminRouter = require("./routers/admin");
 app.use("/admin", login, (req, res, next) => {
