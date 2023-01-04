@@ -7,7 +7,7 @@ const getUsers = async(req, res) => {
 
         let result = await client.query("SELECT id, first_name, last_name, phone, email, role FROM users ORDER BY id ASC");
         result.rows.forEach(({ id, first_name, last_name, phone, email, role }) => {
-            let user = { id, firstName: first_name, lastName: last_name, phone: parseInt(), email, role };
+            let user = { id, firstName: first_name, lastName: last_name, phone: parseInt(phone), email, role };
             users.push(user);
         });
 
