@@ -3,41 +3,31 @@
 // General
 require("dotenv").config();
 const app = require("express")();
-const bodyParser = require("body-parser");
-const helmet = require("helmet");
-const passport = require("passport");
 const port = process.env.PORT || 8000;
+
+// Body Parser
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // connect-ensure-login
 const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 
-// Swagger UI Express
-const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("./openapi.json");
-
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
-// Express session
-const session = require("express-session");
-const store = new session.MemoryStore();
-
-// Body Parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Helmet
+const helmet = require("helmet");
 app.use(helmet());
 
 // Session
+const session = require("express-session");
 const sessionConfig = {
+    store: new session.MemoryStore(),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 172800000,
         sameSite: "none",
-    },
-    store
+    }
 }
 
 if (app.get("env") === "production") {
@@ -47,8 +37,15 @@ if (app.get("env") === "production") {
 app.use(session(sessionConfig));
 
 // Passport.js
+const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Swagger UI Express
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("./openapi.json");
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
 /* IMPLEMENTATION */
