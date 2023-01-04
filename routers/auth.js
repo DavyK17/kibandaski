@@ -10,8 +10,8 @@ const idGen = require("../util/idGen");
 const requestIP = require("request-ip");
 
 // connect-ensure-login
-const login = require("connect-ensure-login").ensureLoggedIn("/login");
-const logout = require("connect-ensure-login").ensureLoggedOut("/account");
+const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
+const logout = require("connect-ensure-login").ensureLoggedOut("/auth/user");
 
 // Passport.js
 const passport = require("passport");
