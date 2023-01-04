@@ -18,10 +18,8 @@ const getUsers = async(req, res) => {
 }
 
 const getUserById = async(req, res) => {
-    const id = req.params.id;
-
     try {
-        let result = await client.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [id]);
+        let result = await client.query("SELECT id, first_name, last_name, email FROM users WHERE id = $1", [req.params.id]);
 
         let user = {
             id: result.rows[0].id,

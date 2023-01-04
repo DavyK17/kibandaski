@@ -19,11 +19,9 @@ const createProduct = async(req, res) => {
 }
 
 const updateProduct = async(req, res) => {
-    const id = req.params.id;
-
     try {
         // Retrieve existing details from database if not provided in body
-        let result = await client.query("SELECT name, price, category FROM products WHERE id = $1", [id]);
+        let result = await client.query("SELECT name, price, category FROM products WHERE id = $1", [req.params.id]);
 
         const name = req.body.name || result.rows[0].name;
         const price = req.body.price || result.rows[0].price;
@@ -31,7 +29,7 @@ const updateProduct = async(req, res) => {
 
         // Update product details
         let text = "UPDATE products SET name = $1, price = $2, category = $3 WHERE id = $4 RETURNING id";
-        let values = [name, price, category, id];
+        let values = [name, price, category, req.params.id];
 
         result = await client.query(text, values);
         res.status(200).send(`Product modified with ID: ${result.rows[0].id}`);
@@ -41,10 +39,8 @@ const updateProduct = async(req, res) => {
 }
 
 const deleteProduct = async(req, res) => {
-    const id = req.params.id;
-
     try {
-        let result = await client.query("DELETE FROM products WHERE id = $1 RETURNING id", [id]);
+        let result = await client.query("DELETE FROM products WHERE id = $1 RETURNING id", [req.params.id]);
         res.status(204).send(`Product created with ID: ${result.rows[0].id}`);
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
