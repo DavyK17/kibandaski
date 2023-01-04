@@ -29,17 +29,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 // Session
-app.use(session({
+const sessionConfig = {
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 172800000,
-        secure: true,
         sameSite: "none",
     },
     store
-}));
+}
+
+if (app.get("env") === "production") {
+    app.set("trust proxy", 1);
+    sessionConfig.cookie.secure = true;
+}
+app.use(session(sessionConfig));
 
 // Passport.js
 app.use(passport.initialize());
