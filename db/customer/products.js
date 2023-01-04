@@ -1,5 +1,5 @@
 require("dotenv").config();
-const client = require("./client");
+const client = require("../client");
 
 const getProducts = async(req, res) => {
     try {

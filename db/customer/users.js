@@ -1,7 +1,7 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-const client = require("./client");
-const idGen = require("../util/idGen");
+const client = require("../client");
+const idGen = require("../../util/idGen");
 
 const getUser = async(req, res) => {
     try {
