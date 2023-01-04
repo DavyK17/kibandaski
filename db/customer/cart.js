@@ -20,14 +20,13 @@ const getCart = async(req, res) => {
 }
 
 const addToCart = async(req, res) => {
-    let { productId, quantity } = req.body;
-    if (!quantity) quantity = 1;
+    let { productId, quantity = 1 } = req.body;
 
     try {
         // Update quantity if product is already in cart
         let result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1 AND product_id = $2", [req.user.cartId, productId]);
         if (result.rows.length > 0) {
-            quantity = parseInt(quantity) + parseInt(result.rows[0].quantity);
+            quantity += parseInt(result.rows[0].quantity);
 
             let text = "UPDATE cart_items SET quantity = $1 WHERE cart_id = $2 AND product_id = $3 RETURNING product_id";
             let values = [quantity, req.user.cartId, productId];
