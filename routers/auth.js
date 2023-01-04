@@ -80,7 +80,7 @@ router.get("/login", (req, res) => {
     res.send("Kindly log in with your account details");
 });
 
-router.post("/login", logout, passport.authenticate(["local", "basic"], { failureRedirect: "/login" }), (req, res) => {
+router.post("/login", logout, passport.authenticate(["local", "basic"]), (req, res) => {
     res.send("Login successful");
 });
 
