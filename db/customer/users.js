@@ -55,7 +55,7 @@ const updateUser = async(req, res) => {
 
         const firstName = req.body.firstName || result.rows[0].first_name;
         const lastName = req.body.lastName || result.rows[0].last_name;
-        const phone = parseInt(req.body.phone || result.rows[0].phone);
+        const phone = req.body.phone || result.rows[0].phone;
         const email = req.body.email || result.rows[0].email;
 
         const salt = await bcrypt.genSalt(17);
