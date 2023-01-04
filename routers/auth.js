@@ -5,7 +5,7 @@ require("dotenv").config();
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const client = require("../db/client");
-const db = require("../db/index");
+const db = require("../db/index").customer;
 const idGen = require("../util/idGen");
 const requestIP = require("request-ip");
 
