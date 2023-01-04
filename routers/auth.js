@@ -5,7 +5,7 @@ require("dotenv").config();
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const client = require("../db/client");
-const db = require("../db/index").customer;
+const db = require("../db/index").customer.users;
 const idGen = require("../util/idGen");
 const requestIP = require("request-ip");
 
@@ -70,7 +70,7 @@ router.get("/register", (req, res) => {
     res.send("Create a new account");
 });
 
-router.post("/register", db.users.createUser);
+router.post("/register", db.createUser);
 
 // User login and logout
 router.get("/login", (req, res) => {
