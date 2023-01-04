@@ -9,7 +9,7 @@ const passport = require("passport");
 const port = process.env.PORT || 8000;
 
 // connect-ensure-login
-const login = require("connect-ensure-login").ensureLoggedIn("/login");
+const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 
 // Swagger UI Express
 const swaggerUI = require("swagger-ui-express");
