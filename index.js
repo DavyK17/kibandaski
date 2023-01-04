@@ -68,7 +68,7 @@ app.use("/customer", customerRouter);
 
 // Error messages
 app.all("*", (req, res) => {
-    res.status(400).send("Error: This operation does not exist.");
+    res.status(404).send("Error: This operation does not exist.");
 });
 
 // Listener
