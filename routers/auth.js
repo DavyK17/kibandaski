@@ -27,14 +27,14 @@ const authenticate = async(req, email, password, done) => {
         if (!passwordMatch) {
             let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), FALSE)`;
             let values = [attemptId, ip, email];
-            result = await client.query(text, values);
+            await client.query(text, values);
 
             return done(null, false);
         }
 
         let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), TRUE)`;
         let values = [attemptId, ip, email];
-        result = await client.query(text, values);
+        await client.query(text, values);
 
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
