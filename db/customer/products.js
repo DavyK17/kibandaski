@@ -24,7 +24,4 @@ const getProductsByCategory = async(req, res) => {
     }
 }
 
-module.exports = {
-    getProducts,
-    getProductsByCategory
-}
+module.exports = { getProducts, getProductsByCategory };

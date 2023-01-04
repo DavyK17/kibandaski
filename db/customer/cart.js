@@ -84,9 +84,4 @@ const checkout = async(req, res) => {
     }
 }
 
-module.exports = {
-    getCart,
-    addToCart,
-    emptyCart,
-    checkout
-}
+module.exports = { getCart, addToCart, emptyCart, checkout };

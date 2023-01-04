@@ -45,8 +45,4 @@ const fulfillOrder = async(req, res) => {
     }
 }
 
-module.exports = {
-    getOrders,
-    getOrdersByUser,
-    fulfillOrder
-}
+module.exports = { getOrders, getOrdersByUser, fulfillOrder };
