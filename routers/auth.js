@@ -18,24 +18,26 @@ const passport = require("passport");
 const authenticate = async(req, email, password, done) => {
     const ip = requestIP.getClientIp(req);
     const attemptId = idGen(15);
+    const logAttempt = async(success) => {
+        let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), ${success})`;
+        let values = [attemptId, ip, email];
+        return await client.query(text, values);
+    }
 
     try {
         let result = await client.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
-        if (result.rows.length === 0) return done(null, false);
-
-        const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
-        if (!passwordMatch) {
-            let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), FALSE)`;
-            let values = [attemptId, ip, email];
-            await client.query(text, values);
-
+        if (result.rows.length === 0) {
+            await logAttempt(false);
             return done(null, false);
         }
 
-        let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), TRUE)`;
-        let values = [attemptId, ip, email];
-        await client.query(text, values);
+        const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
+        if (!passwordMatch) {
+            await logAttempt(false);
+            return done(null, false);
+        }
 
+        await logAttempt(true);
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
         return done(err);
