@@ -46,8 +46,13 @@ const addToCart = async(req, res) => {
 
 const emptyCart = async(req, res) => {
     try {
-        let result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 RETURNING cart_id", [req.user.cartId]);
-        res.status(204).send(`Emptied cart with ID: ${result.rows[0].cart_id}`);
+        let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
+        if (result.rows.length === 0) { // Send error if cart is empty
+            res.status(403).send("Error: Your cart is already empty");
+        } else { // Empty cart
+            result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 RETURNING cart_id", [req.user.cartId]);
+            if (result.rows[0].cart_id === req.user.cartId) res.status(200).send("Emptied cart successfully");
+        }
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
