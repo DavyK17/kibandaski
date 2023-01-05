@@ -3,7 +3,7 @@ const pool = require("../pool");
 const getProducts = async(req, res) => {
     try {
         if (req.query.id) { // Get product by ID
-            let result = await pool.query("SELECT id, name, price, category FROM products WHERE id = $1", [req.params.id]);
+            let result = await pool.query("SELECT id, name, price, category FROM products WHERE id = $1", [req.query.id]);
             res.status(200).json(result.rows[0]);
         } else { // Get all products
             let result = await pool.query("SELECT id, name, price, category FROM products ORDER BY id ASC");
