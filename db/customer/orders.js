@@ -28,8 +28,13 @@ const cancelOrder = async(req, res) => {
     if (!req.query.id) return res.status(400).send("Error: No order ID specified");
 
     try {
-        let result = await pool.query("UPDATE orders SET status = 'cancelled' WHERE id = $1 AND user_id = $2 RETURNING id", [req.query.id, req.user.id]);
-        res.status(200).send(`Order cancelled with ID: ${result.rows[0].id}`);
+        let result = await pool.query("SELECT id, user_id, status FROM orders WHERE id = $1 AND user_id = $2", [req.query.id, req.user.id]);
+        if (result.rows[0].status === "pending") { // Cancel order if still pending
+            result = await pool.query("UPDATE orders SET status = 'cancelled' WHERE id = $1 AND user_id = $2 RETURNING id", [req.query.id, req.user.id]);
+            res.status(200).send(`Order cancelled with ID: ${result.rows[0].id}`);
+        } else { // Send error if order has been cancelled or processed
+            res.status(403).send(`Error: The order has already been ${result.rows[0].status}`);
+        }
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
