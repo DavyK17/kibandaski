@@ -33,6 +33,17 @@ const getOrdersByUser = async(req, res) => {
     }
 }
 
+const acknowledgeOrder = async(req, res) => {
+    if (!req.query.id) return res.status(400).send("Error: No order ID specified");
+
+    try {
+        let result = await pool.query("UPDATE orders SET status = 'acknowledged' WHERE id = $1 RETURNING id", [req.query.id]);
+        res.status(200).send(`Order acknowledged with ID: ${result.rows[0].id}`);
+    } catch (err) {
+        res.status(500).send(`Error: ${err.detail}`);
+    }
+}
+
 const fulfillOrder = async(req, res) => {
     if (!req.query.id) return res.status(400).send("Error: No order ID specified");
 
@@ -44,4 +55,4 @@ const fulfillOrder = async(req, res) => {
     }
 }
 
-module.exports = { getOrders, getOrdersByUser, fulfillOrder };
+module.exports = { getOrders, getOrdersByUser, acknowledgeOrder, fulfillOrder };
