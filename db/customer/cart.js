@@ -37,7 +37,7 @@ const addToCart = async(req, res) => {
             let values = [req.user.cartId, productId, quantity];
 
             result = await pool.query(text, values);
-            res.status(201).send(`Added to cart product with ID: ${result.rows[0].product_id}`);
+            res.status(200).send(`Added to cart product with ID: ${result.rows[0].product_id}`);
         }
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
