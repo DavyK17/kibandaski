@@ -1,28 +1,39 @@
+// IMPORTS
 const pool = require("../pool");
+const { isNumeric, isLength, trim } = require("validator");
 
+// FUNCTIONS
 const getUsers = async(req, res) => {
     try {
-        if (req.query.id) { // Get user by ID
-            let result = await pool.query("SELECT id, first_name, last_name, phone, email, role FROM users WHERE id = $1", [req.query.id]);
-    
-            let user = {
+        if (req.query.id) { // GET USER BY ID
+            // Validate and sanitise user ID
+            let id = trim(req.query.id);
+            if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID provided.");
+
+            // Get user
+            let result = await pool.query("SELECT id, first_name, last_name, phone, email, role FROM users WHERE id = $1", [id]);
+
+            // Create and send user object
+            res.status(200).json({
                 id: result.rows[0].id,
                 firstName: result.rows[0].first_name,
                 lastName: result.rows[0].last_name,
                 phone: parseInt(result.rows[0].phone),
                 email: result.rows[0].email,
                 role: result.rows[0].role
-            };
-            res.status(200).json(user);
-        } else { // Get all users
+            });
+        } else { // GET ALL USERS
+            // Create user array
             let users = [];
-    
+
+            // Add each user to user array
             let result = await pool.query("SELECT id, first_name, last_name, phone, email, role FROM users ORDER BY id ASC");
             result.rows.forEach(({ id, first_name, last_name, phone, email, role }) => {
-                let user = { id, firstName: first_name, lastName: last_name, phone: parseInt(phone), email, role };
+                let user = { id, firstName: first_name, lastName: last_name, phone: Number(phone), email, role };
                 users.push(user);
             });
-    
+
+            // Send user array
             res.status(200).json(users);
         }
     } catch (err) {
