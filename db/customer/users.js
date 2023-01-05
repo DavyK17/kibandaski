@@ -65,7 +65,7 @@ const updateUser = async(req, res) => {
         let values = [firstName, lastName, phone, email, passwordHash, req.user.id];
 
         result = await pool.query(text, values);
-        res.status(200).send(`User modified with ID: ${result.rows[0].id}`);
+        res.status(200).send(`User updated with ID: ${result.rows[0].id}`);
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
