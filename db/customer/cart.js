@@ -62,29 +62,34 @@ const checkout = async(req, res) => {
     const orderId = idGen(10);
 
     try {
-        // Create order
-        let text = `INSERT INTO orders (id, user_id, created_at, status) VALUES ($1, $2, to_timestamp(${Date.now()} / 1000), 'pending') RETURNING id`;
-        let values = [orderId, req.user.id]
-
-        let result = await pool.query(text, values);
-
-        // Add items to order
-        let items = [];
-        result = await pool.query(`SELECT product_id, quantity FROM cart_items WHERE cart_id = $1`, [req.user.cartId]);
-        result.rows.forEach(row => items.push({ productId: row.product_id, quantity: row.quantity }));
-
-        items.forEach(async(item) => {
-            text = "INSERT INTO order_items (order_id, product_id, quantity) VALUES ($1, $2, $3)";
-            values = [orderId, item.productId, item.quantity];
-
+        let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
+        if (result.rows.length === 0) { // Send error if cart is empty
+            res.status(403).send("Error: Your cart is empty");
+        } else {
+            // Create order
+            let text = `INSERT INTO orders (id, user_id, created_at, status) VALUES ($1, $2, to_timestamp(${Date.now()} / 1000), 'pending') RETURNING id`;
+            let values = [orderId, req.user.id]
+    
             result = await pool.query(text, values);
-        });
-
-        // Empty cart
-        result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 RETURNING cart_id", [req.user.cartId]);
-
-        // Confirm order
-        res.status(201).send(`Order placed with ID: ${orderId}`);
+    
+            // Add items to order
+            let items = [];
+            result = await pool.query(`SELECT product_id, quantity FROM cart_items WHERE cart_id = $1`, [req.user.cartId]);
+            result.rows.forEach(row => items.push({ productId: row.product_id, quantity: row.quantity }));
+    
+            items.forEach(async(item) => {
+                text = "INSERT INTO order_items (order_id, product_id, quantity) VALUES ($1, $2, $3)";
+                values = [orderId, item.productId, item.quantity];
+    
+                result = await pool.query(text, values);
+            });
+    
+            // Empty cart
+            result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 RETURNING cart_id", [req.user.cartId]);
+    
+            // Confirm order
+            res.status(201).send(`Order placed with ID: ${orderId}`);
+        }
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
