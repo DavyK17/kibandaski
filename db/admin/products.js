@@ -23,7 +23,7 @@ const createProduct = async(req, res) => {
 
     // Category
     if (typeof category !== "string") return res.status(400).send("Error: Category must be a string.");
-    category = sanitizeHtml(trim(escape(category)));
+    category = sanitizeHtml(trim(escape(category))).toLowerCase();
 
     try {
         // Send error if product already exists

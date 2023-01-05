@@ -1,6 +1,7 @@
 // IMPORTS
 const pool = require("../pool");
-const { trim } = require("validator");
+const { isNumeric, isLength, trim, escape } = require("validator");
+const sanitizeHtml = require("../../util/sanitizeHtml");
 
 // FUNCTIONS
 const getProducts = async(req, res) => {
@@ -28,7 +29,7 @@ const getProducts = async(req, res) => {
 
 const getProductsByCategory = async(req, res) => {
     try { // Sanitise category
-        let category = trim(req.params.category).toLowerCase();
+        let category = sanitizeHtml(trim(escape(req.params.category))).toLowerCase();
 
         // Send products in category
         let result = await pool.query("SELECT id, name, price FROM products WHERE category = $1 ORDER BY id ASC", [category]);
