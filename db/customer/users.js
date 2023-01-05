@@ -65,7 +65,7 @@ const updateUser = async(req, res) => {
         let values = [firstName, lastName, phone, email, passwordHash, req.user.id];
 
         result = await pool.query(text, values);
-        res.status(200).send(`User updated with ID: ${result.rows[0].id}`);
+        if (result.rows[0].id === req.user.id) res.status(200).send("Account updated successfully");
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
@@ -89,7 +89,7 @@ const deleteUser = async(req, res) => {
 
         // Delete user
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
-        res.status(204).send(`User deleted with ID: ${result.rows[0].id}`);
+        if (result.rows[0].id === req.user.id) res.status(204).send("Account deleted successfully");
     } catch (err) {
         res.status(500).send(`Error: ${err.detail}`);
     }
