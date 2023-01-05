@@ -77,12 +77,12 @@ router.get("/register", (req, res) => {
 router.post("/register", db.createUser);
 
 // User login and logout
-router.get("/login", (req, res) => {
-    res.send("Kindly log in with your account details");
-});
-
 router.post("/login", logout, passport.authenticate(["local", "basic"]), (req, res) => {
     res.send("Login successful");
+});
+
+router.all("/login", (req, res) => {
+    res.send("Kindly log in with your account details");
 });
 
 router.get("/logout", login, (req, res) => {
