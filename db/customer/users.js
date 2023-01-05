@@ -13,7 +13,7 @@ const getUser = async(req, res) => {
             email: result.rows[0].email
         });
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -43,7 +43,7 @@ const createUser = async(req, res) => {
 
         result = await pool.query(text, values);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -67,7 +67,7 @@ const updateUser = async(req, res) => {
         result = await pool.query(text, values);
         if (result.rows[0].id === req.user.id) res.status(200).send("Account updated successfully");
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -91,7 +91,7 @@ const deleteUser = async(req, res) => {
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [req.user.id]);
         if (result.rows[0].id === req.user.id) res.status(204).send("Account deleted successfully");
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 

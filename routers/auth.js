@@ -87,7 +87,7 @@ router.all("/login", (req, res) => {
 
 router.get("/logout", login, (req, res) => {
     req.logout(err => {
-        if (err) return res.status(500).send(`Error: ${err.detail}`);
+        if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
         res.send("Logout successful");
     });
 });

@@ -14,7 +14,7 @@ const getCart = async(req, res) => {
 
         res.status(200).json(cart);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -40,7 +40,7 @@ const addToCart = async(req, res) => {
             res.status(200).send(`Added to cart product with ID: ${result.rows[0].product_id}`);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -48,13 +48,13 @@ const emptyCart = async(req, res) => {
     try {
         let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
         if (result.rows.length === 0) { // Send error if cart is empty
-            res.status(403).send("Error: Your cart is already empty");
+            res.status(403).send("Error: Your cart is already empty.");
         } else { // Empty cart
             result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 RETURNING cart_id", [req.user.cartId]);
             if (result.rows[0].cart_id === req.user.cartId) res.status(200).send("Emptied cart successfully");
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -64,7 +64,7 @@ const checkout = async(req, res) => {
     try {
         let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [req.user.cartId]);
         if (result.rows.length === 0) { // Send error if cart is empty
-            res.status(403).send("Error: Your cart is empty");
+            res.status(403).send("Error: Your cart is empty.");
         } else {
             // Create order
             let text = `INSERT INTO orders (id, user_id, created_at, status) VALUES ($1, $2, to_timestamp(${Date.now()} / 1000), 'pending') RETURNING id`;
@@ -91,7 +91,7 @@ const checkout = async(req, res) => {
             res.status(201).send(`Order placed with ID: ${orderId}`);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 

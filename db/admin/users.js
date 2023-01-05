@@ -26,7 +26,7 @@ const getUsers = async(req, res) => {
             res.status(200).json(users);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 

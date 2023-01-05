@@ -20,12 +20,12 @@ const getOrders = async(req, res) => {
             res.status(200).json(result.rows);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
 const cancelOrder = async(req, res) => {
-    if (!req.query.id) return res.status(400).send("Error: No order ID specified");
+    if (!req.query.id) return res.status(400).send("Error: No order ID specified.");
 
     try {
         let result = await pool.query("SELECT id, user_id, status FROM orders WHERE id = $1 AND user_id = $2", [req.query.id, req.user.id]);
@@ -36,7 +36,7 @@ const cancelOrder = async(req, res) => {
             res.status(403).send(`Error: The order has already been ${result.rows[0].status}`);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 

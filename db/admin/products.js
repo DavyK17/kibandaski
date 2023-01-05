@@ -13,12 +13,12 @@ const createProduct = async(req, res) => {
         let result = await pool.query(text, values);
         res.status(201).send(`Product created with ID: ${result.rows[0].id}`);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
 const updateProduct = async(req, res) => {
-    if (!req.query.id) return res.status(400).send("Error: No product ID specified");
+    if (!req.query.id) return res.status(400).send("Error: No product ID specified.");
 
     try {
         // Retrieve existing details from database if not provided in body
@@ -35,18 +35,18 @@ const updateProduct = async(req, res) => {
         result = await pool.query(text, values);
         res.status(200).send(`Product modified with ID: ${result.rows[0].id}`);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
 const deleteProduct = async(req, res) => {
-    if (!req.query.id) return res.status(400).send("Error: No product ID specified");
+    if (!req.query.id) return res.status(400).send("Error: No product ID specified.");
     
     try {
         let result = await pool.query("DELETE FROM products WHERE id = $1 RETURNING id", [req.query.id]);
         res.status(204).send(`Product created with ID: ${result.rows[0].id}`);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 

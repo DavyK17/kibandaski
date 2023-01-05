@@ -10,7 +10,7 @@ const getProducts = async(req, res) => {
             res.status(200).json(result.rows);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -19,7 +19,7 @@ const getProductsByCategory = async(req, res) => {
         let result = await pool.query("SELECT id, name, price FROM products WHERE category = $1 ORDER BY id ASC", [req.params.category]);
         res.status(200).json(result.rows);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 

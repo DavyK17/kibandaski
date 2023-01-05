@@ -20,7 +20,7 @@ const getOrders = async(req, res) => {
             res.status(200).json({ id: result.rows[0].id, userId: result.rows[0].user_id, status: result.rows[0].status });
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
@@ -29,12 +29,12 @@ const getOrdersByUser = async(req, res) => {
         let result = await pool.query("SELECT id, status FROM orders WHERE user_id = $1 ORDER BY created_at DESC", [req.params.userId]);
         res.status(200).json(result.rows);
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
 const acknowledgeOrder = async(req, res) => {
-    if (!req.query.id) return res.status(400).send("Error: No order ID specified");
+    if (!req.query.id) return res.status(400).send("Error: No order ID specified.");
 
     try {
         let result = await pool.query("SELECT * FROM orders WHERE id = $1", [req.query.id]);
@@ -45,12 +45,12 @@ const acknowledgeOrder = async(req, res) => {
             res.status(403).send(`Error: The order has already been ${result.rows[0].status}`);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
 const fulfillOrder = async(req, res) => {
-    if (!req.query.id) return res.status(400).send("Error: No order ID specified");
+    if (!req.query.id) return res.status(400).send("Error: No order ID specified.");
 
     try {
         let result = await pool.query("SELECT * FROM orders WHERE id = $1", [req.query.id]);
@@ -58,12 +58,12 @@ const fulfillOrder = async(req, res) => {
             result = await pool.query("UPDATE orders SET status = 'fulfilled' WHERE id = $1 RETURNING id", [req.query.id]);
             res.status(200).send(`Order fulfilled with ID: ${result.rows[0].id}`);
         } else if (result.rows[0].status === "pending") { // Send error if still pending
-            res.status(403).send("Error: The order is still pending");
+            res.status(403).send("Error: The order is still pending.");
         } else { // Send error if fulfilled or cancelled
             res.status(403).send(`Error: The order has already been ${result.rows[0].status}`);
         }
     } catch (err) {
-        res.status(500).send(`Error: ${err.detail}`);
+        res.status(500).send("An unknown error occurred. Kindly try again.");
     }
 }
 
