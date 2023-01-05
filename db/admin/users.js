@@ -1,4 +1,3 @@
-require("dotenv").config();
 const pool = require("../pool");
 
 const getUsers = async(req, res) => {
