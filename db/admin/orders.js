@@ -28,7 +28,7 @@ const getOrders = async(req, res) => {
             res.status(200).json(order);
         } else { // GET ALL ORDERS
             let result = await pool.query("SELECT id, user_id, status FROM orders ORDER BY created_at DESC");
-            res.status(200).json({ id: result.rows[0].id, userId: result.rows[0].user_id, status: result.rows[0].status });
+            res.status(200).json(result.rows);
         }
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
