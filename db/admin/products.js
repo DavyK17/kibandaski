@@ -101,8 +101,8 @@ const deleteProduct = async(req, res) => {
     if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
 
     try { // Delete product
-        let result = await pool.query("DELETE FROM products WHERE id = $1 RETURNING id", [id]);
-        res.status(204).send(`Product created with ID: ${result.rows[0].id}`);
+        let result = await pool.query("DELETE FROM products WHERE id = $1", [id]);
+        res.status(204).send("Product deleted successfully");
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
