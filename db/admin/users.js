@@ -14,6 +14,9 @@ const getUsers = async(req, res) => {
             // Get user
             let result = await pool.query("SELECT id, first_name, last_name, phone, email, role FROM users WHERE id = $1", [id]);
 
+            // Send error if user does not exist
+            if (result.rows.length === 0) return res.status(404).send("Error: This user does not exist.");
+
             // Create and send user object
             res.status(200).json({
                 id: result.rows[0].id,
