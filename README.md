@@ -1,4 +1,4 @@
-# FGC Reddit
+# Kibandaski
 
 This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is a Node.js REST API that allows the user to buy food from a local street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth in recent years).
 
