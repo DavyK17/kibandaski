@@ -30,7 +30,7 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 ### Additional libraries/techonolgies
 - [bcrypt](https://www.npmjs.com/package/bcrypt) - Password hashing library for Node.js
 - [connect-ensure-login](https://www.npmjs.com/package/connect-ensure-login) - Express.js middleware for ensuring user is logged in
-<!-- - [CORS](https://github.com/expressjs/cors) - Express.js middleware for enabling CORS -->
+- [CORS](https://github.com/expressjs/cors) - Express.js middleware for enabling CORS
 - [Dotenv](https://github.com/motdotla/dotenv) - Module for loading environment variables from a .env file
 - [express-session](https://expressjs.com/en/resources/middleware/session.html) - Express.js framework for managing session middleware 
 - [Helmet.js](https://helmetjs.github.io/) - Node.js module for securing HTTP headers
