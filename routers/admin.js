@@ -1,8 +1,4 @@
 const router = require("express").Router();
-const db = require("../db/index").admin;
-
-// Login attempts
-router.get("/logins", db.loginAttempts);
 
 // Routers
 const ordersRouter = require("./admin/orders");
