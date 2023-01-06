@@ -99,7 +99,7 @@ const updateUser = async(req, res) => {
 
         // Last name
         lastName = lastName || result.rows[0].last_name;
-        if (lastName && typeof lastName !== "string") return res.status(403).send("Error: Last name must be a string.");
+        if (typeof lastName !== "string") return res.status(403).send("Error: Last name must be a string.");
         lastName = sanitizeHtml(trim(escape(lastName)));
 
         // Phone number
