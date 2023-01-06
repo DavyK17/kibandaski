@@ -13,6 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // connect-ensure-login
 const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 
+// CORS
+const cors = require("cors");
+const origin = app.get("env") === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:8000";
+app.use(cors({ origin }));
+
 // Helmet
 const helmet = require("helmet");
 app.use(helmet());
