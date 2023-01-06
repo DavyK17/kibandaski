@@ -49,11 +49,11 @@ app.use(passport.session());
 // Swagger UI Express
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./openapi.json");
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 /* ROUTING */
 // Root path
-app.get("/", (req, res) => res.send("Welcome to Kibandaski! You can access the API documentation at /api-docs."));
+app.get("/", (req, res) => res.send("Welcome to Kibandaski! You can access the API documentation at /docs."));
 
 // Routers
 const authRouter = require("./routers/auth");
