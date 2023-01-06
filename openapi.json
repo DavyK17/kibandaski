@@ -57,14 +57,10 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: Email must be a string."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid email provided."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: Email must be a string.",
+                                        "Error: Invalid email provided."
                                     ]
                                 }
                             }
@@ -121,7 +117,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -156,7 +152,7 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -370,14 +366,10 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: No order ID provided."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid order ID provided."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: No order ID provided.",
+                                        "Error: Invalid order ID provided."
                                     ]
                                 }
                             }
@@ -388,18 +380,11 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: The order has already been acknowledged."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: The order has already been fulfilled."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: The order has already been cancelled."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: The order has already been acknowledged.",
+                                        "Error: The order has already been fulfilled.",
+                                        "Error: The order has already been cancelled."
                                     ]
                                 }
                             }
@@ -462,14 +447,10 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: No order ID provided."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid order ID provided."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: No order ID provided.",
+                                        "Error: Invalid order ID provided."
                                     ]
                                 }
                             }
@@ -480,18 +461,11 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: The order is still pending."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: The order has already been fulfilled."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: The order has already been cancelled."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: The order is still pending.",
+                                        "Error: The order has already been fulfilled.",
+                                        "Error: The order has already been cancelled."
                                     ]
                                 }
                             }
@@ -552,18 +526,11 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: Name must be a string."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Price must be a number."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Category must be a string."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: Name must be a string.",
+                                        "Error: Price must be a number.",
+                                        "Error: Category must be a string."
                                     ]
                                 }
                             }
@@ -612,7 +579,23 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/product"
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "integer"
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Beef stew",
+                                    "price": 80,
+                                    "category": "proteins"
+                                }
                             }
                         }
                     }
@@ -634,37 +617,32 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: No product ID provided."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: No updates provided."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Name must be a string."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Price must be a number."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Category must be a string."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid product ID provided."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: No product ID provided.",
+                                        "Error: No updates provided.",
+                                        "Error: Name must be a string.",
+                                        "Error: Price must be a number.",
+                                        "Error: Category must be a string.",
+                                        "Error: Invalid product ID provided."
                                     ]
                                 }
                             }
                         }
                     },
+                    "404": {
+                        "description": "An error message (if product does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This product does not exist."
+                                }
+                            }
+                        }
+                    },
                     "409": {
-                        "description": "An error message (if product already exists)",
+                        "description": "An error message (if another product with the same name already exists)",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -718,14 +696,10 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: No product ID provided."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid product ID provided."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: No product ID provided.",
+                                        "Error: Invalid product ID provided."
                                     ]
                                 }
                             }
@@ -921,7 +895,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -973,21 +947,17 @@
                 }],
                 "responses": {
                     "204": {
-                        "description": "A confirmation of the operation"
+                        "description": "Confirmation of the operation"
                     },
                     "403": {
                         "description": "An error message (if user ID or cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: Invalid user ID in session."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid cart ID in session."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: Invalid user ID in session.",
+                                        "Error: Invalid cart ID in session."
                                     ]
                                 }
                             }
@@ -1040,14 +1010,10 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "oneOf": [{
-                                            "type": "string",
-                                            "example": "Error: Invalid user ID in session."
-                                        },
-                                        {
-                                            "type": "string",
-                                            "example": "Error: Invalid cart ID in session."
-                                        }
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: Invalid user ID in session.",
+                                        "Error: Invalid cart ID in session."
                                     ]
                                 }
                             }
@@ -1083,12 +1049,15 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Added to cart product with ID: [product ID]"
+                                    "examples": [
+                                        "Added to cart product with ID: [product ID]",
+                                        "Quantity updated in cart for product with ID: [product ID]"
+                                    ]
                                 }
                             }
                         }
@@ -1135,7 +1104,7 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1206,6 +1175,103 @@
                                 "schema": {
                                     "type": "string",
                                     "example": "Error: Your cart is empty."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/cart/update": {
+            "put": {
+                "tags": ["Customer", "Cart"],
+                "description": "Update an item in the cart",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Numeric ID of product to update",
+                    "required": true
+                }],
+                "requestBody": {
+                    "description": "new details to update to product",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "quantity": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "example": {
+                                    "quantity": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Confirmation of the operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Quantity updated in cart for product with ID: [product ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if no product ID provided, no updates provided or input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "examples": [
+                                        "Error: No product ID provided.",
+                                        "Error: No update provided.",
+                                        "Error: Invalid product ID provided.",
+                                        "Error: Quantity must be a number."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid cart ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if item is not in cart)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This item is not in the cart."
                                 }
                             }
                         }
