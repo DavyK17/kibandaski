@@ -89,14 +89,13 @@ const updateCartItem = async(req, res) => {
     let { quantity } = req.body;
 
     // Send error if no details are provided
-    if (!quantity) return res.status(400).send("Error: No updates provided.");
+    if (!quantity) return res.status(400).send("Error: No update provided.");
 
     // Product ID (also sanitised)
     let productId = trim(req.query.id);
     if (!isNumeric(productId, { no_symbols: true }) || !isLength(productId, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
 
     // Quantity
-    if (!quantity) return res.status(400).send("Error: No quantity provided.");
     if (typeof quantity !== "string" && typeof quantity !== "number") return res.status(400).send("Error: Quantity must be a number.");
     if (typeof quantity === "string") { // If quantity is a string, trim, validate for numeric values and convert to number
         quantity = trim(quantity);
@@ -115,7 +114,7 @@ const updateCartItem = async(req, res) => {
         if (result.rows.length === 0) return res.status(404).send("Error: This item is not in the cart.");
 
         // Send error if no updates made
-        if (result.rows[0].quantity === quantity) return res.status(400).send("Error: No updates provided.");
+        if (result.rows[0].quantity === quantity) return res.status(400).send("Error: No update provided.");
 
         // Update quantity in database
         result = await pool.query("UPDATE cart_items SET quantity = $1 WHERE cart_id = $2 AND product_id = $3 RETURNING product_id", [quantity, cartId, productId]);
