@@ -73,7 +73,7 @@ const acknowledgeOrder = async(req, res) => {
             return res.status(200).send(`Order acknowledged with ID: ${result.rows[0].id}`);
         }
 
-        // Send error if order has been acknowledged or fulfilled
+        // Send error if order has been acknowledged, fulfilled or cancelled
         res.status(403).send(`Error: The order has already been ${result.rows[0].status}`);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
