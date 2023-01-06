@@ -59,7 +59,7 @@ const updateProduct = async(req, res) => {
     // Category
     if (category && typeof category !== "string") return res.status(400).send("Error: Category must be a string.");
 
-    // User ID (also sanitised)
+    // Product ID (also sanitised)
     let id = trim(req.query.id);
     if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
 
@@ -68,15 +68,15 @@ const updateProduct = async(req, res) => {
 
         // SANITISATION
         // Name
-        name = sanitizeHtml(trim(escape(req.body.name || result.rows[0].name)));
+        name = sanitizeHtml(trim(escape(name || result.rows[0].name)));
 
         // Price
-        price = req.body.price || result.rows[0].price;
+        price = price || result.rows[0].price;
         if (typeof price === "string") price = trim(price);
         price = Math.round(price);
 
         // Category
-        category = sanitizeHtml(trim(escape(req.body.category || result.rows[0].category)));
+        category = sanitizeHtml(trim(escape(category || result.rows[0].category)));
 
         // Send error if another product of the desired name already exists
         if (req.body.name) {
@@ -86,7 +86,7 @@ const updateProduct = async(req, res) => {
 
         // Update product details
         result = await pool.query("UPDATE products SET name = $1, price = $2, category = $3 WHERE id = $4 RETURNING id", [name, price, category, id]);
-        res.status(200).send(`Product modified with ID: ${result.rows[0].id}`);
+        res.status(200).send(`Product updated with ID: ${result.rows[0].id}`);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
