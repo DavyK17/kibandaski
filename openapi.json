@@ -414,7 +414,7 @@
                 }
             }
         },
-        "/admin/orders/fulfilled": {
+        "/admin/orders/fulfill": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Fulfill order",
@@ -1192,7 +1192,7 @@
                 }
             }
         },
-        "/customer/cart/update": {
+        "/customer/cart/item": {
             "put": {
                 "tags": ["Customer", "Cart"],
                 "description": "Update an item in the cart",
