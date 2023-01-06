@@ -20,7 +20,7 @@ const getUser = async(req, res) => {
         // Get user
         let result = await pool.query("SELECT id, first_name, last_name, phone, email FROM users WHERE id = $1", [id]);
 
-        // Create and send user object
+        // Send user
         res.status(200).json({
             id: result.rows[0].id,
             firstName: result.rows[0].first_name,
@@ -57,7 +57,7 @@ const createUser = async(req, res) => {
     // Email
     if (typeof email !== "string") return res.status(403).send("Error: Email must be a string.");
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
-    if (!isEmail(email)) return res.status(400).send("Error: Invalid email");
+    if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
 
     // Password
     const salt = await bcrypt.genSalt(17);
@@ -82,7 +82,7 @@ const createUser = async(req, res) => {
 }
 
 const updateUser = async(req, res) => {
-    // User ID
+    // Validate and sanitise user ID
     let userId = trim(req.user.id);
     if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID in session.");
 
@@ -90,37 +90,39 @@ const updateUser = async(req, res) => {
         let result = await pool.query("SELECT first_name, last_name, phone, email, password FROM users WHERE id = $1", [userId]);
 
         // VALIDATION AND SANITISATION
+        let { firstName, lastName, phone, email, password } = req.body;
+
         // First name
-        const firstName = req.body.firstName || result.rows[0].first_name;
+        firstName = firstName || result.rows[0].first_name;
         if (typeof firstName !== "string") return res.status(403).send("Error: First name must be a string.");
         firstName = sanitizeHtml(trim(escape(firstName)));
 
         // Last name
-        const lastName = req.body.lastName || result.rows[0].last_name;
+        lastName = lastName || result.rows[0].last_name;
         if (lastName && typeof lastName !== "string") return res.status(403).send("Error: Last name must be a string.");
         lastName = sanitizeHtml(trim(escape(lastName)));
 
         // Phone number
-        const phone = req.body.phone || result.rows[0].phone;
+        phone = phone || result.rows[0].phone;
         if (typeof phone !== "number" && typeof phone !== "string") return res.status(403).send(`Error: Phone number must be a number.`);
         phone = trim(typeof phone === "number" ? phone.toString() : phone);
         if (!checkPhone(phone)) return res.status(403).send(`Error: Phone number must be Kenyan (starts with "254").`);
 
         // Email
-        const email = req.body.email || result.rows[0].email;
+        email = email || result.rows[0].email;
         if (typeof email !== "string") return res.status(403).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
 
         // Password
         const salt = await bcrypt.genSalt(17);
-        passwordHash = req.body.password ? await bcrypt.hash(trim(req.body.password), salt) : result.rows[0].password;
+        const passwordHash = password ? await bcrypt.hash(trim(password), salt) : result.rows[0].password;
 
         // UPDATE USER DETAILS
         let text = "UPDATE users SET first_name = $1, last_name = $2, phone = $3, email = $4, password = $5 WHERE id = $6 RETURNING id";
         let values = [firstName, lastName, phone, email, passwordHash, userId];
         result = await pool.query(text, values);
 
-        // Send confirmation of update
+        // Confirm update
         if (result.rows[0].id === userId) res.status(200).send("Account updated successfully");
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
@@ -137,18 +139,21 @@ const deleteUser = async(req, res) => {
     let cartId = trim(req.user.cartId);
     if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid cart ID in session.");
 
-    try {
-        // Delete orders
+    try { // DELETE USER
+        // Create orders array
         let orders = [];
+
+        // Add each order by user to orders array
         let result = await pool.query("SELECT id FROM orders WHERE user_id = $1", [userId]);
         result.rows.forEach(row => orders.push(row.id));
 
+        // Delete each order and its items in orders array
         orders.forEach(async(id) => {
             result = await pool.query("DELETE FROM order_items WHERE order_id = $1", [id]);
             result = await pool.query("DELETE FROM orders WHERE id = $1", [id]);
         });
 
-        // Delete cart
+        // Delete cart and its items
         result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [cartId]);
         result = await pool.query("DELETE FROM carts WHERE id = $1", [cartId]);
 

@@ -15,7 +15,7 @@ const getProducts = async(req, res) => {
             let result = await pool.query("SELECT * FROM products WHERE id = $1", [id]);
             if (result.rows.length === 0) return res.status(404).send("Error: This product does not exist.");
 
-            // Send product object
+            // Send product
             result = await pool.query("SELECT id, name, price, category FROM products WHERE id = $1", [id]);
             res.status(200).json(result.rows[0]);
         } else { // GET ALL PRODUCTS

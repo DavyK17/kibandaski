@@ -10,6 +10,7 @@ const getOrders = async(req, res) => {
 
     try {
         if (req.query.id) { // GET ORDER BY ID
+            // Validate and sanitise order ID
             let id = trim(req.query.id);
             if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 10, max: 10 })) return res.status(400).send("Error: Invalid order ID provided.");
 
@@ -20,7 +21,7 @@ const getOrders = async(req, res) => {
             // Create order object
             let order = {...result.rows[0], items: [] };
 
-            // Add each item on the order to array in order object
+            // Add each item on order to items array in order object
             result = await pool.query("SELECT order_items.product_id AS product_id, order_items.quantity AS quantity, (order_items.quantity * products.price) AS total_cost FROM order_items JOIN products ON order_items.product_id = products.id WHERE order_items.order_id = $1", [id]);
             result.rows.forEach(({ product_id, quantity, total_cost }) => {
                 let item = { productId: product_id, quantity, totalCost: total_cost };
@@ -39,22 +40,24 @@ const getOrders = async(req, res) => {
 }
 
 const cancelOrder = async(req, res) => {
+    // Send error if no order ID provided
+    if (!req.query.id) return res.status(400).send("Error: No order ID provided.");
+
     // VALIDATION AND SANITISATION
+    // Order ID
+    let id = trim(req.query.id);
+    if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 10, max: 10 })) return res.status(400).send("Error: Invalid order ID provided.");
+
     // User ID
     let userId = trim(req.user.id);
     if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID in session.");
-
-    // Order ID
-    if (!req.query.id) return res.status(400).send("Error: No order ID provided.");
-    let id = trim(req.query.id);
-    if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 10, max: 10 })) return res.status(400).send("Error: Invalid order ID provided.");
 
     // CANCEL ORDER
     try { // Get order
         let result = await pool.query("SELECT id, user_id, status FROM orders WHERE id = $1 AND user_id = $2", [id, userId]);
 
         // Send error if order does not exist
-        if (result.rows.length === 0) return res.status(404).send("Error: This product does not exist.");
+        if (result.rows.length === 0) return res.status(404).send("Error: This order does not exist.");
 
         // Cancel order if pending
         if (result.rows[0].status === "pending") {
