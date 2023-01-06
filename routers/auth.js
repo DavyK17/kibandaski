@@ -31,7 +31,7 @@ const authenticate = async(req, email, password, done) => {
     }
 
     // Validate and sanitise email
-    if (typeof email !== "string") return res.status(403).send("Error: Email must be a string.");
+    if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
     if (!isEmail(email)) return res.status(400).send("Error: Invalid email");
 

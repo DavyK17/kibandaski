@@ -28,7 +28,7 @@ const createProduct = async(req, res) => {
     try {
         // Send error if product already exists
         let result = await pool.query("SELECT * FROM products WHERE name = $1", [name]);
-        if (result.rows.length > 0) return res.status(403).send("Error: A product with the provided name already exists.");
+        if (result.rows.length > 0) return res.status(409).send("Error: A product with the provided name already exists.");
 
         // Create product
         let text = `INSERT INTO products (id, name, price, category, created_at) VALUES ($1, $2, $3, $4, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
@@ -81,7 +81,7 @@ const updateProduct = async(req, res) => {
         // Send error if another product of the desired name already exists
         if (req.body.name) {
             result = await pool.query("SELECT * FROM products WHERE name = $1", [name]);
-            if (result.rows.length > 0) return res.status(403).send("Error: A product with the provided name already exists.");
+            if (result.rows.length > 0) return res.status(409).send("Error: A product with the provided name already exists.");
         }
 
         // Update product details

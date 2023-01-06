@@ -42,20 +42,20 @@ const createUser = async(req, res) => {
     let { firstName, lastName, phone, email, password } = req.body;
 
     // First name
-    if (typeof firstName !== "string") return res.status(403).send("Error: First name must be a string.");
+    if (typeof firstName !== "string") return res.status(400).send("Error: First name must be a string.");
     firstName = sanitizeHtml(trim(escape(firstName)));
 
     // Last name
-    if (typeof lastName !== "string") return res.status(403).send("Error: Last name must be a string.");
+    if (typeof lastName !== "string") return res.status(400).send("Error: Last name must be a string.");
     lastName = sanitizeHtml(trim(escape(lastName)));
 
     // Phone number
-    if (typeof phone !== "number" && typeof phone !== "string") return res.status(403).send(`Error: Phone number must be a number.`);
+    if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
     phone = trim(typeof phone === "number" ? phone.toString() : phone);
-    if (!checkPhone(phone)) return res.status(403).send(`Error: Phone number must be Kenyan (starts with "254").`);
+    if (!checkPhone(phone)) return res.status(400).send(`Error: Phone number must be Kenyan (starts with "254").`);
 
     // Email
-    if (typeof email !== "string") return res.status(403).send("Error: Email must be a string.");
+    if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
     if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
 
@@ -94,23 +94,23 @@ const updateUser = async(req, res) => {
 
         // First name
         firstName = firstName || result.rows[0].first_name;
-        if (typeof firstName !== "string") return res.status(403).send("Error: First name must be a string.");
+        if (typeof firstName !== "string") return res.status(400).send("Error: First name must be a string.");
         firstName = sanitizeHtml(trim(escape(firstName)));
 
         // Last name
         lastName = lastName || result.rows[0].last_name;
-        if (typeof lastName !== "string") return res.status(403).send("Error: Last name must be a string.");
+        if (typeof lastName !== "string") return res.status(400).send("Error: Last name must be a string.");
         lastName = sanitizeHtml(trim(escape(lastName)));
 
         // Phone number
         phone = phone || result.rows[0].phone;
-        if (typeof phone !== "number" && typeof phone !== "string") return res.status(403).send(`Error: Phone number must be a number.`);
+        if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
         phone = trim(typeof phone === "number" ? phone.toString() : phone);
-        if (!checkPhone(phone)) return res.status(403).send(`Error: Phone number must be Kenyan (starts with "254").`);
+        if (!checkPhone(phone)) return res.status(400).send(`Error: Phone number must be Kenyan (starts with "254").`);
 
         // Email
         email = email || result.rows[0].email;
-        if (typeof email !== "string") return res.status(403).send("Error: Email must be a string.");
+        if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
 
         // Password
