@@ -16,8 +16,10 @@ const sanitizeHtml = require("../util/sanitizeHtml");
 const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 const logout = require("connect-ensure-login").ensureLoggedOut("/auth/user");
 
-// Passport.js
+// PASSPORT.JS
 const passport = require("passport");
+
+// Authentication function
 const authenticate = async(req, email, password, done) => {
     // Get request IP address
     const ip = requestIP.getClientIp(req);
@@ -33,7 +35,7 @@ const authenticate = async(req, email, password, done) => {
     // Validate and sanitise email
     if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
-    if (!isEmail(email)) return res.status(400).send("Error: Invalid email");
+    if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
 
     try { // Get user details
         let result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
@@ -59,12 +61,14 @@ const authenticate = async(req, email, password, done) => {
     }
 }
 
+// Strategies
 const LocalStrategy = require("passport-local").Strategy;
 passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, authenticate));
 
 const { BasicStrategy } = require("passport-http");
 passport.use(new BasicStrategy({ usernameField: "email", passReqToCallback: true }, authenticate));
 
+// Serialize and Deserealize
 passport.serializeUser((user, done) => {
     return done(null, user.id);
 });
@@ -85,14 +89,14 @@ passport.deserializeUser(async(id, done) => {
 // User object
 router.all("/user", login, (req, res) => res.json(req.user));
 
-// User registration
+// Registration
 router.get("/register", (req, res) => {
     res.send("Create a new account");
 });
 
 router.post("/register", db.createUser);
 
-// User login and logout
+// Login
 router.post("/login", logout, passport.authenticate(["local", "basic"]), (req, res) => {
     res.send("Login successful");
 });
@@ -101,6 +105,7 @@ router.all("/login", (req, res) => {
     res.send("Kindly log in with your account details");
 });
 
+// Logout
 router.get("/logout", login, (req, res) => {
     req.logout(err => {
         if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
@@ -108,4 +113,6 @@ router.get("/logout", login, (req, res) => {
     });
 });
 
+
+/* EXPORT */
 module.exports = router;
