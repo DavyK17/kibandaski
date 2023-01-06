@@ -10,12 +10,12 @@
         }
     },
     "paths": {
-        "/register": {
+        "/auth/register": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Creates a new user account",
+                "description": "Create a new user account",
                 "requestBody": {
                     "description": "new user's details",
                     "content": {
@@ -42,9 +42,9 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "User created with ID: [user ID]"
@@ -52,10 +52,28 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "An error message (if input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: Email must be a string."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid email provided."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "An error message (if email already exists in database)",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Error: A user with the provided email already exists."
@@ -66,7 +84,7 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -76,12 +94,12 @@
                 }
             }
         },
-        "/login": {
+        "/auth/login": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Logs in user",
+                "description": "Log in user",
                 "requestBody": {
                     "description": "user's details",
                     "content": {
@@ -105,7 +123,7 @@
                     "200": {
                         "description": "A confirmation of the operation",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Login successful"
@@ -114,9 +132,9 @@
                         }
                     },
                     "default": {
-                        "description": "Requests user to log in (in case of invalid credentials)",
+                        "description": "Requests user to log in (if credentials are invalid)",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Kindly log in with your account details"
@@ -127,12 +145,12 @@
                 }
             }
         },
-        "/logout": {
+        "/auth/logout": {
             "get": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Logs out user",
+                "description": "Log out user",
                 "security": [{
                     "BasicAuth": []
                 }],
@@ -140,7 +158,7 @@
                     "200": {
                         "description": "A confirmation of the operation",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Logout successful"
@@ -151,18 +169,18 @@
                 }
             }
         },
-        "/account": {
+        "/auth/user": {
             "get": {
                 "tags": [
-                    "Account"
+                    "Authentication"
                 ],
-                "description": "Returns current user's account details",
+                "description": "Return current user's data",
                 "security": [{
                     "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
-                        "description": "An object with account data",
+                        "description": "An object with current user's data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -174,7 +192,398 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/orders": {
+            "get": {
+                "tags": ["Admin", "Orders"],
+                "description": "Return all orders",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "$ref": "#/components/schemas/orderId"
+                    },
+                    "description": "Numeric ID of specific order to get"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "An array with orders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/ordersAll"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/order"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if orderID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid order ID provided."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if order does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This order does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/orders/{userId}": {
+            "get": {
+                "tags": ["Admin", "Orders"],
+                "description": "Return all orders by user",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "path",
+                    "name": "userId",
+                    "schema": {
+                        "$ref": "#/components/schemas/userId"
+                    },
+                    "description": "Numeric ID of specific user for whom to get orders",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "An array with user's orders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/orders"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/order"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if orderID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid order ID provided."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if order does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This order does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/orders/acknowledge": {
+            "get": {
+                "tags": ["Admin", "Orders"],
+                "description": "Acknowledge order",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "$ref": "#/components/schemas/orderId"
+                    },
+                    "description": "Numeric ID of specific order to acknowledge",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Confirmation of the acknowledgement",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Order acknowledged with ID: [order ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if no order ID or order ID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: No order ID provided."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid order ID provided."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if order has already been acknowledged, fulfilled or cancelled)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: The order has already been acknowledged."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: The order has already been fulfilled."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: The order has already been cancelled."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if order does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This order does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/orders/fulfilled": {
+            "get": {
+                "tags": ["Admin", "Orders"],
+                "description": "Fulfill order",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "$ref": "#/components/schemas/orderId"
+                    },
+                    "description": "Numeric ID of specific order to fulfill",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Confirmation of the fulfillment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Order fulfilled with ID: [order ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if no order ID or order ID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: No order ID provided."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid order ID provided."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if order is still pending or has already been fulfilled or cancelled)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: The order is still pending."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: The order has already been fulfilled."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: The order has already been cancelled."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if order does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This order does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/products": {
+            "post": {
+                "tags": ["Admin", "Products"],
+                "description": "Create a new product",
+                "requestBody": {
+                    "description": "new product details",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Confirmation of the operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Product created with ID: [product ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: Name must be a string."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Price must be a number."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Category must be a string."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "An error message (if product already exists)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: A product with the provided name already exists."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -184,10 +593,313 @@
                 }
             },
             "put": {
-                "tags": [
-                    "Account"
-                ],
-                "description": "Updates current user's account details",
+                "tags": ["Admin", "Products"],
+                "description": "Update a product",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Numeric ID of product to update",
+                    "required": true
+                }],
+                "requestBody": {
+                    "description": "new details to update to product",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Confirmation of the operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Product updated with ID: [product ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if no product ID provided, no updates provided or input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: No product ID provided."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: No updates provided."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Name must be a string."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Price must be a number."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Category must be a string."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid product ID provided."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "An error message (if product already exists)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: A product with the provided name already exists."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Admin", "Products"],
+                "description": "Delete product",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Numeric ID of product to delete",
+                    "required": true
+                }],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of the operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Product deleted successfully"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if no product ID provided or product ID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: No product ID provided."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid product ID provided."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/users": {
+            "get": {
+                "tags": ["Admin", "Users"],
+                "description": "Return existing products",
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "$ref": "#/components/schemas/userId"
+                    },
+                    "description": "Numeric ID of specific user to get"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "An array with existing users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/users"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/user"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if user ID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid user ID provided."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if user does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This user does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/users/{role}": {
+            "get": {
+                "tags": ["Admin", "Users"],
+                "description": "Return existing users in role",
+                "parameters": [{
+                    "in": "path",
+                    "name": "role",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Name of role for which to get users",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "An array with existing users in role (e.g. \"customer\")",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/usersCat"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if no users found in role)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: No users found in provided role."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/account": {
+            "get": {
+                "tags": ["Customer", "Users"],
+                "description": "Return current user's account details",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "An object with the current user's account data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if user ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid user ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Customer", "Users"],
+                "description": "Update current user's account details",
                 "security": [{
                     "BasicAuth": []
                 }],
@@ -211,10 +923,32 @@
                     "200": {
                         "description": "A confirmation of the operation",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "User modified with ID: [user ID]"
+                                    "example": "User updated with ID: [user ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: [error message]"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if user ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid user ID in session."
                                 }
                             }
                         }
@@ -222,7 +956,7 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -232,10 +966,8 @@
                 }
             },
             "delete": {
-                "tags": [
-                    "Account"
-                ],
-                "description": "Deletes current user's account",
+                "tags": ["Customer", "Users"],
+                "description": "Delete current user's account",
                 "security": [{
                     "BasicAuth": []
                 }],
@@ -243,10 +975,28 @@
                     "204": {
                         "description": "A confirmation of the operation"
                     },
+                    "403": {
+                        "description": "An error message (if user ID or cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: Invalid user ID in session."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid cart ID in session."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -256,18 +1006,16 @@
                 }
             }
         },
-        "/cart": {
+        "/customer/cart": {
             "get": {
-                "tags": [
-                    "Cart"
-                ],
+                "tags": ["Customer", "Cart"],
                 "description": "Return current user's cart",
                 "security": [{
                     "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
-                        "description": "An object with cart data",
+                        "description": "An object with the current user's cart data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -276,10 +1024,39 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "An error message (if cart does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This cart does not exist."
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if user ID or cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "type": "string",
+                                            "example": "Error: Invalid user ID in session."
+                                        },
+                                        {
+                                            "type": "string",
+                                            "example": "Error: Invalid cart ID in session."
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -289,27 +1066,17 @@
                 }
             },
             "post": {
-                "tags": [
-                    "Cart"
-                ],
-                "description": "Add item to current user's cart",
+                "tags": ["Customer", "Cart"],
+                "description": "Adds item to cart",
                 "security": [{
                     "BasicAuth": []
                 }],
                 "requestBody": {
-                    "description": "product to add to cart",
+                    "description": "product details",
                     "content": {
                         "application/json": {
                             "schema": {
-                                "allOf": [{
-                                        "$ref": "#/components/schemas/cartItem"
-                                    },
-                                    {
-                                        "required": [
-                                            "productId"
-                                        ]
-                                    }
-                                ]
+                                "$ref": "#/components/schemas/cartItem"
                             }
                         }
                     }
@@ -318,7 +1085,7 @@
                     "200": {
                         "description": "A confirmation of the operation",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Added to cart product with ID: [product ID]"
@@ -326,10 +1093,32 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "An error message (if input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: [error message]"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid cart ID in session."
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -339,21 +1128,38 @@
                 }
             },
             "delete": {
-                "tags": [
-                    "Cart"
-                ],
-                "description": "Empties current user's cart",
+                "tags": ["Customer", "Cart"],
+                "description": "Empty cart",
                 "security": [{
                     "BasicAuth": []
                 }],
                 "responses": {
-                    "204": {
-                        "description": "A confirmation of the operation"
+                    "200": {
+                        "description": "A confirmation of the operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Emptied cart successfully"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid cart ID in session."
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -363,22 +1169,43 @@
                 }
             }
         },
-        "/orders": {
+        "/customer/cart/checkout": {
             "get": {
-                "tags": [
-                    "Orders"
-                ],
-                "description": "Returns a list of current user's orders",
+                "tags": ["Customer", "Cart"],
+                "description": "Check out cart",
                 "security": [{
                     "BasicAuth": []
                 }],
                 "responses": {
-                    "200": {
-                        "description": "An array of orders",
+                    "201": {
+                        "description": "Confirmation of the order",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/orders"
+                                    "type": "string",
+                                    "example": "Order placed with ID: [order ID]"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid cart ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "An error message (if cart is empty)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Your cart is empty."
                                 }
                             }
                         }
@@ -386,7 +1213,7 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -396,76 +1223,64 @@
                 }
             }
         },
-        "/orders/{id}": {
-            "parameters": [{
-                "name": "id",
-                "in": "path",
-                "description": "ID of the order",
-                "required": true,
-                "schema": {
-                    "type": "string"
-                }
-            }],
+        "/customer/orders": {
             "get": {
-                "tags": [
-                    "Orders"
-                ],
-                "description": "Returns a single order",
+                "tags": ["Customer", "Orders"],
+                "description": "Return current user's orders",
                 "security": [{
                     "BasicAuth": []
                 }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "$ref": "#/components/schemas/orderId"
+                    },
+                    "description": "Numeric ID of specific order to get"
+                }],
                 "responses": {
                     "200": {
-                        "description": "An object with order data",
+                        "description": "An array with the current user's orders",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [{
-                                            "$ref": "#/components/schemas/order"
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/orders"
                                         },
                                         {
-                                            "properties": {
-                                                "items": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "allOf": [{
-                                                                "$ref": "#/components/schemas/cartItem"
-                                                            },
-                                                            {
-                                                                "properties": {
-                                                                    "totalCost": {
-                                                                        "type": "integer",
-                                                                        "description": "(quantity * product.price)"
-                                                                    }
-                                                                }
-                                                            }
-                                                        ]
-                                                    }
-                                                }
-                                            },
-                                            "example": {
-                                                "items": [{
-                                                        "productId": 39998,
-                                                        "quantity": 3,
-                                                        "totalCost": 30
-                                                    },
-                                                    {
-                                                        "productId": 6280,
-                                                        "quantity": 1,
-                                                        "totalCost": 20
-                                                    }
-                                                ]
-                                            }
+                                            "$ref": "#/components/schemas/order"
                                         }
                                     ]
                                 }
                             }
                         }
                     },
-                    "404": {
-                        "description": "An error message (if order belongs to another user or does not exist)",
+                    "400": {
+                        "description": "An error message (if orderID is invalid)",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid order ID provided."
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if user ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid user ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if order does not exist)",
+                        "content": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Error: This order does not exist."
@@ -476,7 +1291,7 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -486,18 +1301,25 @@
                 }
             },
             "delete": {
-                "tags": [
-                    "Orders"
-                ],
-                "description": "Cancels a single order",
+                "tags": ["Customer", "Orders"],
+                "description": "Cancel order",
                 "security": [{
                     "BasicAuth": []
                 }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "Numeric ID of order to delete"
+                }],
                 "responses": {
                     "200": {
-                        "description": "A confirmation of the operation",
+                        "description": "Confirmation of the operation",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Order cancelled with ID: [order ID]"
@@ -505,40 +1327,35 @@
                             }
                         }
                     },
-                    "500": {
-                        "description": "An error message",
+                    "400": {
+                        "description": "An error message (if orderID is invalid)",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/error"
+                                    "type": "string",
+                                    "example": "Error: Invalid order ID provided."
                                 }
                             }
                         }
-                    }
-                }
-            }
-        },
-        "/products": {
-            "parameters": [{
-                "name": "category",
-                "in": "query",
-                "description": "category to return (carbohydrates, proteins, vegetables, dishes, or beverages)",
-                "schema": {
-                    "type": "string"
-                }
-            }],
-            "get": {
-                "tags": [
-                    "Products"
-                ],
-                "description": "Returns a list of products",
-                "responses": {
-                    "200": {
-                        "description": "An array of products (category is omitted if included in query)",
+                    },
+                    "403": {
+                        "description": "An error message (if user ID in session is invalid)",
                         "content": {
-                            "application/json": {
+                            "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/products"
+                                    "type": "string",
+                                    "example": "Error: Invalid user ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if order does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This order does not exist."
                                 }
                             }
                         }
@@ -546,7 +1363,7 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -556,49 +1373,61 @@
                 }
             }
         },
-        "/products/{id}": {
-            "parameters": [{
-                "name": "id",
-                "in": "path",
-                "description": "ID of the product",
-                "required": true,
-                "schema": {
-                    "type": "string"
-                }
-            }],
+        "/customer/products": {
             "get": {
-                "tags": [
-                    "Products"
-                ],
-                "description": "Returns a single product",
+                "tags": ["Customer", "Products"],
+                "description": "Return existing products",
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "$ref": "#/components/schemas/productId"
+                    },
+                    "description": "Numeric ID of specific product to get"
+                }],
                 "responses": {
                     "200": {
-                        "description": "An object with product data",
+                        "description": "An array with existing products",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [{
-                                            "$ref": "#/components/schemas/product"
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/products"
                                         },
                                         {
-                                            "properties": {
-                                                "category": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "example": {
-                                                "category": "proteins"
-                                            }
+                                            "$ref": "#/components/schemas/product"
                                         }
                                     ]
                                 }
                             }
                         }
                     },
+                    "400": {
+                        "description": "An error message (if product ID is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid product ID provided."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if product does not exist)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This product does not exist."
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -608,19 +1437,37 @@
                 }
             }
         },
-        "/users": {
+        "/customer/products/{category}": {
             "get": {
-                "tags": [
-                    "Users"
-                ],
-                "description": "Returns a list of users",
+                "tags": ["Customer", "Products"],
+                "description": "Return existing products in category",
+                "parameters": [{
+                    "in": "path",
+                    "name": "category",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Name of category for which to get products",
+                    "required": true
+                }],
                 "responses": {
                     "200": {
-                        "description": "An array of users",
+                        "description": "An array with existing products in category (e.g. \"vegetables\")",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/users"
+                                    "$ref": "#/components/schemas/productsCat"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if no products found in category)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: No products found in provided category."
                                 }
                             }
                         }
@@ -628,46 +1475,7 @@
                     "500": {
                         "description": "An error message",
                         "content": {
-                            "text/html": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/{id}": {
-            "parameters": [{
-                "name": "id",
-                "in": "path",
-                "description": "ID of the user",
-                "required": true,
-                "schema": {
-                    "type": "string"
-                }
-            }],
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "description": "Returns a single user",
-                "responses": {
-                    "200": {
-                        "description": "An object with user data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/user"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "An error message",
-                        "content": {
-                            "text/html": {
+                            "text/plain": {
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
@@ -688,7 +1496,7 @@
         "schemas": {
             "error": {
                 "type": "string",
-                "example": "Error: [error message]"
+                "example": "An unknown error occurred. Kindly try again."
             },
             "names": {
                 "type": "object",
@@ -718,7 +1526,7 @@
                 },
                 "example": {
                     "email": "thisisan@email.com",
-                    "password": "$Wagwan2022&"
+                    "password": "kibandaskiCustomer"
                 }
             },
             "account": {
@@ -731,14 +1539,18 @@
                         "type": "string",
                         "format": "email"
                     },
+                    "role": {
+                        "type": "string"
+                    },
                     "cartId": {
                         "type": "string"
                     }
                 },
                 "example": {
-                    "id": "2529575",
+                    "id": "7355234",
                     "email": "thisisan@email.com",
-                    "cartId": "8152840"
+                    "role": "customer",
+                    "cartId": "3599584"
                 }
             },
             "cart": {
@@ -769,17 +1581,17 @@
                     }
                 },
                 "example": {
-                    "id": "8152840",
-                    "userId": "2529575",
+                    "id": "3599584",
+                    "userId": "7355234",
                     "items": [{
-                            "productId": "06280",
+                            "productId": "68472",
                             "quantity": 1,
-                            "totalCost": 20
+                            "totalCost": 5
                         },
                         {
-                            "productId": "39998",
-                            "quantity": 3,
-                            "totalCost": 30
+                            "productId": "52743",
+                            "quantity": 1,
+                            "totalCost": 20
                         }
                     ]
                 }
@@ -802,12 +1614,34 @@
                     "$ref": "#/components/schemas/order"
                 },
                 "example": [{
-                        "id": "8324346005",
+                        "id": "4378625166",
+                        "status": "fulfilled"
+                    },
+                    {
+                        "id": "0059574716",
+                        "status": "cancelled"
+                    }
+                ]
+            },
+            "ordersAll": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/order"
+                },
+                "example": [{
+                        "id": "7792357006",
+                        "user_id": "3532335",
                         "status": "cancelled"
                     },
                     {
-                        "id": "1741143697",
-                        "status": "pending"
+                        "id": "4378625166",
+                        "user_id": "7355234",
+                        "status": "fulfilled"
+                    },
+                    {
+                        "id": "0059574716",
+                        "user_id": "7355234",
+                        "status": "cancelled"
                     }
                 ]
             },
@@ -826,40 +1660,45 @@
                     "status": "pending"
                 }
             },
+            "orderId": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 10
+            },
             "products": {
                 "type": "array",
                 "items": {
                     "$ref": "#/components/schemas/product"
                 },
                 "example": [{
-                        "id": "06280",
-                        "name": "Beans",
-                        "price": 20,
+                        "id": "01075",
+                        "name": "Water",
+                        "price": 5,
+                        "category": "drinks"
+                    },
+                    {
+                        "id": "08053",
+                        "name": "Ugali",
+                        "price": 30,
+                        "category": "carbohydrates"
+                    },
+                    {
+                        "id": "11540",
+                        "name": "Fresh juice",
+                        "price": 30,
+                        "category": "drinks"
+                    },
+                    {
+                        "id": "14659",
+                        "name": "Githeri special",
+                        "price": 70,
                         "category": "proteins"
                     },
                     {
-                        "id": "39998",
-                        "name": "Chapati",
-                        "price": 10,
-                        "category": "carbohdyrates"
-                    },
-                    {
-                        "id": "45609",
-                        "name": "Pilau",
-                        "price": 100,
-                        "category": "dishes"
-                    },
-                    {
-                        "id": "53022",
-                        "name": "Sukuma wiki",
-                        "price": 20,
-                        "category": "vegetables"
-                    },
-                    {
-                        "id": "57227",
-                        "name": "Soda",
-                        "price": 30,
-                        "category": "beverages"
+                        "id": "19821",
+                        "name": "Fish",
+                        "price": 40,
+                        "category": "proteins"
                     }
                 ]
             },
@@ -880,11 +1719,38 @@
                     }
                 },
                 "example": {
-                    "id": "89410",
+                    "id": "43193",
                     "name": "Beef stew",
                     "price": 80,
                     "category": "proteins"
                 }
+            },
+            "productsCat": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/product"
+                },
+                "example": [{
+                        "id": "46621",
+                        "name": "Mchicha",
+                        "price": 30
+                    },
+                    {
+                        "id": "83132",
+                        "name": "Sukuma wiki",
+                        "price": 20
+                    },
+                    {
+                        "id": "86543",
+                        "name": "Cabbage",
+                        "price": 20
+                    }
+                ]
+            },
+            "productId": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 5
             },
             "users": {
                 "type": "array",
@@ -892,16 +1758,41 @@
                     "$ref": "#/components/schemas/user"
                 },
                 "example": [{
-                        "id": "2529575",
+                        "id": "7355234",
                         "firstName": "Mwenyeji",
                         "lastName": "Mkenya",
+                        "phone": 254712345678,
+                        "email": "thisisan@email.com",
+                        "role": "customer"
+                    },
+                    {
+                        "id": "3532335",
+                        "firstName": "Bigman",
+                        "lastName": "Bazu",
+                        "phone": 254202345678,
+                        "email": "thisisanother@email.com",
+                        "role": "admin"
+                    }
+                ]
+            },
+            "usersCat": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/user"
+                },
+                "example": [{
+                        "id": "7355234",
+                        "firstName": "Mwenyeji",
+                        "lastName": "Mkenya",
+                        "phone": 254712345678,
                         "email": "thisisan@email.com"
                     },
                     {
-                        "id": "8866068",
-                        "firstName": "Jane",
-                        "lastName": "Doe",
-                        "email": "jane@web.com"
+                        "id": "9786965",
+                        "firstName": "Wanjiku",
+                        "lastName": "Oduor",
+                        "phone": 254701324657,
+                        "email": "wanjiku@oduor.com"
                     }
                 ]
             },
@@ -917,17 +1808,26 @@
                     "lastName": {
                         "type": "string"
                     },
+                    "phone": {
+                        "type": "number"
+                    },
                     "email": {
                         "type": "string",
                         "format": "email"
                     }
                 },
                 "example": {
-                    "id": "2529575",
+                    "id": "7355234",
                     "firstName": "Mwenyeji",
                     "lastName": "Mkenya",
+                    "phone": 254712345678,
                     "email": "thisisan@email.com"
                 }
+            },
+            "userId": {
+                "type": "string",
+                "minLength": 7,
+                "maxLength": 7
             }
         }
     },
@@ -936,8 +1836,12 @@
             "description": "Authentication operations"
         },
         {
-            "name": "Account",
-            "description": "Account operations"
+            "name": "Admin",
+            "description": "Admin operations"
+        },
+        {
+            "name": "Customer",
+            "description": "Customer operations"
         },
         {
             "name": "Cart",
