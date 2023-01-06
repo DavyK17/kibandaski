@@ -15,7 +15,7 @@ const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 
 // CORS
 const cors = require("cors");
-const origin = app.get("env") === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:8000";
+const origin = app.get("env") === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:3000";
 app.use(cors({ origin }));
 
 // Helmet
