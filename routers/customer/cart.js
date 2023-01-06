@@ -6,6 +6,6 @@ router.post("/", db.addToCart);
 router.delete("/", db.emptyCart);
 
 router.get("/checkout", db.checkout);
-router.put("/update", db.updateCartItem);
+router.put("/item", db.updateCartItem);
 
 module.exports = router;
