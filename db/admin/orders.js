@@ -40,8 +40,13 @@ const getOrdersByUser = async(req, res) => {
     let id = trim(req.params.userId);
     if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID provided.");
 
-    try { // Get orders
+    try { // Get orders by user
         let result = await pool.query("SELECT id, status FROM orders WHERE user_id = $1 ORDER BY created_at DESC", [id]);
+
+        // Send error if no orders found by user
+        if (result.rows.length === 0) return res.status(404).send("Error: No orders found from provided user.");
+
+        // Send orders by user
         res.status(200).json(result.rows);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");

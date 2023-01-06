@@ -31,8 +31,13 @@ const getProductsByCategory = async(req, res) => {
     try { // Sanitise category
         let category = sanitizeHtml(trim(escape(req.params.category))).toLowerCase();
 
-        // Send products in category
+        // Get products in category
         let result = await pool.query("SELECT id, name, price FROM products WHERE category = $1 ORDER BY id ASC", [category]);
+
+        // Send error if no products in category
+        if (result.rows.length === 0) return res.status(404).send("Error: No products found in provided category.");
+
+        // Send products in category
         res.status(200).json(result.rows);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
