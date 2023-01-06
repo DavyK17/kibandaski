@@ -114,9 +114,9 @@ const updateUser = async(req, res) => {
 
         // Phone number
         phone = phone || old.phone;
-        if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
+        if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send("Error: Phone number must be a number.");
         phone = trim(typeof phone === "number" ? phone.toString() : phone);
-        if (!checkPhone(phone)) return res.status(400).send(`Error: Phone number must be Kenyan (starts with "254").`);
+        if (!checkPhone(phone)) return res.status(400).send("Error: Phone number must be Kenyan (starts with \"254\").");
 
         // Email
         email = email || old.email;
