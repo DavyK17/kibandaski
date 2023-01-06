@@ -15,7 +15,7 @@ const checkPhone = value => {
 const getUser = async(req, res) => {
     try { // Validate and sanitise user ID
         let id = trim(req.user.id);
-        if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID in session.");
+        if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
 
         // Get user
         let result = await pool.query("SELECT id, first_name, last_name, phone, email FROM users WHERE id = $1", [id]);
@@ -84,7 +84,7 @@ const createUser = async(req, res) => {
 const updateUser = async(req, res) => {
     // Validate and sanitise user ID
     let userId = trim(req.user.id);
-    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID in session.");
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
 
     try { // Retrieve existing details from database if not provided in body
         let result = await pool.query("SELECT first_name, last_name, phone, email, password FROM users WHERE id = $1", [userId]);
@@ -133,11 +133,11 @@ const deleteUser = async(req, res) => {
     // VALIDATION AND SANITISATION
     // User ID
     let userId = trim(req.user.id);
-    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid user ID in session.");
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
 
     // Cart ID
     let cartId = trim(req.user.cartId);
-    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(400).send("Error: Invalid cart ID in session.");
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
 
     try { // DELETE USER
         // Create orders array
