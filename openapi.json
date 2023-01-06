@@ -58,6 +58,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: Email must be a string.",
                                     "examples": [
                                         "Error: Email must be a string.",
                                         "Error: Invalid email provided."
@@ -367,6 +368,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No order ID provided.",
                                     "examples": [
                                         "Error: No order ID provided.",
                                         "Error: Invalid order ID provided."
@@ -381,6 +383,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: The order has already been acknowledged.",
                                     "examples": [
                                         "Error: The order has already been acknowledged.",
                                         "Error: The order has already been fulfilled.",
@@ -448,6 +451,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No order ID provided.",
                                     "examples": [
                                         "Error: No order ID provided.",
                                         "Error: Invalid order ID provided."
@@ -462,6 +466,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: The order is still pending.",
                                     "examples": [
                                         "Error: The order is still pending.",
                                         "Error: The order has already been fulfilled.",
@@ -527,6 +532,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: Name must be a string.",
                                     "examples": [
                                         "Error: Name must be a string.",
                                         "Error: Price must be a number.",
@@ -618,6 +624,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No product ID provided.",
                                     "examples": [
                                         "Error: No product ID provided.",
                                         "Error: No updates provided.",
@@ -697,6 +704,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No product ID provided.",
                                     "examples": [
                                         "Error: No product ID provided.",
                                         "Error: Invalid product ID provided."
@@ -911,6 +919,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No updates provided.",
                                     "examples": [
                                         "Error: No updates provided.",
                                         "Error: First name must be a string.",
@@ -962,6 +971,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: Invalid user ID in session.",
                                     "examples": [
                                         "Error: Invalid user ID in session.",
                                         "Error: Invalid cart ID in session."
@@ -1018,6 +1028,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: Invalid user ID in session.",
                                     "examples": [
                                         "Error: Invalid user ID in session.",
                                         "Error: Invalid cart ID in session."
@@ -1061,6 +1072,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Added to cart product with ID: [product ID]",
                                     "examples": [
                                         "Added to cart product with ID: [product ID]",
                                         "Quantity updated in cart for product with ID: [product ID]"
@@ -1075,6 +1087,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No product ID provided.",
                                     "examples": [
                                         "Error: No product ID provided.",
                                         "Error: Product ID must be a string.",
@@ -1256,6 +1269,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No product ID provided.",
                                     "examples": [
                                         "Error: No product ID provided.",
                                         "Error: No update provided.",
