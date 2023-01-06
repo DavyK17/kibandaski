@@ -44,16 +44,9 @@ app.use(passport.session());
 // Swagger UI Express
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./openapi.json");
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-
-/* IMPLEMENTATION */
-
-app.get("/", (req, res) => {
-    res.send("Welcome to Kibandaski!");
-});
-
-// Routers
+/* ROUTING */
 const authRouter = require("./routers/auth");
 app.use("/auth", authRouter);
 
@@ -67,12 +60,13 @@ app.use("/admin", login, (req, res, next) => {
 const customerRouter = require("./routers/customer");
 app.use("/customer", customerRouter);
 
-// Error messages
+// Send error if route does not exist
 app.all("*", (req, res) => {
     res.status(404).send("Error: This operation does not exist.");
 });
 
-// Listener
+
+/* LISTENER */
 app.listen(port, () => {
     console.log(`Server listening on port ${port}.`);
 });
