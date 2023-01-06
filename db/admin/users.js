@@ -1,6 +1,7 @@
 // IMPORTS
 const pool = require("../pool");
-const { isNumeric, isLength, trim } = require("validator");
+const { isNumeric, isLength, trim, escape } = require("validator");
+const sanitizeHtml = require("../../util/sanitizeHtml");
 
 // FUNCTIONS
 const getUsers = async(req, res) => {
@@ -23,17 +24,17 @@ const getUsers = async(req, res) => {
                 role: result.rows[0].role
             });
         } else { // GET ALL USERS
-            // Create user array
+            // Create users array
             let users = [];
 
-            // Add each user to user array
+            // Add each user to users array
             let result = await pool.query("SELECT id, first_name, last_name, phone, email, role FROM users ORDER BY id ASC");
             result.rows.forEach(({ id, first_name, last_name, phone, email, role }) => {
                 let user = { id, firstName: first_name, lastName: last_name, phone: Number(phone), email, role };
                 users.push(user);
             });
 
-            // Send user array
+            // Send users array
             res.status(200).json(users);
         }
     } catch (err) {
@@ -41,4 +42,25 @@ const getUsers = async(req, res) => {
     }
 }
 
-module.exports = getUsers;
+const getUsersByRole = async(req, res) => {
+    try { // Sanitise role
+        let role = sanitizeHtml(trim(escape(req.params.role))).toLowerCase();
+
+        // Create user array
+        let users = [];
+
+        // Add each user in role to users array
+        let result = await pool.query("SELECT id, first_name, last_name, phone, email FROM users WHERE role = $1 ORDER BY id ASC", [role]);
+        result.rows.forEach(({ id, first_name, last_name, phone, email }) => {
+            let user = { id, firstName: first_name, lastName: last_name, phone: Number(phone), email };
+            users.push(user);
+        });
+
+        // Send users array
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).send("An unknown error occurred. Kindly try again.");
+    }
+}
+
+module.exports = { getUsers, getUsersByRole };
