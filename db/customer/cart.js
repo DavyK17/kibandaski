@@ -116,7 +116,7 @@ const checkout = async(req, res) => {
         let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [cartId]);
 
         // Send error if cart is empty
-        if (result.rows.length === 0) return res.status(403).send("Error: Your cart is empty.");
+        if (result.rows.length === 0) return res.status(409).send("Error: Your cart is empty.");
 
         // Create order
         let text = `INSERT INTO orders (id, user_id, created_at, status) VALUES ($1, $2, to_timestamp(${Date.now()} / 1000), 'pending') RETURNING id`;
