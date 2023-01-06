@@ -42,7 +42,7 @@ const createProduct = async(req, res) => {
 
 const updateProduct = async(req, res) => {
     // Send error if no product ID provided
-    if (!req.query.id) return res.status(400).send("Error: No product ID specified.");
+    if (!req.query.id) return res.status(400).send("Error: No product ID provided.");
 
     // VALIDATION
     let { name, price, category } = req.body;
@@ -93,8 +93,8 @@ const updateProduct = async(req, res) => {
 }
 
 const deleteProduct = async(req, res) => {
-    // Send error if no product ID specified
-    if (!req.query.id) return res.status(400).send("Error: No product ID specified.");
+    // Send error if no product ID provided
+    if (!req.query.id) return res.status(400).send("Error: No product ID provided.");
 
     // Validate and sanitise product ID
     let id = trim(req.query.id);
