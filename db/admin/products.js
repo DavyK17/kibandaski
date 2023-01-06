@@ -48,7 +48,7 @@ const updateProduct = async(req, res) => {
     let { name, price, category } = req.body;
 
     // Send error if no details are provided
-    if (!name && !price && !category) return res.status(400).send("Error: No updates provided.")
+    if (!name && !price && !category) return res.status(400).send("Error: No updates provided.");
 
     // Name
     if (name && typeof name !== "string") return res.status(400).send("Error: Name must be a string.");
@@ -66,6 +66,12 @@ const updateProduct = async(req, res) => {
     try { // Get product details
         let result = await pool.query("SELECT name, price, category FROM products WHERE id = $1", [id]);
 
+        // Send error if product does not exist
+        if (result.rows.length === 0) return res.status(404).send("Error: This product does not exist.");
+
+        // Save existing details to object
+        let old = { name: result.rows[0].name, price: result.rows[0].price, category: result.rows[0].category };
+
         // SANITISATION
         // Name
         name = sanitizeHtml(trim(escape(name || result.rows[0].name)));
@@ -77,6 +83,9 @@ const updateProduct = async(req, res) => {
 
         // Category
         category = sanitizeHtml(trim(escape(category || result.rows[0].category)));
+
+        // Send error if no updates made
+        if (old.name === name && old.price === price && old.category === category) return res.status(400).send("Error: No updates provided.");
 
         // Send error if another product of the desired name already exists
         if (req.body.name) {

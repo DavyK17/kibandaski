@@ -88,34 +88,49 @@ const updateUser = async(req, res) => {
 
     try { // Retrieve existing details from database if not provided in body
         let result = await pool.query("SELECT first_name, last_name, phone, email, password FROM users WHERE id = $1", [userId]);
+        let old = {
+            firstName: result.rows[0].first_name,
+            lastName: result.rows[0].last_name,
+            phone: result.rows[0].phone,
+            email: result.rows[0].email,
+            password: result.rows[0].password
+        };
 
         // VALIDATION AND SANITISATION
         let { firstName, lastName, phone, email, password } = req.body;
 
+        // Send error if no details are provided
+        if (!firstName && !lastName && !phone && !email && !password) return res.status(400).send("Error: No updates provided.");
+
         // First name
-        firstName = firstName || result.rows[0].first_name;
+        firstName = firstName || old.firstName;
         if (typeof firstName !== "string") return res.status(400).send("Error: First name must be a string.");
         firstName = sanitizeHtml(trim(escape(firstName)));
 
         // Last name
-        lastName = lastName || result.rows[0].last_name;
+        lastName = lastName || old.lastName;
         if (typeof lastName !== "string") return res.status(400).send("Error: Last name must be a string.");
         lastName = sanitizeHtml(trim(escape(lastName)));
 
         // Phone number
-        phone = phone || result.rows[0].phone;
+        phone = phone || old.phone;
         if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
         phone = trim(typeof phone === "number" ? phone.toString() : phone);
         if (!checkPhone(phone)) return res.status(400).send(`Error: Phone number must be Kenyan (starts with "254").`);
 
         // Email
-        email = email || result.rows[0].email;
+        email = email || old.email;
         if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
 
         // Password
         const salt = await bcrypt.genSalt(17);
-        const passwordHash = password ? await bcrypt.hash(trim(password), salt) : result.rows[0].password;
+        const passwordHash = password ? await bcrypt.hash(trim(password), salt) : old.password;
+
+        // Send error if no updates made
+        const passwordMatch = await bcrypt.compare(password, old.password);
+        if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && passwordMatch)
+            return res.status(400).send("Error: No updates provided.");
 
         // UPDATE USER DETAILS
         let text = "UPDATE users SET first_name = $1, last_name = $2, phone = $3, email = $4, password = $5 WHERE id = $6 RETURNING id";

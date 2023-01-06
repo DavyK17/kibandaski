@@ -42,7 +42,9 @@ const addToCart = async(req, res) => {
     let { productId, quantity = 1 } = req.body;
 
     // Product ID
+    if (!productId) return res.status(400).send("Error: No product ID provided.");
     if (typeof productId !== "string") return res.status(400).send("Error: Product ID must be a string.");
+    productId = trim(productId);
     if (!isNumeric(productId, { no_symbols: true }) || !isLength(productId, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
 
     // Quantity
@@ -60,9 +62,8 @@ const addToCart = async(req, res) => {
     try { // Get item in cart
         let result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1 AND product_id = $2", [cartId, productId]);
 
-        // Update quantity if item is already in cart
+        // Add to existing quantity if item is already in cart
         if (result.rows.length > 0) {
-            // Add requested quantity to existing quantity in cart
             quantity += parseInt(result.rows[0].quantity);
 
             // Update quantity in database
@@ -75,6 +76,50 @@ const addToCart = async(req, res) => {
         let values = [cartId, productId, quantity];
         result = await pool.query(text, values);
         res.status(200).send(`Added to cart product with ID: ${result.rows[0].product_id}`);
+    } catch (err) {
+        res.status(500).send("An unknown error occurred. Kindly try again.");
+    }
+}
+
+const updateCartItem = async(req, res) => {
+    // Send error if no product ID provided
+    if (!req.query.id) return res.status(400).send("Error: No product ID provided.");
+
+    // VALIDATION AND SANITISATION
+    let { quantity } = req.body;
+
+    // Send error if no details are provided
+    if (!quantity) return res.status(400).send("Error: No updates provided.");
+
+    // Product ID (also sanitised)
+    let productId = trim(req.query.id);
+    if (!isNumeric(productId, { no_symbols: true }) || !isLength(productId, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
+
+    // Quantity
+    if (!quantity) return res.status(400).send("Error: No quantity provided.");
+    if (typeof quantity !== "string" && typeof quantity !== "number") return res.status(400).send("Error: Quantity must be a number.");
+    if (typeof quantity === "string") { // If quantity is a string, trim, validate for numeric values and convert to number
+        quantity = trim(quantity);
+        if (!isNumeric(quantity, { no_symbols: true })) return res.status(400).send("Error: Quantity must be a number.");
+        quantity = Math.round(quantity);
+    };
+
+    // Cart ID
+    let cartId = trim(req.user.cartId);
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
+
+    try { // Get item in cart
+        let result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1 AND product_id = $2", [cartId, productId]);
+
+        // Send error if item is not in cart
+        if (result.rows.length === 0) return res.status(404).send("Error: This item is not in the cart.");
+
+        // Send error if no updates made
+        if (result.rows[0].quantity === quantity) return res.status(400).send("Error: No updates provided.");
+
+        // Update quantity in database
+        result = await pool.query("UPDATE cart_items SET quantity = $1 WHERE cart_id = $2 AND product_id = $3 RETURNING product_id", [quantity, cartId, productId]);
+        res.status(200).send(`Quantity updated in cart for product with ID: ${result.rows[0].product_id}`);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
@@ -145,4 +190,4 @@ const checkout = async(req, res) => {
     }
 }
 
-module.exports = { getCart, addToCart, emptyCart, checkout };
+module.exports = { getCart, addToCart, updateCartItem, emptyCart, checkout };
