@@ -906,12 +906,19 @@
                         }
                     },
                     "400": {
-                        "description": "An error message (if input is invalid)",
+                        "description": "An error message (if no updates provided or input is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: [error message]"
+                                    "examples": [
+                                        "Error: No updates provided.",
+                                        "Error: First name must be a string.",
+                                        "Error: Last name must be a string.",
+                                        "Error: Phone number must be a number.",
+                                        "Error: Phone number must be Kenyan (starts with \"254\").",
+                                        "Error: Email must be a string."
+                                    ]
                                 }
                             }
                         }
@@ -1063,12 +1070,17 @@
                         }
                     },
                     "400": {
-                        "description": "An error message (if input is invalid)",
+                        "description": "An error message (if no product ID provided or input is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: [error message]"
+                                    "examples": [
+                                        "Error: No product ID provided.",
+                                        "Error: Product ID must be a string.",
+                                        "Error: Invalid product ID provided.",
+                                        "Error: Quantity must be a number."
+                                    ]
                                 }
                             }
                         }
