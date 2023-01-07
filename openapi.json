@@ -513,7 +513,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/product"
+                                "$ref": "#/components/schemas/productBody"
                             }
                         }
                     }
@@ -1696,6 +1696,11 @@
                     "totalCost": {
                         "type": "integer"
                     }
+                },
+                "example": {
+                    "productId": "68472",
+                    "quantity": 1,
+                    "totalCost": 5
                 }
             },
             "cartItemBody": {
@@ -1705,9 +1710,12 @@
                         "type": "string"
                     },
                     "quantity": {
-                        "type": "integer",
-                        "default": 1
+                        "type": "integer"
                     }
+                },
+                "example": {
+                    "productId": "68472",
+                    "quantity": 1
                 }
             },
             "orders": {
