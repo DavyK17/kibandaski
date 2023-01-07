@@ -210,7 +210,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/order ID"
+                        "$ref": "#/components/schemas/orderId"
                     },
                     "description": "Numeric ID of specific order to get"
                 }],
@@ -248,6 +248,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No orders found.",
                                     "examples": [
                                         "Error: No orders found.",
                                         "Error: This order does not exist."
@@ -348,7 +349,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/order ID"
+                        "$ref": "#/components/schemas/orderId"
                     },
                     "description": "Numeric ID of specific order to acknowledge",
                     "required": true
@@ -431,7 +432,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/order ID"
+                        "$ref": "#/components/schemas/orderId"
                     },
                     "description": "Numeric ID of specific order to fulfill",
                     "required": true
@@ -538,6 +539,8 @@
                                     "example": "Error: Name must be a string.",
                                     "examples": [
                                         "Error: Name must be a string.",
+                                        "Error: Description must be a string.",
+                                        "Error: Description must be no longer than 255 characters.",
                                         "Error: Price must be a number.",
                                         "Error: Category must be a string."
                                     ]
@@ -632,6 +635,8 @@
                                         "Error: No product ID provided.",
                                         "Error: No updates provided.",
                                         "Error: Name must be a string.",
+                                        "Error: Description must be a string.",
+                                        "Error: Description must be no longer than 255 characters.",
                                         "Error: Price must be a number.",
                                         "Error: Category must be a string.",
                                         "Error: Invalid product ID provided."
@@ -1329,7 +1334,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/order ID"
+                        "$ref": "#/components/schemas/orderId"
                     },
                     "description": "Numeric ID of specific order to get"
                 }],
@@ -1378,6 +1383,7 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
+                                    "example": "Error: No orders found.",
                                     "examples": [
                                         "Error: No orders found.",
                                         "Error: This order does not exist."
@@ -1858,7 +1864,7 @@
                     ]
                 }
             },
-            "order ID": {
+            "orderId": {
                 "type": "string",
                 "minLength": 10,
                 "maxLength": 10
@@ -1871,30 +1877,35 @@
                 "example": [{
                         "id": "01075",
                         "name": "Water",
+                        "description": "Just a good old glass of water.",
                         "price": 5,
                         "category": "drinks"
                     },
                     {
                         "id": "08053",
                         "name": "Ugali",
+                        "description": "The maize flour delicacy you know and love.",
                         "price": 30,
                         "category": "carbohydrates"
                     },
                     {
                         "id": "11540",
                         "name": "Fresh juice",
+                        "description": "Freshly squeezed orange, mango or pineapple juice.",
                         "price": 30,
                         "category": "drinks"
                     },
                     {
                         "id": "14659",
                         "name": "Githeri special",
+                        "description": "A delicious mix of githeri and beef stew.",
                         "price": 70,
                         "category": "proteins"
                     },
                     {
                         "id": "19821",
                         "name": "Fish",
+                        "description": "Deep fried whole fish straight from the pan.",
                         "price": 40,
                         "category": "proteins"
                     }
@@ -1909,6 +1920,9 @@
                     "name": {
                         "type": "string"
                     },
+                    "description": {
+                        "type": "string"
+                    },
                     "price": {
                         "type": "integer"
                     },
@@ -1919,6 +1933,7 @@
                 "example": {
                     "id": "43193",
                     "name": "Beef stew",
+                    "description": "Delicious beef stew made with tomatoes, onions and spices.",
                     "price": 80,
                     "category": "proteins"
                 }
@@ -1931,16 +1946,19 @@
                 "example": [{
                         "id": "46621",
                         "name": "Mchicha",
+                        "description": "A healthy portion of amaranth.",
                         "price": 30
                     },
                     {
                         "id": "83132",
                         "name": "Sukuma wiki",
+                        "description": "Collard greens made with onions and spices.",
                         "price": 20
                     },
                     {
                         "id": "86543",
                         "name": "Cabbage",
+                        "description": "Cabbage made with onions and spices.",
                         "price": 20
                     }
                 ]
