@@ -210,7 +210,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/orderId"
+                        "$ref": "#/components/schemas/order ID"
                     },
                     "description": "Numeric ID of specific order to get"
                 }],
@@ -224,7 +224,7 @@
                                             "$ref": "#/components/schemas/ordersAll"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/order"
+                                            "$ref": "#/components/schemas/orderAll"
                                         }
                                     ]
                                 }
@@ -232,7 +232,7 @@
                         }
                     },
                     "400": {
-                        "description": "An error message (if orderID is invalid)",
+                        "description": "An error message (if order ID is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -243,12 +243,15 @@
                         }
                     },
                     "404": {
-                        "description": "An error message (if order does not exist)",
+                        "description": "An error message (if no orders found or order does not exist)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: This order does not exist."
+                                    "examples": [
+                                        "Error: No orders found.",
+                                        "Error: This order does not exist."
+                                    ]
                                 }
                             }
                         }
@@ -300,7 +303,7 @@
                         }
                     },
                     "400": {
-                        "description": "An error message (if orderID is invalid)",
+                        "description": "An error message (if order ID is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -345,7 +348,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/orderId"
+                        "$ref": "#/components/schemas/order ID"
                     },
                     "description": "Numeric ID of specific order to acknowledge",
                     "required": true
@@ -428,7 +431,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/orderId"
+                        "$ref": "#/components/schemas/order ID"
                     },
                     "description": "Numeric ID of specific order to fulfill",
                     "required": true
@@ -1060,7 +1063,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/cartItem"
+                                "$ref": "#/components/schemas/cartItemBody"
                             }
                         }
                     }
@@ -1326,7 +1329,7 @@
                     "in": "query",
                     "name": "id",
                     "schema": {
-                        "$ref": "#/components/schemas/orderId"
+                        "$ref": "#/components/schemas/order ID"
                     },
                     "description": "Numeric ID of specific order to get"
                 }],
@@ -1348,7 +1351,7 @@
                         }
                     },
                     "400": {
-                        "description": "An error message (if orderID is invalid)",
+                        "description": "An error message (if order ID is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1370,12 +1373,15 @@
                         }
                     },
                     "404": {
-                        "description": "An error message (if order does not exist)",
+                        "description": "An error message (if no orders found or order does not exist)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: This order does not exist."
+                                    "examples": [
+                                        "Error: No orders found.",
+                                        "Error: This order does not exist."
+                                    ]
                                 }
                             }
                         }
@@ -1420,7 +1426,7 @@
                         }
                     },
                     "400": {
-                        "description": "An error message (if orderID is invalid)",
+                        "description": "An error message (if order ID is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1695,6 +1701,20 @@
                         "type": "string"
                     },
                     "quantity": {
+                        "type": "integer"
+                    },
+                    "totalCost": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "cartItemBody": {
+                "type": "object",
+                "properties": {
+                    "productId": {
+                        "type": "string"
+                    },
+                    "quantity": {
                         "type": "integer",
                         "default": 1
                     }
@@ -1707,32 +1727,12 @@
                 },
                 "example": [{
                         "id": "4378625166",
+                        "createdAt": "2023-01-05T03:53:38.000Z",
                         "status": "fulfilled"
                     },
                     {
                         "id": "0059574716",
-                        "status": "cancelled"
-                    }
-                ]
-            },
-            "ordersAll": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/order"
-                },
-                "example": [{
-                        "id": "7792357006",
-                        "user_id": "3532335",
-                        "status": "cancelled"
-                    },
-                    {
-                        "id": "4378625166",
-                        "user_id": "7355234",
-                        "status": "fulfilled"
-                    },
-                    {
-                        "id": "0059574716",
-                        "user_id": "7355234",
+                        "createdAt": "2023-01-05T03:49:27.000Z",
                         "status": "cancelled"
                     }
                 ]
@@ -1743,16 +1743,122 @@
                     "id": {
                         "type": "string"
                     },
+                    "createdAt": {
+                        "type": "string"
+                    },
                     "status": {
                         "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/cartItem"
+                        }
                     }
                 },
                 "example": {
-                    "id": "1741143697",
-                    "status": "pending"
+                    "id": "4378625166",
+                    "createdAt": "2023-01-05T03:53:38.000Z",
+                    "status": "fulfilled",
+                    "items": [{
+                            "productId": "43193",
+                            "quantity": 1,
+                            "totalCost": 80
+                        },
+                        {
+                            "productId": "83132",
+                            "quantity": 1,
+                            "totalCost": 20
+                        },
+                        {
+                            "productId": "08053",
+                            "quantity": 1,
+                            "totalCost": 30
+                        },
+                        {
+                            "productId": "01075",
+                            "quantity": 1,
+                            "totalCost": 5
+                        }
+                    ]
                 }
             },
-            "orderId": {
+            "ordersAll": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/orderAll"
+                },
+                "example": [{
+                        "id": "7792357006",
+                        "userId": "3532335",
+                        "createdAt": "2023-01-05T16:03:17.000Z",
+                        "status": "cancelled"
+                    },
+                    {
+                        "id": "4378625166",
+                        "userId": "7355234",
+                        "createdAt": "2023-01-05T03:53:38.000Z",
+                        "status": "fulfilled"
+                    },
+                    {
+                        "id": "0059574716",
+                        "userId": "7355234",
+                        "createdAt": "2023-01-05T03:49:27.000Z",
+                        "status": "cancelled"
+                    }
+                ]
+            },
+            "orderAll": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "$ref": "#/components/schemas/userId"
+                    },
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/cartItem"
+                        }
+                    }
+                },
+                "example": {
+                    "id": "4378625166",
+                    "userId": "7355234",
+                    "createdAt": "2023-01-05T03:53:38.000Z",
+                    "status": "fulfilled",
+                    "items": [{
+                            "productId": "43193",
+                            "quantity": 1,
+                            "totalCost": 80
+                        },
+                        {
+                            "productId": "83132",
+                            "quantity": 1,
+                            "totalCost": 20
+                        },
+                        {
+                            "productId": "08053",
+                            "quantity": 1,
+                            "totalCost": 30
+                        },
+                        {
+                            "productId": "01075",
+                            "quantity": 1,
+                            "totalCost": 5
+                        }
+                    ]
+                }
+            },
+            "order ID": {
                 "type": "string",
                 "minLength": 10,
                 "maxLength": 10
