@@ -591,23 +591,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "price": {
-                                        "type": "integer"
-                                    },
-                                    "category": {
-                                        "type": "string"
-                                    }
-                                },
-                                "example": {
-                                    "name": "Beef stew",
-                                    "price": 80,
-                                    "category": "proteins"
-                                }
+                                "$ref": "#/components/schemas/productBody"
                             }
                         }
                     }
@@ -1932,6 +1916,29 @@
                 },
                 "example": {
                     "id": "43193",
+                    "name": "Beef stew",
+                    "description": "Delicious beef stew made with tomatoes, onions and spices.",
+                    "price": 80,
+                    "category": "proteins"
+                }
+            },
+            "productBody": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "category": {
+                        "type": "string"
+                    }
+                },
+                "example": {
                     "name": "Beef stew",
                     "description": "Delicious beef stew made with tomatoes, onions and spices.",
                     "price": 80,
