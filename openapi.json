@@ -31,6 +31,7 @@
                                         "required": [
                                             "firstName",
                                             "lastName",
+                                            "phone",
                                             "email",
                                             "password"
                                         ]
@@ -1594,11 +1595,15 @@
                     },
                     "lastName": {
                         "type": "string"
+                    },
+                    "phone": {
+                        "type": "number"
                     }
                 },
                 "example": {
                     "firstName": "Mwenyeji",
-                    "lastName": "Mkenya"
+                    "lastName": "Mkenya",
+                    "phone": 254712345678
                 }
             },
             "login": {
