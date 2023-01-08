@@ -2,9 +2,7 @@
 
 This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is a Node.js REST API that allows the user to buy food from a local street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth in recent years).
 
-![A "kibandaski" in Kenya][kibandaski]
-
-[kibandaski]: https://www.kenyans.co.ke/files/styles/article_style/public/images/media/Kibandaski%20in%20Nairobi.jpg ""
+![A "kibandaski" in Kenya](https://www.kenyans.co.ke/files/styles/article_style/public/images/media/Kibandaski%20in%20Nairobi.jpg "")
 
 ## The project
 ### Requirements
@@ -29,13 +27,13 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 
 ### Additional libraries/techonolgies
 - [bcrypt](https://www.npmjs.com/package/bcrypt) - Password hashing library for Node.js
-- [connect-ensure-login](https://www.npmjs.com/package/connect-ensure-login) - Express.js middleware for ensuring user is logged in
+- [Cookie Parser](http://expressjs.com/en/resources/middleware/cookie-parser.html) - Express.js middleware for parsing cookies
 - [CORS](https://github.com/expressjs/cors) - Express.js middleware for enabling CORS
 - [Dotenv](https://github.com/motdotla/dotenv) - Module for loading environment variables from a .env file
 - [express-session](https://expressjs.com/en/resources/middleware/session.html) - Express.js framework for managing session middleware 
 - [Helmet.js](https://helmetjs.github.io/) - Node.js module for securing HTTP headers
+- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - Node.js implementation of JSON web tokens
 - [node-postgres](https://node-postgres.com/) - Node.js interface for PostgreSQL
-- [Passport.js](https://www.passportjs.org/) - Authentication middleware library for Node.js
 - [request-ip](https://www.npmjs.com/package/request-ip) - Node.js module for retrieving a request's IP address
 - [sanitize-html](https://www.npmjs.com/package/sanitize-html) - HTML sanitiser module
 - [Swagger UI](https://swagger.io/tools/swagger-ui/) - REST API documentation tool
