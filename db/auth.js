@@ -16,7 +16,7 @@ const login = async(req, res) => {
     // Get request IP address
     const ip = requestIP.getClientIp(req);
 
-    // Generate attempt ID and define attempt log function
+    // Generate login attempt ID and define function to log attempts
     const attemptId = idGen(15);
     const logAttempt = async(success) => {
         let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), ${success})`;
@@ -24,10 +24,9 @@ const login = async(req, res) => {
         return await pool.query(text, values);
     }
 
-    // VALIDATION AND SANITISATION
+    // Validate and sanitise email
     let { email, password } = req.body;
 
-    // Validate and sanitise email
     if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
     if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
@@ -51,7 +50,7 @@ const login = async(req, res) => {
         // Create user object
         let user = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
 
-        // Create JSON Web Token
+        // Create JSON web token
         let expiresIn = 172800;
         const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn });
 
