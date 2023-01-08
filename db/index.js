@@ -1,3 +1,6 @@
+// AUTHENTICATION FUNCTIONS
+const auth = require("./auth");
+
 // ADMIN FUNCTIONS
 const ordersA = require("./admin/orders");
 const productsA = require("./admin/products");
@@ -11,6 +14,7 @@ const usersC = require("./customer/users");
 
 // EXPORTS
 module.exports = {
+    auth,
     admin: {
         orders: ordersA,
         products: productsA,
