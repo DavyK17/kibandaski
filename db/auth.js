@@ -60,7 +60,7 @@ const login = async(req, res) => {
 
         // Log successful login and confirm
         await logAttempt(true);
-        res.status(200).send("Login successful");
+        res.status(200).json({ token });
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
