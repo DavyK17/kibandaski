@@ -10,8 +10,9 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// connect-ensure-login
-const login = require("connect-ensure-login").ensureLoggedIn("/auth/login");
+// Cookie Parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 // CORS
 const cors = require("cors");
@@ -21,6 +22,9 @@ app.use(cors({ origin }));
 // Helmet
 const helmet = require("helmet");
 app.use(helmet());
+
+// JSON Web Token verification
+const jwtVerify = require("./middleware/jwtVerify");
 
 // Session
 const session = require("express-session");
@@ -41,15 +45,11 @@ if (app.get("env") === "production") {
 }
 app.use(session(sessionConfig));
 
-// Passport.js
-const passport = require("passport");
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Swagger UI Express
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./openapi.json");
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 
 /* ROUTING */
 // Root path
@@ -60,7 +60,7 @@ const authRouter = require("./routers/auth");
 app.use("/auth", authRouter);
 
 const adminRouter = require("./routers/admin");
-app.use("/admin", login, (req, res, next) => {
+app.use("/admin", jwtVerify, (req, res, next) => {
     // Send error if user is not an admin
     if (req.user.role !== "admin") return res.status(403).send("Error: You are not authorised to carry out this operation.");
     next();
