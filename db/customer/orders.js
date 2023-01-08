@@ -6,7 +6,7 @@ const { isNumeric, isLength, trim } = require("validator");
 const getOrders = async(req, res) => {
     // Validate and sanitise user ID
     let userId = trim(req.user.id);
-    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     try {
         if (req.query.id) { // GET ORDER BY ID
@@ -65,7 +65,7 @@ const cancelOrder = async(req, res) => {
 
     // User ID
     let userId = trim(req.user.id);
-    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     // CANCEL ORDER
     try { // Get order

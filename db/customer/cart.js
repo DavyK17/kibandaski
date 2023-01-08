@@ -8,11 +8,11 @@ const getCart = async(req, res) => {
     // VALIDATION AND SANITISATION
     // User ID
     let userId = trim(req.user.id);
-    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     // Cart ID
     let cartId = trim(req.user.cartId);
-    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
 
     try { // Get cart
         let result = await pool.query("SELECT * FROM carts WHERE user_id = $1", [userId]);
@@ -57,7 +57,7 @@ const addToCart = async(req, res) => {
 
     // Cart ID
     let cartId = trim(req.user.cartId);
-    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
 
     try { // Get item in cart
         let result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1 AND product_id = $2", [cartId, productId]);
@@ -105,7 +105,7 @@ const updateCartItem = async(req, res) => {
 
     // Cart ID
     let cartId = trim(req.user.cartId);
-    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
 
     try { // Get item in cart
         let result = await pool.query("SELECT product_id, quantity FROM cart_items WHERE cart_id = $1 AND product_id = $2", [cartId, productId]);
@@ -127,7 +127,7 @@ const updateCartItem = async(req, res) => {
 const emptyCart = async(req, res) => {
     // Validate and sanitise cart ID
     let cartId = trim(req.user.cartId);
-    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
 
     try { // Get cart
         let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [cartId]);
@@ -150,11 +150,11 @@ const checkout = async(req, res) => {
     // VALIDATION AND SANITISATION
     // User ID
     let userId = trim(req.user.id);
-    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid user ID in session.");
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     // Cart ID
     let cartId = trim(req.user.cartId);
-    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(403).send("Error: Invalid cart ID in session.");
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
 
     try { // Get cart
         let result = await pool.query("SELECT * FROM cart_items WHERE cart_id = $1", [cartId]);
