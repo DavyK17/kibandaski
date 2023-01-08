@@ -119,12 +119,19 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Confirmation of the operation",
+                        "description": "An object containing the user's JSON web token",
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "type": "string",
-                                    "example": "Login successful"
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjczNTUyMzQiLCJlbWFpbCI6InRoaXNpc2FuQGVtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImNhcnRJZCI6IjM1OTk1ODQifQ.DquM29yPCQlFM4D6SCKPrbskdd-oMkJSQbK0KAq6jxE"
+                                    }
                                 }
                             }
                         }
@@ -875,7 +882,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if user ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -951,7 +958,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if user ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -984,7 +991,7 @@
                     "204": {
                         "description": "Confirmation of the operation"
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if user ID or cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -1041,7 +1048,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if user ID or cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -1117,7 +1124,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -1158,7 +1165,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -1201,13 +1208,17 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "An error message (if cart ID in session is invalid)",
+                    "401": {
+                        "description": "An error message (if user ID or cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: Invalid cart ID in session."
+                                    "example": "Error: Invalid user ID in session.",
+                                    "examples": [
+                                        "Error: Invalid user ID in session.",
+                                        "Error: Invalid cart ID in session."
+                                    ]
                                 }
                             }
                         }
@@ -1299,7 +1310,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if cart ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -1377,7 +1388,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if user ID in session is invalid)",
                         "content": {
                             "text/plain": {
@@ -1453,7 +1464,7 @@
                             }
                         }
                     },
-                    "403": {
+                    "401": {
                         "description": "An error message (if user ID in session is invalid)",
                         "content": {
                             "text/plain": {
