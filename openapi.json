@@ -129,13 +129,39 @@
                             }
                         }
                     },
-                    "default": {
-                        "description": "Requests user to log in (if credentials are invalid)",
+                    "400": {
+                        "description": "An error message (if input is invalid)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Kindly log in with your account details"
+                                    "example": "Error: Email must be a string.",
+                                    "examples": [
+                                        "Error: Email must be a string.",
+                                        "Error: Invalid email provided.",
+                                        "Error: Incorrect email or password provided."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "An error message (if already logged in)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: You are already logged in."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -150,7 +176,7 @@
                 ],
                 "description": "Log out user",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -174,7 +200,7 @@
                 ],
                 "description": "Return current user's data",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -205,7 +231,7 @@
                 "tags": ["Admin", "Orders"],
                 "description": "Return all orders",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -276,7 +302,7 @@
                 "tags": ["Admin", "Orders"],
                 "description": "Return all orders by user",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "path",
@@ -344,7 +370,7 @@
                 "tags": ["Admin", "Orders"],
                 "description": "Acknowledge order",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -427,7 +453,7 @@
                 "tags": ["Admin", "Orders"],
                 "description": "Fulfill order",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -576,7 +602,7 @@
                 "tags": ["Admin", "Products"],
                 "description": "Update a product",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -668,7 +694,7 @@
                 "tags": ["Admin", "Products"],
                 "description": "Delete product",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -836,7 +862,7 @@
                 "tags": ["Customer", "Users"],
                 "description": "Return current user's account details",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -876,7 +902,7 @@
                 "tags": ["Customer", "Users"],
                 "description": "Update current user's account details",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "requestBody": {
                     "description": "details to update",
@@ -952,7 +978,7 @@
                 "tags": ["Customer", "Users"],
                 "description": "Delete current user's account",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "204": {
@@ -991,7 +1017,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Return current user's cart",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -1046,7 +1072,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Adds item to cart",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "requestBody": {
                     "description": "product details",
@@ -1118,7 +1144,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Empty cart",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -1161,7 +1187,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Check out cart",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "responses": {
                     "201": {
@@ -1215,7 +1241,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Update an item in the cart",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -1313,7 +1339,7 @@
                 "tags": ["Customer", "Orders"],
                 "description": "Return current user's orders",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -1393,7 +1419,7 @@
                 "tags": ["Customer", "Orders"],
                 "description": "Cancel order",
                 "security": [{
-                    "BasicAuth": []
+                    "bearerAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -1577,9 +1603,10 @@
     },
     "components": {
         "securitySchemes": {
-            "BasicAuth": {
+            "bearerAuth": {
                 "type": "http",
-                "scheme": "basic"
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         },
         "schemas": {
