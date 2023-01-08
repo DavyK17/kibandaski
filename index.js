@@ -29,14 +29,10 @@ const jwtVerify = require("./middleware/jwtVerify");
 // Session
 const session = require("express-session");
 const sessionConfig = {
-    store: new session.MemoryStore(),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        maxAge: 172800000,
-        sameSite: "none",
-    }
+    cookie: { sameSite: "none" }
 }
 
 if (app.get("env") === "production") {
