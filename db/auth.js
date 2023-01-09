@@ -54,9 +54,6 @@ const login = async(req, res) => {
         let expiresIn = 172800;
         const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn });
 
-        // Add token to cookie
-        res.cookie("token", token, { maxAge: expiresIn * 1000 });
-
         // Log successful login and confirm
         await logAttempt(true);
         res.status(200).json({ token });
