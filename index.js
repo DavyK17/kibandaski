@@ -33,11 +33,12 @@ const sessionConfig = {
     name: "kibandaski_sid",
     resave: false,
     saveUninitialized: false,
-    cookie: { sameSite: "none" }
+    cookie: { sameSite: "none", httpOnly: false, secure: false }
 }
 
 if (app.get("env") === "production") {
     app.set("trust proxy", 1);
+    sessionConfig.cookie.httpOnly = true;
     sessionConfig.cookie.secure = true;
 }
 app.use(session(sessionConfig));
