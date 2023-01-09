@@ -2,7 +2,7 @@
 
 This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is a Node.js REST API that allows the user to buy food from a local street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth in recent years).
 
-![A "kibandaski" in Kenya](https://www.kenyans.co.ke/files/styles/article_style/public/images/media/Kibandaski%20in%20Nairobi.jpg "")
+![A "kibandaski" in Kenya](https://global.discourse-cdn.com/codecademy/original/5X/e/8/f/1/e8f11e906dcfb4d83d09230efc9cad6a57b5d3dc.jpeg "")
 
 ## The project
 ### Requirements
