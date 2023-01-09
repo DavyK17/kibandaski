@@ -11,7 +11,7 @@ const sanitizeHtml = require("../util/sanitizeHtml");
 // FUNCTIONS
 const login = async(req, res) => {
     // Send error if already logged in
-    if (req.cookies.token) return res.status(403).send("Error: You are already logged in.");
+    if (req.user) return res.status(403).send("Error: You are already logged in.");
 
     // Get request IP address
     const ip = requestIP.getClientIp(req);
