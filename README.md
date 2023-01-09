@@ -4,7 +4,11 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 
 ![A "kibandaski" in Kenya](https://global.discourse-cdn.com/codecademy/original/5X/e/8/f/1/e8f11e906dcfb4d83d09230efc9cad6a57b5d3dc.jpeg "")
 
-## The project
+## Links
+- Repository: [github.com/DavyK17/kibandaski](https://github.com/DavyK17/kibandaski)
+- Live link: [kibandaski.up.railway.app](https://kibandaski.up.railway.app/)
+
+## Server
 ### Requirements
 - Build a functioning e-commerce REST API using Express, Node.js, and Postgres
 - Allow users to register and log in via the API
@@ -15,17 +19,13 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 - Allow CRUD operations on orders
 - Document the API using Swagger
 
-### Links
-- Repository: [github.com/DavyK17/kibandaski-server](https://github.com/DavyK17/kibandaski-server)
-- Live link: [kibandaski-server.up.railway.app](https://kibandaski-server.up.railway.app/)
-
-## How it was built
-### Base libraries/techonolgies
+### How it was built
+#### Base libraries/techonolgies
 - [PostgreSQL](https://www.postgresql.org/) - Open source object-relational database system
 - [Node.js](https://nodejs.org/) - JavaScript runtime
 - [Express.js](https://expressjs.com/) - Web application framework for Node.js
 
-### Additional libraries/techonolgies
+#### Additional libraries/techonolgies
 - [bcrypt](https://www.npmjs.com/package/bcrypt) - Password hashing library for Node.js
 - [Cookie Parser](http://expressjs.com/en/resources/middleware/cookie-parser.html) - Express.js middleware for parsing cookies
 - [CORS](https://github.com/expressjs/cors) - Express.js middleware for enabling CORS
@@ -39,6 +39,19 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 - [Swagger UI](https://swagger.io/tools/swagger-ui/) - REST API documentation tool
   - [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) - Express.js interface for Swagger UI  
 - [Validator.js](https://github.com/validatorjs/validator.js) - Library of string validators and sanitisers
+
+## Client (Part Two)
+### Requirements
+- Build a functioning e-commerce application using React, Node.js, and Postgres by extending your existing e-commerce REST API with an interactive client
+- Use Git version control
+- Use command line
+- Develop locally on your computer
+- Enable users to create a personal account
+- Enable users to create an account with a third-party service (Google, Facebook, etc)
+- Enable users to browse products
+- Enable users to complete a purchase using a payment processor (Stripe recommended)
+- Enable users to view order history
+- Publish the application to Heroku
 
 ## Future work
 None planned at the moment, but additional features could potentially be added in the future such as:
