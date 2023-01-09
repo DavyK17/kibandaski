@@ -55,7 +55,7 @@ const loginLocal = async(req, email, password, done) => {
         await logAttempt(true);
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
-        res.status(500).send("An unknown error occurred. Kindly try again.");
+        return done(err);
     }
 }
 
