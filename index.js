@@ -5,15 +5,11 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 8000;
-const path = require("path");
 
 // Body Parser
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// connect-ensure-login
-const loggedIn = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 
 // Helmet
 const helmet = require("helmet");
@@ -44,14 +40,10 @@ const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Swagger UI Express
-const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("./openapi.json");
-app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
 
 /* ROUTING */
 // Client
+const path = require("path");
 app.use(express.static(path.join(__dirname, "client/build")));
 
 // Routers
