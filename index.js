@@ -10,10 +10,6 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Cookie Parser
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
-
 // CORS
 const cors = require("cors");
 const origin = app.get("env") === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:3000";
