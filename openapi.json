@@ -9,6 +9,9 @@
             "url": "https://davyk17.github.io"
         }
     },
+    "servers": [
+        { "url": "https://kibandaski.up.railway.app/", "description": "Production server" }
+    ],
     "paths": {
         "/auth/register": {
             "post": {
