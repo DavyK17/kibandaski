@@ -2,13 +2,13 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const jwtVerify = (req, res, next) => {
+    // Send error if no Authorization header
+    if (!req.headers.authorization) return res.status(401).send("Error: You are not authorised to perform this operation.");
+
     // Get token from Authorization header
     const token = req.headers.authorization.split(" ")[1];
-
-    // Send error if cookie is not set
-    if (!token) return res.status(401).send("Error: You are not authorised to perform this operation.");
-
     let payload;
+
     try {
         payload = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
