@@ -30,7 +30,7 @@ passport.deserializeUser((user, done) => done(null, user));
 
 /* IMPLEMENTATION */
 // Login required
-router.all("/user", loggedIn, (req, res) => res.json(req.session));
+router.all("/user", loggedIn, (req, res) => res.json(req.user));
 
 router.get("/logout", loggedIn, db.auth.logout);
 
