@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "Kibandaski",
+        "title": "Kibandaski (/api)",
         "version": "1.0.0",
         "description": "Codecademy portfolio project: Kibandaski (e-commerce app)",
         "contact": {
