@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const loggedIn = require("connect-ensure-login").ensureLoggedIn("/auth/login");
+const loggedIn = require("connect-ensure-login").ensureLoggedIn("/api/auth/login");
 
 // Authentication
 const authRouter = require("./auth");
@@ -16,6 +16,11 @@ router.use("/admin", loggedIn, (req, res, next) => {
 // Customer
 const customerRouter = require("./customer");
 router.use("/customer", customerRouter);
+
+// API documentation
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("../openapi.json");
+router.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Export
 module.exports = router;

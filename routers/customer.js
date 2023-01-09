@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const loggedIn = require("connect-ensure-login").ensureLoggedIn("/auth/login");
+const loggedIn = require("connect-ensure-login").ensureLoggedIn("/api/auth/login");
 
 // No login
 const productsRouter = require("./customer/products");
