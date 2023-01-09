@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const jwtVerify = require("../middleware/jwtVerify");
+const loggedIn = require("connect-ensure-login").ensureLoggedIn("/auth/login");
 
 // No login
 const productsRouter = require("./customer/products");
@@ -7,13 +7,13 @@ router.use("/products", productsRouter);
 
 // Login required
 const accountRouter = require("./customer/account");
-router.use("/account", jwtVerify, accountRouter);
+router.use("/account", loggedIn, accountRouter);
 
 const cartRouter = require("./customer/cart");
-router.use("/cart", jwtVerify, cartRouter);
+router.use("/cart", loggedIn, cartRouter);
 
 const ordersRouter = require("./customer/orders");
-router.use("/orders", jwtVerify, ordersRouter);
+router.use("/orders", loggedIn, ordersRouter);
 
 // Export
 module.exports = router;

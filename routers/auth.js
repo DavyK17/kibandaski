@@ -1,27 +1,45 @@
 /* IMPORTS */
+// General
 const router = require("express").Router();
 const db = require("../db/index");
-const jwtVerify = require("../middleware/jwtVerify");
+const pool = require("../db/pool");
 
-/* ROUTES */
-// Current user
-router.all("/user", jwtVerify, (req, res) => res.json(req.user));
+// connect-ensure-login
+const loggedIn = require("connect-ensure-login").ensureLoggedIn("/auth/login");
+const loggedOut = require("connect-ensure-login").ensureLoggedOut("/auth/user");
 
-// Registration
-router.get("/register", (req, res) => {
-    res.send("Create a new account");
+/* PASSPORT.JS */
+const passport = require("passport");
+
+// Strategies
+const LocalStrategy = require("passport-local").Strategy;
+passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, db.auth.loginLocal));
+
+// Serialize and Deserealize
+passport.serializeUser(async(user, done) => {
+    try {
+        let result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [user.id]);
+        if (result.rows.length === 0) return done(null, false);
+
+        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
+    } catch (err) {
+        return done(err);
+    }
 });
-router.post("/register", db.customer.users.createUser);
+passport.deserializeUser((user, done) => done(null, user));
 
-// Login
-router.post("/login", db.auth.login);
-router.all("/login", (req, res) => {
-    res.send("Kindly log in with your account details");
-});
+/* IMPLEMENTATION */
+// Login required
+router.all("/user", loggedIn, (req, res) => res.json(req.session));
 
-// Logout
-router.get("/logout", jwtVerify, db.auth.logout);
+router.get("/logout", loggedIn, db.auth.logout);
 
+// Logout required
+router.get("/register", loggedOut, (req, res) => res.send("Create a new account"));
+router.post("/register", loggedOut, db.customer.users.createUser);
 
-/* EXPORT */
+router.post("/login", loggedOut, passport.authenticate(["local"]), (req, res) => res.send("Login successful"));
+router.all("/login", (req, res) => res.send("Kindly log in with your account details"));
+
+// Export
 module.exports = router;
