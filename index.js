@@ -24,7 +24,11 @@ app.use(helmet());
 
 // Session
 const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
+const pool = require("./db/pool");
+
 const sessionConfig = {
+    store: new pgSession({ pool, tableName: "user_sessions", createTableIfMissing: true }),
     secret: process.env.SESSION_SECRET,
     name: "kibandaski_sid",
     resave: false,
