@@ -2,8 +2,10 @@
 
 // General
 require("dotenv").config();
-const app = require("express")();
+const express = require("express");
+const app = express();
 const port = process.env.PORT || 8000;
+const path = require("path");
 
 // Body Parser
 const bodyParser = require("body-parser");
@@ -12,11 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // connect-ensure-login
 const loggedIn = require("connect-ensure-login").ensureLoggedIn("/auth/login");
-
-// CORS
-const cors = require("cors");
-const origin = app.get("env") === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:3000";
-app.use(cors({ origin }));
 
 // Helmet
 const helmet = require("helmet");
@@ -33,12 +30,11 @@ const sessionConfig = {
     name: "kibandaski_sid",
     resave: false,
     saveUninitialized: false,
-    cookie: { sameSite: "none", httpOnly: false, secure: false }
+    cookie: { sameSite: "strict", secure: false }
 }
 
 if (app.get("env") === "production") {
     app.set("trust proxy", 1);
-    sessionConfig.cookie.httpOnly = true;
     sessionConfig.cookie.secure = true;
 }
 app.use(session(sessionConfig));
@@ -51,12 +47,12 @@ app.use(passport.session());
 // Swagger UI Express
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./openapi.json");
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 
 /* ROUTING */
-// Root path
-app.get("/", (req, res) => res.send("Welcome to Kibandaski! You can access the API documentation at /docs."));
+// Client
+app.use(express.static(path.join(__dirname, "client/build")));
 
 // Routers
 const authRouter = require("./routers/auth");
