@@ -55,18 +55,8 @@ app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 // Routers
-const authRouter = require("./routers/auth");
-app.use("/auth", authRouter);
-
-const adminRouter = require("./routers/admin");
-app.use("/admin", loggedIn, (req, res, next) => {
-    // Send error if user is not an admin
-    if (req.user.role !== "admin") return res.status(403).send("Error: You are not authorised to carry out this operation.");
-    next();
-}, adminRouter);
-
-const customerRouter = require("./routers/customer");
-app.use("/customer", customerRouter);
+const apiRouter = require("./routers/index");
+app.use("/api", apiRouter);
 
 // Send error if route does not exist
 app.all("*", (req, res) => {
