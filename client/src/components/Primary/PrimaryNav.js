@@ -1,12 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import capitalise from "../../util/capitalise";
 
 const PrimaryNav = props => {
     const { user, activeClassName } = props;
+    let location = useLocation();
+
     const renderMenuItem = name => {
+        const check = (isActive) => name === "menu" ? (isActive || location.pathname === "/") : isActive;
+
         return (
             <li>
-                <NavLink className={({ isActive }) => isActive ? activeClassName : undefined} to={`/${name}`} end>{capitalise(name)}</NavLink>
+                <NavLink className={({ isActive }) => check(isActive) ? activeClassName : undefined} to={`/${name}`} end>{capitalise(name)}</NavLink>
             </li>
         )
     }

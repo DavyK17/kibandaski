@@ -1,19 +1,19 @@
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const CartHome = props => {
     const { iconHeight, user } = props;
-    let navigate = useNavigate();
     let location = useLocation();
+    let navigate = useNavigate();
 
-    const primary = ["menu", "admin"];
-    const secondary = ["login", "register", "account", "cart"];
-
+    const primary = ["/", "/menu", "/admin"];
+    const secondary = ["/login", "/register", "/account", "/cart"];
     const checkPathFor = type => {
         let current;
         if (type === "primary") current = primary;
         if (type === "secondary") current = secondary;
 
-        current = current.filter(view => location.pathname.includes(view));
+        current = current.filter(pathname => location.pathname === pathname);
         return current.length > 0 ? true : false;
     }
 
@@ -35,9 +35,15 @@ const CartHome = props => {
         if (e.target.id  === "iconHome" && checkPathFor("secondary")) navigate("/");
     }
     
+    let [icon, setIcon] = useState(user ? (checkPathFor("primary") ? Cart : Home) : Home);
+    useEffect(() => {
+        if (user) setIcon(checkPathFor("primary") ? Cart : Home);
+        // eslint-disable-next-line
+    }, [location]);
+
     return (
         <span onClick={handleClick}>
-            {user ? (checkPathFor("primary") ? Cart : Home) : Home}
+            {icon}
         </span>
     )
 }
