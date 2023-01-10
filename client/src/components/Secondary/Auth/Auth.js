@@ -45,6 +45,7 @@ const Auth = props => {
             if (response === "Login successful") {
                 response = await Server.getUser();
                 setUser(response);
+                navigate("/cart");
             };
         };
     }
