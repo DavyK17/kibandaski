@@ -4,10 +4,11 @@
 @import "helper/variables";
 @import "components/auth";
 @import "components/header";
+@import "components/main";
 @import "components/primary";
 @import "components/secondary";
 
-/* GENERAL */
+/* GENERAL STYLES */
 
 * {
     box-sizing: border-box;
@@ -19,6 +20,7 @@ html {
 }
 
 body {
+    background-color: $body-bg-color;
     color: black;
     font-family: "Gantari", sans-serif;
 }
@@ -29,65 +31,6 @@ strong {
 
 em {
     font-style: italic;
-}
-
-
-/* MAIN */
-
-main {
-    display: grid;
-    grid-template: auto / 2fr 1fr;
-    grid-template-areas: "primary secondary";
-    section {
-        padding: 1rem;
-        nav {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba($bg-color, 0.25);
-            ul {
-                display: flex;
-                margin: unset;
-                padding: unset;
-                list-style-type: none;
-                justify-content: flex-start;
-                align-items: center;
-                li {
-                    display: inline;
-                    height: fit-content;
-                    margin-inline-end: 1rem;
-                    text-transform: uppercase;
-                    a,
-                    span {
-                        color: black;
-                        text-decoration: none;
-                        &.selected {
-                            font-weight: 700;
-                            opacity: 1;
-                        }
-                        &:not(.cart) {
-                            cursor: pointer;
-                        }
-                        &:not(.selected) {
-                            transition: color 0.2s ease-in-out;
-                            &:hover,
-                            &:focus {
-                                color: $bg-color;
-                                transition: color 0.125s ease-in-out;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (max-width: 991px) {
-    main {
-        display: block;
-    }
 }
 
 // Adapted from Bootstrap
