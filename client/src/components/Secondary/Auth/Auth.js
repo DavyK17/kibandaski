@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { Auth as Server } from "../../../api/Server";
 
 const Auth = props => {
-    const { setUser, secondaryView } = props;
+    const { view, setUser } = props;
+    let navigate = useNavigate();
 
     const names = (
         <div className="names">
@@ -38,21 +40,22 @@ const Auth = props => {
         e.preventDefault();
         console.log("Attempting login...");
 
-        if (secondaryView === "login") {
+        if (view === "login") {
             let response = await Server.login(e.target[0].value, e.target[1].value);
-            return console.log(response);
-            if (response === "Login successful") response = await Server.getUser();
-            // setUser(response);
+            if (response === "Login successful") {
+                response = await Server.getUser();
+                setUser(response);
+            };
         };
     }
 
     return (
         <form className="auth" onSubmit={handleSubmit}>
-            {secondaryView === "register" ? names : null}
-            {secondaryView === "register" ? phone : null}
+            {view === "register" ? names : null}
+            {view === "register" ? phone : null}
             {email}
             {password}
-            <button type="submit">{secondaryView === "login" ? "Log in" : "Register"}</button>
+            <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
         </form>
     );
 }
