@@ -35,20 +35,13 @@ const App = () => {
                 <Routes>
                     <Route path="/" exact element={<Primary view="menu" user={user} activeClassName={activeClassName} />} />
                     <Route path="/menu" element={<Primary view="menu" user={user} activeClassName={activeClassName} />} />
-                    {
-                        user ? (
-                            <>
-                                <Route path="/admin" element={<Primary view="admin" user={user} activeClassName={activeClassName} />} />
-                                <Route path="/account" element={<Secondary view="account" user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                                <Route path="/cart" element={<Secondary view="cart" user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                            </>
-                        ) : (
-                            <>
-                                <Route path="/login" element={<Secondary user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                                <Route path="/register" element={<Secondary user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                            </>
-                        )
-                    }
+                    <Route path="/admin" element={<Primary view={user ? "admin" : "login"} user={user} activeClassName={activeClassName} />} />
+
+                    <Route path="/account" element={<Secondary view={user ? "account" : "login"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
+                    <Route path="/cart" element={<Secondary view={user ? "cart" : "login"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
+                    <Route path="/login" element={<Secondary view={user ? "account" : "login"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
+                    <Route path="/register" element={<Secondary view={user ? "account" : "register"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
+                    
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
