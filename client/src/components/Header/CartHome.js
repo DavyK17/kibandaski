@@ -1,5 +1,21 @@
+import { useNavigate, useLocation } from "react-router-dom";
+
 const CartHome = props => {
-    const { iconHeight, user, view, setView } = props;
+    const { iconHeight, user } = props;
+    let navigate = useNavigate();
+    let location = useLocation();
+
+    const primary = ["menu", "admin"];
+    const secondary = ["login", "register", "account", "cart"];
+
+    const checkPathFor = type => {
+        let current;
+        if (type === "primary") current = primary;
+        if (type === "secondary") current = secondary;
+
+        current = current.filter(view => location.pathname.includes(view));
+        return current.length > 0 ? true : false;
+    }
 
     const Cart = (
         <svg id="iconCart" width={iconHeight} height={iconHeight} viewBox="0 0 24 24">
@@ -15,13 +31,13 @@ const CartHome = props => {
 
     const handleClick = e => {
         e.preventDefault();
-        if (e.target.id === "iconCart" && view === "primary") setView("secondary");
-        if (e.target.id  === "iconHome" && view === "secondary") setView("primary");
+        if (e.target.id === "iconCart" && checkPathFor("primary") && user) navigate("/cart");
+        if (e.target.id  === "iconHome" && checkPathFor("secondary")) navigate("/");
     }
     
     return (
         <span onClick={handleClick}>
-            {user ? (view === "primary" ? Cart : Home) : Home}
+            {user ? (checkPathFor("primary") ? Cart : Home) : Home}
         </span>
     )
 }

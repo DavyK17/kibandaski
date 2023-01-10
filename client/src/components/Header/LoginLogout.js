@@ -1,5 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const LoginLogout = props => {
-    const { iconHeight, user, setUser, view, setView } = props;
+    const { iconHeight, user, setUser } = props;
+    let navigate = useNavigate();
 
     const Login = (
         <svg id="iconLogin" width={iconHeight} height={iconHeight} viewBox="0 0 24 24">
@@ -15,8 +18,11 @@ const LoginLogout = props => {
 
     const handleClick = e => {
         e.preventDefault();
-        if (e.target.id === "iconLogin" && !user && view === "primary") setView("secondary");
-        if (e.target.id === "iconLogout" && user) setUser(null);
+        if (e.target.id === "iconLogin" && !user) navigate("/login");
+        if (e.target.id === "iconLogout" && user) {
+            setUser(null);
+            navigate("/");
+        };
     }
     
     return (
