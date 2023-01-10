@@ -17,7 +17,7 @@ const logout = (req, res) => {
 
 const loginLocal = async(req, email, password, done) => {
     // Send error if already logged in
-    if (req.user) return res.status(403).send("Error: You are already logged in.");
+    if (req.user) return done("Error: You are already logged in.");
 
     // Get request IP address
     const ip = requestIP.getClientIp(req);
@@ -31,9 +31,9 @@ const loginLocal = async(req, email, password, done) => {
     }
 
     // Validate and sanitise email
-    if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
+    if (typeof email !== "string") return done("Error: Email must be a string.");
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
-    if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
+    if (!isEmail(email)) return done("Error: Invalid email provided.");
 
     try { // Get user details
         let result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
