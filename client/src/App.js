@@ -1,27 +1,25 @@
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import Cookies from "js-cookie";
 
 import Header from "./components/Header/Header";
 import Primary from "./components/Primary/Primary";
 import Secondary from "./components/Secondary/Secondary";
 import NotFound from "./components/Other/NotFound";
 
-// import { Auth } from "./api/Server";
+import { Auth } from "./api/Server";
 
 const App = () => {
     const [user, setUser] = useState(null);
     let activeClassName = "selected";
 
     useEffect(() => {
-        // const fetchUser = async() => {
-        //     let user = await Auth.getUser();
-        //     if (user) setUser(user);
-        // }
+        const fetchUser = async() => {
+            let user = await Auth.getUser();
+            if (user) setUser(user);
+        }
 
-        // fetchUser();
-        console.log(Cookies.get());
-    });
+        fetchUser();
+    }, []);
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useEffect(() => {
