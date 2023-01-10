@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Auth as Server } from "../../api/Server";
 
 const LoginLogout = props => {
     const { iconHeight, user, setUser } = props;
@@ -16,12 +17,15 @@ const LoginLogout = props => {
         </svg>
     )
 
-    const handleClick = e => {
+    const handleClick = async e => {
         e.preventDefault();
         if (e.target.id === "iconLogin" && !user) navigate("/login");
         if (e.target.id === "iconLogout" && user) {
-            setUser(null);
-            navigate("/");
+            let response = await Server.logout();
+            if (response === "Logout successful") {
+                setUser(null);
+                navigate("/");
+            };
         };
     }
     
