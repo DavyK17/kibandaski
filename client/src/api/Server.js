@@ -1,4 +1,4 @@
-const url = ""; // process.env.REACT_APP_ENV === "production" ? "https://kibandaski-server.up.railway.app" : "http://localhost:8000";
+const url = "/api";
 
 export const Auth = {
     getUser: async() => {
