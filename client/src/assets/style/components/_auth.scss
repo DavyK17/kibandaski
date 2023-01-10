@@ -1,6 +1,7 @@
 .auth {
     display: flex;
     flex-direction: column;
+    max-width: 500px;
     input,
     button {
         font-family: "Gantari", sans-serif;

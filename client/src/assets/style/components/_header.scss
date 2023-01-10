@@ -18,9 +18,6 @@ header {
                 display: inline;
                 height: fit-content;
                 text-transform: uppercase;
-                &:not(#logo) {
-                    display: none;
-                }
                 a,
                 span {
                     color: white;
@@ -40,8 +37,5 @@ header {
 @media only screen and (max-width: 991px) {
     header nav ul {
         justify-content: space-between;
-        li:not(#logo) {
-            display: block;
-        }
     }
 }
