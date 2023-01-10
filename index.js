@@ -11,6 +11,13 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// CORS
+if (app.get("env") === "development") {
+    const cors = require("cors");
+    const origin = "http://localhost:3000";
+    app.use(cors({ origin }));
+}
+
 // Helmet
 const helmet = require("helmet");
 app.use(helmet());
