@@ -19,7 +19,7 @@ const PrimaryNav = props => {
         <nav>
             <ul>
                 {renderMenuItem("menu")}
-                {user ? (user.role === "admin" ? renderMenuItem("admin") : null) : null}
+                {user && user.role === "admin" ? renderMenuItem("admin") : null}
             </ul>
         </nav>
     )

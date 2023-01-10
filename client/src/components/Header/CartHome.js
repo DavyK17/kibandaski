@@ -38,8 +38,9 @@ const CartHome = props => {
     let [icon, setIcon] = useState(user ? (checkPathFor("primary") ? Cart : Home) : Home);
     useEffect(() => {
         if (user) setIcon(checkPathFor("primary") ? Cart : Home);
+        else setIcon(Home);
         // eslint-disable-next-line
-    }, [location]);
+    }, [location, user]);
 
     return (
         <span onClick={handleClick}>
