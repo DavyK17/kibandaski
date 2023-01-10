@@ -3,13 +3,8 @@ const url = "/api";
 export const Auth = {
     getUser: async() => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                let response = await fetch(`${url}/auth/user`, { headers: { "Authorization": `Bearer ${token}` } });
-                if (response.ok) return response;
-                return null;
-            }
-            return null;
+            let response = await fetch(`${url}/auth/user`);
+            if (response.ok) return response.json();
         } catch (err) {
             console.log(err);
         }
