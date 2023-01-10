@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import LoginLogout from "./LoginLogout";
 
 const Header = props => {
-    const { user, setUser, view, setView, windowWidth } = props;
+    const { user, setUser, windowWidth } = props;
     const iconHeight = "30";
 
     return (
@@ -12,13 +12,13 @@ const Header = props => {
             <nav>
                 <ul>
                     <li>
-                        <CartHome iconHeight={iconHeight} user={user} view={view} setView={setView} />
+                        <CartHome iconHeight={iconHeight} user={user} />
                     </li>
                     <li id="logo">
                         <Logo windowWidth={windowWidth} />
                     </li>
                     <li>
-                        <LoginLogout iconHeight={iconHeight} user={user} setUser={setUser} view={view} setView={setView} />
+                        <LoginLogout iconHeight={iconHeight} user={user} setUser={setUser} />
                     </li>
                 </ul>
             </nav>

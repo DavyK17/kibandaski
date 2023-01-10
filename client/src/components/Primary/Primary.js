@@ -1,33 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import Nav from "./PrimaryNav";
-import Account from "./Account/Account";
 import Admin from "./Admin/Admin";
 import Menu from "./Menu/Menu";
+import Nav from "./PrimaryNav";
+
+import capitalise from "../../util/capitalise";
 
 const Primary = props => {
-    const { user, activeClassName } = props;
+    const { view, user, activeClassName } = props;
+
+    const renderView = (view, type) => {
+        switch (view) {
+            case "admin":
+                if (type === "string") return "admin";
+                if (type === "component") return <Admin user={user} />;
+                break;
+            case "menu":
+            default:
+                if (type === "string") return "menu";
+                if (type === "component") return <Menu />;
+                return undefined;
+        }
+    }
 
     return (
-        <Router>
             <section className="primary">
-                <h2 className="sr-only">
-                    <Routes>
-                        <Route path="/account" element={"Account"} />
-                        <Route path="/admin" element={"Admin"} />
-                        <Route path="/menu" element={"Menu"} />
-                        <Route path="*" element={"Menu"} />
-                    </Routes>
-                </h2>
+                <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
                 <Nav user={user} activeClassName={activeClassName} />
-                <Routes>
-                    <Route path="/account" element={<Account />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/menu" element={<Menu />} />
-                    <Route path="*" element={<Menu />} />
-                </Routes>
+                {renderView(view, "component")}
             </section>
-        </Router>
     )
 }
 
