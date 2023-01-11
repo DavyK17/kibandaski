@@ -9,6 +9,10 @@ const sanitizeHtml = require("../util/sanitizeHtml");
 
 // FUNCTIONS
 const logout = (req, res) => {
+    // Send error if already logged out
+    if (!req.user) return res.status(403).send("Error: You are already logged out.");
+
+    // Log out
     req.logout(err => {
         if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
         res.send("Logout successful");
@@ -17,7 +21,7 @@ const logout = (req, res) => {
 
 const loginLocal = async(req, email, password, done) => {
     // Send error if already logged in
-    if (req.user) return done("Error: You are already logged in.");
+    if (req.user) return done({ status: 403, message: "Error: You are already logged in." });
 
     // Get request IP address
     const ip = requestIP.getClientIp(req);
@@ -31,31 +35,35 @@ const loginLocal = async(req, email, password, done) => {
     }
 
     // Validate and sanitise email
-    if (typeof email !== "string") return done("Error: Email must be a string.");
+    if (!email) return done({ status: 400, message: "Error: No email provided." });
+    if (typeof email !== "string") return done({ status: 400, message: "Error: Email must be a string." });
     email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
-    if (!isEmail(email)) return done("Error: Invalid email provided.");
+    if (!isEmail(email)) return done({ status: 400, message: "Error: Invalid email provided." });
+
+    // Validate password
+    if (!password) return done({ status: 400, message: "Error: No password provided." });
 
     try { // Get user details
         let result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [email]);
 
-        // Send null if user does not exist
+        // Send error if user does not exist
         if (result.rows.length === 0) {
             await logAttempt(false);
-            return done(null, false);
+            return done({ status: 401, message: "Error: Incorrect email or password provided." });
         };
 
         // Send null if password hashes do not match
         const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
         if (!passwordMatch) {
             await logAttempt(false);
-            return done(null, false);
+            return done({ status: 401, message: "Error: Incorrect email or password provided." });
         };
 
         // Add user to session
         await logAttempt(true);
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
-        return done(err);
+        return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
     }
 }
 
