@@ -35,6 +35,7 @@ const Secondary = props => {
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
             <Nav user={user} activeClassName={activeClassName} />
             {renderView(view, "component")}
+            <p id="status"></p>
         </section>
     )
 }
