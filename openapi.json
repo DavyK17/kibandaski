@@ -10,10 +10,10 @@
         }
     },
     "servers": [
-        { "url": "https://kibandaski.up.railway.app/", "description": "Production server" }
+        { "url": "https://kibandaski.up.railway.app/api", "description": "Production server" }
     ],
     "paths": {
-        "/api/auth/register": {
+        "/auth/register": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -95,7 +95,7 @@
                 }
             }
         },
-        "/api/auth/login": {
+        "/auth/login": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -181,7 +181,7 @@
                 }
             }
         },
-        "/api/auth/logout": {
+        "/auth/logout": {
             "get": {
                 "tags": [
                     "Authentication"
@@ -226,7 +226,7 @@
                 }
             }
         },
-        "/api/auth/user": {
+        "/auth/user": {
             "get": {
                 "tags": [
                     "Authentication"
@@ -259,7 +259,7 @@
                 }
             }
         },
-        "/api/admin/orders": {
+        "/admin/orders": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Return all orders",
@@ -330,7 +330,7 @@
                 }
             }
         },
-        "/api/admin/orders/{userId}": {
+        "/admin/orders/{userId}": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Return all orders by user",
@@ -398,7 +398,7 @@
                 }
             }
         },
-        "/api/admin/orders/acknowledge": {
+        "/admin/orders/acknowledge": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Acknowledge order",
@@ -481,7 +481,7 @@
                 }
             }
         },
-        "/api/admin/orders/fulfill": {
+        "/admin/orders/fulfill": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Fulfill order",
@@ -564,7 +564,7 @@
                 }
             }
         },
-        "/api/admin/products": {
+        "/admin/products": {
             "post": {
                 "tags": ["Admin", "Products"],
                 "description": "Create a new product",
@@ -778,7 +778,7 @@
                 }
             }
         },
-        "/api/admin/users": {
+        "/admin/users": {
             "get": {
                 "tags": ["Admin", "Users"],
                 "description": "Return existing products",
@@ -842,7 +842,7 @@
                 }
             }
         },
-        "/api/admin/users/{role}": {
+        "/admin/users/{role}": {
             "get": {
                 "tags": ["Admin", "Users"],
                 "description": "Return existing users in role",
@@ -890,7 +890,7 @@
                 }
             }
         },
-        "/api/customer/account": {
+        "/customer/account": {
             "get": {
                 "tags": ["Customer", "Users"],
                 "description": "Return current user's account details",
@@ -1045,7 +1045,7 @@
                 }
             }
         },
-        "/api/customer/cart": {
+        "/customer/cart": {
             "get": {
                 "tags": ["Customer", "Cart"],
                 "description": "Return current user's cart",
@@ -1215,7 +1215,7 @@
                 }
             }
         },
-        "/api/customer/cart/checkout": {
+        "/customer/cart/checkout": {
             "get": {
                 "tags": ["Customer", "Cart"],
                 "description": "Check out cart",
@@ -1273,7 +1273,7 @@
                 }
             }
         },
-        "/api/customer/cart/item": {
+        "/customer/cart/item": {
             "put": {
                 "tags": ["Customer", "Cart"],
                 "description": "Update an item in the cart",
@@ -1371,7 +1371,7 @@
                 }
             }
         },
-        "/api/customer/orders": {
+        "/customer/orders": {
             "get": {
                 "tags": ["Customer", "Orders"],
                 "description": "Return current user's orders",
@@ -1525,7 +1525,7 @@
                 }
             }
         },
-        "/api/customer/products": {
+        "/customer/products": {
             "get": {
                 "tags": ["Customer", "Products"],
                 "description": "Return existing products",
@@ -1589,7 +1589,7 @@
                 }
             }
         },
-        "/api/customer/products/{category}": {
+        "/customer/products/{category}": {
             "get": {
                 "tags": ["Customer", "Products"],
                 "description": "Return existing products in category",
