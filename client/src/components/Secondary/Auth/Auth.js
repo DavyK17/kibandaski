@@ -38,20 +38,41 @@ const Auth = props => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log("Attempting login...");
+
+        const status = document.getElementById("status");
+        const displayErrorMessage = response => {
+            // Remove "Error: " from error message
+            response = response.split(" ");
+            response.shift();
+            response = response.join(" ");
+
+            // Display error message
+            status.textContent = response;
+        }
 
         if (view === "login") {
+            status.textContent = "Logging in…";
+
             let response = await Server.login(e.target[0].value, e.target[1].value);
-            if (response === "Login successful") {
-                response = await Server.getUser();
-                setUser(response);
-                navigate("/cart");
-            };
-        };
+            if (typeof response !== "object") return displayErrorMessage(response);
+
+            setUser(response);
+            status.textContent = null;
+            navigate("/cart");
+        }
+
+        if (view === "register") {
+            status.textContent = "Creating account…";
+            
+            let response = await Server.register(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value);
+            if (!response.includes("User created")) return displayErrorMessage(response);
+
+            status.textContent = "Account created. Kindly log in.";
+        }
     }
 
     return (
-        <form className="auth" onSubmit={handleSubmit}>
+        <form className="auth" autoComplete="off" onSubmit={handleSubmit}>
             {view === "register" ? names : null}
             {view === "register" ? phone : null}
             {email}
