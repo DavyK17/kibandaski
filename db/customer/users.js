@@ -172,9 +172,12 @@ const deleteUser = async(req, res) => {
         result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [cartId]);
         result = await pool.query("DELETE FROM carts WHERE id = $1", [cartId]);
 
-        // Delete user
+        // Delete user and log out
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [userId]);
-        if (result.rows[0].id === userId) res.status(204).send("Account deleted successfully");
+        if (result.rows[0].id === userId) req.logout(err => {
+            if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
+            res.status(204).send("Account deleted successfully");
+        });
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
