@@ -32,13 +32,21 @@ passport.deserializeUser((user, done) => done(null, user));
 // Login required
 router.all("/user", loggedIn, (req, res) => res.json(req.user));
 
-router.get("/logout", loggedIn, db.auth.logout);
+router.get("/logout", db.auth.logout);
 
 // Logout required
 router.get("/register", loggedOut, (req, res) => res.send("Create a new account"));
 router.post("/register", loggedOut, db.customer.users.createUser);
 
-router.post("/login", loggedOut, passport.authenticate(["local"]), (req, res) => res.send("Login successful"));
+router.post("/login", (req, res, next) => {
+    passport.authenticate(["local"], (err, user) => {
+        if (err) return res.status(err.status).send(err.message);
+        req.login(user, (err) => {
+            if (err) res.status(500).send("An unknown error occurred. Kindly try again.");
+            res.json(user);
+        });
+    })(req, res, next);
+});
 router.all("/login", (req, res) => res.send("Kindly log in with your account details"));
 
 // Export
