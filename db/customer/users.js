@@ -7,7 +7,7 @@ const sanitizeHtml = require("../../util/sanitizeHtml");
 
 // KENYAN PHONE NUMBER VALIDATOR
 const checkPhone = value => {
-    if (value.match(/^254\d{9}$/)) return true;
+    if (value.match(/^254((20|4[0-6]|5\d|6([0-2]|[4-9]))\d{7}|1[0-1]\d{7}|7\d{8})$/)) return true;
     return false;
 };
 
