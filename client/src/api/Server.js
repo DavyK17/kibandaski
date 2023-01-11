@@ -1,9 +1,10 @@
-const url = "/api";
+const root = "/api";
 
 export const Auth = {
+    url: `${root}/auth`,
     getUser: async() => {
         try {
-            let response = await fetch(`${url}/auth/user`);
+            let response = await fetch(`${Auth.url}/user`);
             if (response.ok) return response.json();
         } catch (err) {
             console.log(err);
@@ -11,7 +12,7 @@ export const Auth = {
     },
     register: async(firstName, lastName, phone, email, password) => {
         try {
-            let response = await fetch(`${url}/auth/register`, {
+            let response = await fetch(`${Auth.url}/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ firstName, lastName, phone, email, password })
@@ -24,7 +25,7 @@ export const Auth = {
     },
     login: async(email, password) => {
         try {
-            let response = await fetch(`${url}/auth/login`, {
+            let response = await fetch(`${Auth.url}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
@@ -38,7 +39,7 @@ export const Auth = {
     },
     logout: async() => {
         try {
-            let response = await fetch(`${url}/auth/logout`);
+            let response = await fetch(`${Auth.url}/logout`);
             if (response.ok) return response.text();
         } catch (err) {
             console.log(err);
