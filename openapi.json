@@ -83,7 +83,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -148,9 +148,19 @@
                                     "example": "Error: Email must be a string.",
                                     "examples": [
                                         "Error: Email must be a string.",
-                                        "Error: Invalid email provided.",
-                                        "Error: Incorrect email or password provided."
+                                        "Error: Invalid email provided."
                                     ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "An error message (if credentials are invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Incorrect email or password provided."
                                 }
                             }
                         }
@@ -167,7 +177,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -199,6 +209,27 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "An error message (if already logged out)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: You are already logged out."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "A generic error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -224,7 +255,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -295,7 +326,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -363,7 +394,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -446,7 +477,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -529,7 +560,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -597,7 +628,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -689,7 +720,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -743,7 +774,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -807,7 +838,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -855,7 +886,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -897,7 +928,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -973,7 +1004,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1010,7 +1041,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1067,7 +1098,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1139,7 +1170,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1180,7 +1211,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1238,7 +1269,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1336,7 +1367,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1418,7 +1449,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1490,7 +1521,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1554,7 +1585,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
@@ -1602,7 +1633,7 @@
                         }
                     },
                     "500": {
-                        "description": "An error message",
+                        "description": "A generic error message",
                         "content": {
                             "text/plain": {
                                 "schema": {
