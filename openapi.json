@@ -122,19 +122,11 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "An object containing the user's JSON web token",
+                        "description": "An object with the logged in user's data",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "token": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "example": {
-                                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjczNTUyMzQiLCJlbWFpbCI6InRoaXNpc2FuQGVtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImNhcnRJZCI6IjM1OTk1ODQifQ.DquM29yPCQlFM4D6SCKPrbskdd-oMkJSQbK0KAq6jxE"
-                                    }
+                                    "$ref": "#/components/schemas/account"
                                 }
                             }
                         }
