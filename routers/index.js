@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const loggedIn = require("connect-ensure-login").ensureLoggedIn("/api/auth/login");
+const { loggedIn } = require("../middleware/authenticated");
 
 // Authentication
 const authRouter = require("./auth");
@@ -9,7 +9,7 @@ router.use("/auth", authRouter);
 const adminRouter = require("./admin");
 router.use("/admin", loggedIn, (req, res, next) => {
     // Send error if user is not an admin
-    if (req.user.role !== "admin") return res.status(403).send("Error: You are not authorised to carry out this operation.");
+    if (req.user.role !== "admin") return res.status(401).send("Error: You are not authorised to carry out this operation.");
     next();
 }, adminRouter);
 

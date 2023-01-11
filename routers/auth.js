@@ -5,8 +5,7 @@ const db = require("../db/index");
 const pool = require("../db/pool");
 
 // connect-ensure-login
-const loggedIn = require("connect-ensure-login").ensureLoggedIn("/api/auth/login");
-const loggedOut = require("connect-ensure-login").ensureLoggedOut("/api/auth/user");
+const { loggedIn, loggedOut } = require("../middleware/authenticated");
 
 /* PASSPORT.JS */
 const passport = require("passport");
