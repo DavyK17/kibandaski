@@ -18,7 +18,7 @@ const Auth = props => {
     const phone = (
         <>
             <label className="sr-only" htmlFor="phone">Phone</label>
-            <input id="phone" type="tel" placeholder='Phone (i.e. "254XXXXXXXXX")' required />
+            <input id="phone" type="tel" pattern="^254((20|4[0-6]|5\d|6([0-2]|[4-9]))\d{7}|1[0-1]\d{7}|7\d{8})$" placeholder='Phone (i.e. "254XXXXXXXXX")' required />
         </>
     )
 
