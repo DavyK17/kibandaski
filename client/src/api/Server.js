@@ -65,5 +65,13 @@ export const Customer = {
                 console.log(err);
             }
         },
+        getCategories: async function() {
+            try {
+                let response = await fetch(`${this.url}/categories`);
+                if (response.ok) return response.json();
+            } catch (err) {
+                console.log(err);
+            }
+        }
     }
 };
