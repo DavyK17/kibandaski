@@ -20,7 +20,7 @@ router.use("/customer", customerRouter);
 // API documentation
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("../openapi.json");
-router.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+router.use("/", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Export
 module.exports = router;
