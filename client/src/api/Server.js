@@ -66,7 +66,7 @@ export const Customer = {
             try {
                 let url = category ? `${this.url}/${category}` : this.url;
                 let response = await fetch(url);
-                if (response.ok) return response.text();
+                if (response.ok) return response.json();
             } catch (err) {
                 console.log(err);
             }
