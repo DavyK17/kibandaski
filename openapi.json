@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "Kibandaski (/api)",
+        "title": "Kibandaski",
         "version": "1.0.0",
         "description": "Codecademy portfolio project: Kibandaski (e-commerce app)",
         "contact": {
@@ -13,7 +13,7 @@
         { "url": "https://kibandaski.up.railway.app/", "description": "Production server" }
     ],
     "paths": {
-        "/auth/register": {
+        "/api/auth/register": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -95,7 +95,7 @@
                 }
             }
         },
-        "/auth/login": {
+        "/api/auth/login": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -181,14 +181,14 @@
                 }
             }
         },
-        "/auth/logout": {
+        "/api/auth/logout": {
             "get": {
                 "tags": [
                     "Authentication"
                 ],
                 "description": "Log out user",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -226,14 +226,14 @@
                 }
             }
         },
-        "/auth/user": {
+        "/api/auth/user": {
             "get": {
                 "tags": [
                     "Authentication"
                 ],
                 "description": "Return current user's data",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -259,12 +259,12 @@
                 }
             }
         },
-        "/admin/orders": {
+        "/api/admin/orders": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Return all orders",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -330,12 +330,12 @@
                 }
             }
         },
-        "/admin/orders/{userId}": {
+        "/api/admin/orders/{userId}": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Return all orders by user",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "path",
@@ -398,12 +398,12 @@
                 }
             }
         },
-        "/admin/orders/acknowledge": {
+        "/api/admin/orders/acknowledge": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Acknowledge order",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -481,12 +481,12 @@
                 }
             }
         },
-        "/admin/orders/fulfill": {
+        "/api/admin/orders/fulfill": {
             "get": {
                 "tags": ["Admin", "Orders"],
                 "description": "Fulfill order",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -564,7 +564,7 @@
                 }
             }
         },
-        "/admin/products": {
+        "/api/admin/products": {
             "post": {
                 "tags": ["Admin", "Products"],
                 "description": "Create a new product",
@@ -635,7 +635,7 @@
                 "tags": ["Admin", "Products"],
                 "description": "Update a product",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -727,7 +727,7 @@
                 "tags": ["Admin", "Products"],
                 "description": "Delete product",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -778,7 +778,7 @@
                 }
             }
         },
-        "/admin/users": {
+        "/api/admin/users": {
             "get": {
                 "tags": ["Admin", "Users"],
                 "description": "Return existing products",
@@ -842,7 +842,7 @@
                 }
             }
         },
-        "/admin/users/{role}": {
+        "/api/admin/users/{role}": {
             "get": {
                 "tags": ["Admin", "Users"],
                 "description": "Return existing users in role",
@@ -890,12 +890,12 @@
                 }
             }
         },
-        "/customer/account": {
+        "/api/customer/account": {
             "get": {
                 "tags": ["Customer", "Users"],
                 "description": "Return current user's account details",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -935,7 +935,7 @@
                 "tags": ["Customer", "Users"],
                 "description": "Update current user's account details",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "requestBody": {
                     "description": "details to update",
@@ -1011,7 +1011,7 @@
                 "tags": ["Customer", "Users"],
                 "description": "Delete current user's account",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "204": {
@@ -1045,12 +1045,12 @@
                 }
             }
         },
-        "/customer/cart": {
+        "/api/customer/cart": {
             "get": {
                 "tags": ["Customer", "Cart"],
                 "description": "Return current user's cart",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -1105,7 +1105,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Adds item to cart",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "requestBody": {
                     "description": "product details",
@@ -1177,7 +1177,7 @@
                 "tags": ["Customer", "Cart"],
                 "description": "Empty cart",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "200": {
@@ -1215,12 +1215,12 @@
                 }
             }
         },
-        "/customer/cart/checkout": {
+        "/api/customer/cart/checkout": {
             "get": {
                 "tags": ["Customer", "Cart"],
                 "description": "Check out cart",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "responses": {
                     "201": {
@@ -1273,12 +1273,12 @@
                 }
             }
         },
-        "/customer/cart/item": {
+        "/api/customer/cart/item": {
             "put": {
                 "tags": ["Customer", "Cart"],
                 "description": "Update an item in the cart",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -1371,12 +1371,12 @@
                 }
             }
         },
-        "/customer/orders": {
+        "/api/customer/orders": {
             "get": {
                 "tags": ["Customer", "Orders"],
                 "description": "Return current user's orders",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -1456,7 +1456,7 @@
                 "tags": ["Customer", "Orders"],
                 "description": "Cancel order",
                 "security": [{
-                    "bearerAuth": []
+                    "BasicAuth": []
                 }],
                 "parameters": [{
                     "in": "query",
@@ -1525,7 +1525,7 @@
                 }
             }
         },
-        "/customer/products": {
+        "/api/customer/products": {
             "get": {
                 "tags": ["Customer", "Products"],
                 "description": "Return existing products",
@@ -1589,7 +1589,7 @@
                 }
             }
         },
-        "/customer/products/{category}": {
+        "/api/customer/products/{category}": {
             "get": {
                 "tags": ["Customer", "Products"],
                 "description": "Return existing products in category",
@@ -1640,10 +1640,9 @@
     },
     "components": {
         "securitySchemes": {
-            "bearerAuth": {
+            "BasicAuth": {
                 "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+                "scheme": "basic"
             }
         },
         "schemas": {
