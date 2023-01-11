@@ -3,8 +3,12 @@
 // General
 require("dotenv").config();
 const express = require("express");
-const app = express();
+const path = require("path");
 const port = process.env.PORT || 8000;
+
+// App
+const app = express();
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 // Body Parser
 const bodyParser = require("body-parser");
@@ -49,17 +53,13 @@ app.use(passport.session());
 
 
 /* ROUTING */
-// Client
-const path = require("path");
-app.use(express.static(path.join(__dirname, "client/build")));
-
 // Routers
 const apiRouter = require("./routers/index");
 app.use("/api", apiRouter);
 
-// Send error if route does not exist
-app.all("*", (req, res) => {
-    res.status(404).send("Error: This operation does not exist.");
+// Client
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 
