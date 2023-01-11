@@ -57,15 +57,9 @@ export const Customer = {
         get url() {
             return this._url;
         },
-        getProducts: async function(category) {
-            if (category) {
-                if (typeof category !== "string") throw new Error("[Server, getProducts] Category must be a string.");
-                category = category.toLowerCase();
-            }
-
+        getProducts: async function() {
             try {
-                let url = category ? `${this.url}/${category}` : this.url;
-                let response = await fetch(url);
+                let response = await fetch(this.url);
                 if (response.ok) return response.json();
             } catch (err) {
                 console.log(err);
