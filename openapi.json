@@ -1636,6 +1636,56 @@
                     }
                 }
             }
+        },
+        "/customer/products/categories": {
+            "get": {
+                "tags": ["Customer", "Products"],
+                "description": "Return existing product categories",
+                "responses": {
+                    "200": {
+                        "description": "An array with existing categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "beverages",
+                                        "carbohydrates",
+                                        "drinks",
+                                        "proteins",
+                                        "snacks",
+                                        "vegetables"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if no categories found)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: No categories found."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "A generic error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
