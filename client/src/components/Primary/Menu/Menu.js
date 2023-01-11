@@ -21,9 +21,10 @@ const Menu = () => {
         // eslint-disable-next-line
     }, []);
 
-    const [category, setCategory] = useState(null);
+    const [category, setCategory] = useState("all");
     useEffect(() => {
         if (menu) {
+            if (category === "all") return setItems(menu);
             let items = menu.filter(item => item.category === category);
             setItems(items);
         }
