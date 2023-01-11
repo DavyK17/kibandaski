@@ -45,4 +45,25 @@ const getProductsByCategory = async(req, res) => {
     }
 }
 
-module.exports = { getProducts, getProductsByCategory };
+const getCategories = async(req, res) => {
+    try {
+        // Create categories array
+        let categories = [];
+
+        // Get categories
+        let result = await pool.query("SELECT category FROM products GROUP BY 1 ORDER BY 1;");
+
+        // Send error if (somehow) no categories found
+        if (result.rows.length === 0) return res.status(404).send("Error: No categories found.");
+
+        // Add each category to categories array
+        result.rows.forEach(obj => categories.push(obj.category));
+
+        // Send categories array
+        res.status(200).json(categories);
+    } catch (err) {
+        res.status(500).send("An unknown error occurred. Kindly try again.");
+    }
+}
+
+module.exports = { getProducts, getProductsByCategory, getCategories };
