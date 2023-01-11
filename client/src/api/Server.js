@@ -30,7 +30,8 @@ export const Auth = {
                 body: JSON.stringify({ email, password })
             });
 
-            if (response.ok) return response.text();
+            if (!response.ok) return response.text();
+            return response.json();
         } catch (err) {
             console.log(err);
         }
