@@ -5,7 +5,7 @@ import Nav from "./PrimaryNav";
 import capitalise from "../../util/capitalise";
 
 const Primary = props => {
-    const { view, user, activeClassName } = props;
+    const { view, user, activeClassName, windowWidth, iconHeight } = props;
 
     const renderView = (view, type) => {
         switch (view) {
@@ -16,7 +16,7 @@ const Primary = props => {
             case "menu":
             default:
                 if (type === "string") return "menu";
-                if (type === "component") return <Menu />;
+                if (type === "component") return <Menu windowWidth={windowWidth} iconHeight={iconHeight} />;
                 return undefined;
         }
     }
