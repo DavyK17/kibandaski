@@ -10,8 +10,8 @@
         padding: 0.5rem;
     }
     button {
-        background-color: rgb(240, 240, 240);
-        border: 1px solid rgb(118, 118, 118);
+        background-color: $lightgray;
+        border: 1px solid $darkgray;
         border-radius: 0.25rem;
     }
     .names {
