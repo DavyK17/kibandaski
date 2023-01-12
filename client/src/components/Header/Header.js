@@ -3,8 +3,7 @@ import Logo from "./Logo";
 import LoginLogout from "./LoginLogout";
 
 const Header = props => {
-    const { user, setUser, windowWidth } = props;
-    const iconHeight = "30";
+    const { user, setUser, windowWidth, iconHeight } = props;
 
     return (
         <header>
