@@ -1,4 +1,127 @@
 .primary {
     background-color: snow;
     min-height: inherit;
+    .menu {
+        .category-select select {
+            width: 250px;
+            color: $header-bg-color;
+            font-size: 1rem;
+            font-family: $font-header;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding: 0.2rem 0.25rem;
+        }
+        ul {
+            margin: unset;
+            padding: unset;
+            list-style-type: none;
+            li {
+                display: flex;
+                width: 700px;
+                border: 1px solid rgba(0, 0, 0, 0.75);
+                flex-direction: column;
+                &:not(:first-of-type) {
+                    margin: 1rem 0;
+                }
+                .item-body {
+                    display: flex;
+                    background-color: $lightgray;
+                    padding: 1rem 0.5rem;
+                    justify-content: space-between;
+                    align-items: center;
+                    .info {
+                        width: 75%;
+                        p {
+                            margin: unset;
+                        }
+                        .name {
+                            width: 75%;
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                            margin-bottom: 0.25rem;
+                        }
+                    }
+                    .price {
+                        display: flex;
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                        align-items: center;
+                        .currency {
+                            font-size: 0.75rem;
+                            font-weight: 400;
+                            margin-right: 0.2rem;
+                        }
+                    }
+                }
+                .item-footer {
+                    display: flex;
+                    background-color: $header-bg-color;
+                    color: white;
+                    padding: 0.5rem;
+                    justify-content: space-between;
+                    align-items: center;
+                    .id {
+                        font-size: 0.75rem;
+                        opacity: 0.4;
+                    }
+                    .category {
+                        font-size: 0.75rem;
+                        opacity: 0.8;
+                    }
+                    .add-to-cart {
+                        font-family: $font-body;
+                        font-size: 0.75rem;
+                        border: unset;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .primary .menu {
+        .category-select {
+            text-align: center;
+            select {
+                text-align: center;
+            }
+        }
+        ul li {
+            width: 100%;
+            .add-to-cart {
+                background-color: unset;
+                padding: unset;
+                transition: opacity 0.15s ease-in-out;
+                &:hover,
+                &:focus {
+                    cursor: pointer;
+                    opacity: 0.8;
+                    transition: opacity 0.15s ease-in-out;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .primary .menu {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        .add-to-cart {
+            background-color: $lightgray;
+            border: unset;
+            font-family: $font-body;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            transition: background-color 0.1s ease-in-out;
+            &:hover,
+            &:focus {
+                background-color: adjust-color($color: chocolate, $lightness: 42.5%);
+                cursor: pointer;
+                transition: background-color 0.1s ease-in-out;
+            }
+        }
+    }
 }
