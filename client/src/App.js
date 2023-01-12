@@ -11,6 +11,7 @@ import { Auth } from "./api/Server";
 const App = () => {
     const [user, setUser] = useState(null);
     let activeClassName = "selected";
+    const iconHeight = "30";
 
     useEffect(() => {
         const fetchUser = async() => {
@@ -26,19 +27,35 @@ const App = () => {
         window.onresize = () => setWindowWidth(window.innerWidth);
     });
 
+    const renderRoute = (type, path, exact = false, view) => {
+        if (type === 1) return (
+            <Route path={path} exact={exact} element={
+                <Primary view={view} user={user} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} />
+            } />
+        )
+        
+        if (type === 2) return (
+            <Route path={path} element={
+                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} />
+            } />
+        )
+
+        throw new Error("No route type provided.");
+    }
+
     return (
         <>
-            <Header user={user} setUser={setUser} windowWidth={windowWidth} />
+            <Header user={user} setUser={setUser} windowWidth={windowWidth} iconHeight={iconHeight} />
             <main>
                 <Routes>
-                    <Route path="/" exact element={<Primary view="menu" user={user} activeClassName={activeClassName} />} />
-                    <Route path="/menu" element={<Primary view="menu" user={user} activeClassName={activeClassName} />} />
-                    <Route path="/admin" element={<Primary view={user ? "admin" : "login"} user={user} activeClassName={activeClassName} />} />
+                    {renderRoute(1, "/", true, "menu")}
+                    {renderRoute(1, "/menu", "menu")}
+                    {renderRoute(1, "/admin", user ? "admin" : "login")}
 
-                    <Route path="/account" element={<Secondary view={user ? "account" : "login"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                    <Route path="/cart" element={<Secondary view={user ? "cart" : "login"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                    <Route path="/login" element={<Secondary view={user ? "account" : "login"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
-                    <Route path="/register" element={<Secondary view={user ? "account" : "register"} user={user} setUser={setUser} activeClassName={activeClassName} />} />
+                    {renderRoute(2, "/account", user ? "account" : "login")}
+                    {renderRoute(2, "/cart", user ? "cart" : "login")}
+                    {renderRoute(2, "/login", user ? "account" : "login")}
+                    {renderRoute(2, "/register", user ? "account" : "register")}
                     
                     <Route path="*" element={<NotFound />} />
                 </Routes>
