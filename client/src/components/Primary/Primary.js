@@ -1,6 +1,7 @@
+import Nav from "./PrimaryNav";
 import Admin from "./Admin/Admin";
 import Menu from "./Menu/Menu";
-import Nav from "./PrimaryNav";
+import Orders from "./Orders/Orders";
 
 import capitalise from "../../util/capitalise";
 
@@ -12,6 +13,10 @@ const Primary = props => {
             case "admin":
                 if (type === "string") return "admin";
                 if (type === "component") return <Admin user={user} />;
+                break;
+            case "orders":
+                if (type === "string") return "orders";
+                if (type === "component") return <Orders user={user} />;
                 break;
             case "menu":
             default:
