@@ -73,5 +73,40 @@ export const Customer = {
                 console.log(err);
             }
         }
+    },
+    orders: {
+        _url: `${root}/customer/orders`,
+        get url() {
+            return this._url;
+        },
+        getOrders: async function(id = null) {
+            try {
+                let response;
+
+                if (id) {
+                    let url = new URL(this.url);
+                    url.search = new URLSearchParams({ id }).toString();
+
+                    response = await fetch(url);
+                    if (response.ok) return response.json();
+                }
+
+                response = await fetch(this.url);
+                if (response.ok) return response.json();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        cancelOrder: async function(id) {
+            try {
+                let url = this.url;
+                url.search = new URLSearchParams({ id }).toString();
+
+                let response = await fetch(url, { method: "DELETE" });
+                if (response.ok) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        }
     }
 };
