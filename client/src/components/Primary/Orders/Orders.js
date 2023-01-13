@@ -3,7 +3,7 @@ import Order from "./Order";
 import StatusSelect from "./StatusSelect";
 import { Customer } from "../../../api/Server";
 
-const Orders = props => {
+const Orders = () => {
     const Server = Customer.orders;
 
     const [orders, setOrders] = useState([]);
@@ -12,8 +12,8 @@ const Orders = props => {
         const fetchOrders = async() => {
             let orders = await Server.getOrders();
             if (orders) {
-                setOrders(products);
-                setItems(products);
+                setOrders(orders);
+                setItems(orders);
             }
         }
 
@@ -36,13 +36,15 @@ const Orders = props => {
     }
 
     const renderItems = () => {
-        if (items) return items.map(({ id, createdAt, status }, i) => {
+        if (items.length > 0) return items.map(({ id, createdAt, status }, i) => {
             return (
                 <li key={i}>
                     <Order id={id} createdAt={createdAt} status={status} cancelOrder={cancelOrder} />
                 </li>
             )
         });
+
+        return  <p>No orders to show.</p>;
     };
 
     return (
