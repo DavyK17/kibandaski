@@ -7,7 +7,7 @@ const Menu = props => {
     const { windowWidth, iconHeight } = props;
     const Server = Customer.products;
 
-    const [menu, setMenu] = useState();
+    const [menu, setMenu] = useState([]);
     const [items, setItems] = useState([]);
     useEffect(() => {
         const fetchProducts = async() => {
@@ -24,17 +24,13 @@ const Menu = props => {
 
     const [category, setCategory] = useState("all");
     useEffect(() => {
-        if (menu) {
-            if (category === "all") return setItems(menu);
-            let items = menu.filter(item => item.category === category);
-            setItems(items);
-        }
+        if (category === "all") return setItems(menu);
+        let items = menu.filter(item => item.category === category);
+        setItems(items);
         // eslint-disable-next-line
     }, [category]);
 
-    const changeCategory = ({ target }) => {
-        setCategory(target.value);
-    }
+    const changeCategory = ({ target }) => setCategory(target.value);
 
     const addToCart = e => {
         e.preventDefault();
