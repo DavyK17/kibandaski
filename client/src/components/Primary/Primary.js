@@ -16,7 +16,7 @@ const Primary = props => {
                 break;
             case "orders":
                 if (type === "string") return "orders";
-                if (type === "component") return <Orders user={user} />;
+                if (type === "component") return <Orders />;
                 break;
             case "menu":
             default:
