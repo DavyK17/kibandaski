@@ -4,11 +4,9 @@ const StatusSelect = props => {
     const { handleChange } = props;
     const statuses = ["pending", "acknowledged", "fulfilled", "cancelled"];
 
-    const renderOptions = () => {
-        return statuses.map((status, i) => {
-            return <option key={i} value={status}>{capitalise(status)}</option>;
-        });
-    }
+    const renderOptions = () => statuses.map((status, i) => {
+        return <option key={i} value={status}>{capitalise(status)}</option>;
+    });
 
     return (
         <div className="category-select" data-testid="status-select">
