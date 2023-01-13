@@ -1,16 +1,16 @@
 .primary {
     background-color: snow;
     min-height: inherit;
+    .category-select select {
+        width: 250px;
+        color: $header-bg-color;
+        font-size: 1rem;
+        font-family: $font-header;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        padding: 0.2rem 0.25rem;
+    }
     .menu {
-        .category-select select {
-            width: 250px;
-            color: $header-bg-color;
-            font-size: 1rem;
-            font-family: $font-header;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            padding: 0.2rem 0.25rem;
-        }
         ul {
             margin: unset;
             padding: unset;
@@ -80,24 +80,26 @@
 }
 
 @media only screen and (max-width: 991px) {
-    .primary .menu {
+    .primary {
         .category-select {
             text-align: center;
             select {
                 text-align: center;
             }
         }
-        ul li {
-            width: 100%;
-            .add-to-cart {
-                background-color: unset;
-                padding: unset;
-                transition: opacity 0.15s ease-in-out;
-                &:hover,
-                &:focus {
-                    cursor: pointer;
-                    opacity: 0.8;
+        .menu {
+            ul li {
+                width: 100%;
+                .add-to-cart {
+                    background-color: unset;
+                    padding: unset;
                     transition: opacity 0.15s ease-in-out;
+                    &:hover,
+                    &:focus {
+                        cursor: pointer;
+                        opacity: 0.8;
+                        transition: opacity 0.15s ease-in-out;
+                    }
                 }
             }
         }
