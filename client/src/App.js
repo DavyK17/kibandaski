@@ -27,7 +27,7 @@ const App = () => {
         window.onresize = () => setWindowWidth(window.innerWidth);
     });
 
-    const renderRoute = (type, path, exact = false, view) => {
+    const renderRoute = (type, path, view, exact = false) => {
         if (type === 1) return (
             <Route path={path} exact={exact} element={
                 <Primary view={view} user={user} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} />
@@ -48,7 +48,7 @@ const App = () => {
             <Header user={user} setUser={setUser} windowWidth={windowWidth} iconHeight={iconHeight} />
             <main>
                 <Routes>
-                    {renderRoute(1, "/", true, "menu")}
+                    {renderRoute(1, "/", "menu", true)}
                     {renderRoute(1, "/menu", "menu")}
                     {renderRoute(1, "/admin", user ? "admin" : "login")}
                     {renderRoute(1, "/orders", user ? "orders" : "login")}
