@@ -51,6 +51,7 @@ const App = () => {
                     {renderRoute(1, "/", true, "menu")}
                     {renderRoute(1, "/menu", "menu")}
                     {renderRoute(1, "/admin", user ? "admin" : "login")}
+                    {renderRoute(1, "/orders", "orders")}
 
                     {renderRoute(2, "/account", user ? "account" : "login")}
                     {renderRoute(2, "/cart", user ? "cart" : "login")}
