@@ -16,7 +16,7 @@ const Primary = props => {
                 break;
             case "orders":
                 if (type === "string") return "orders";
-                if (type === "component") return <Orders />;
+                if (type === "component") return <Orders windowWidth={windowWidth} iconHeight={iconHeight} />;
                 break;
             case "menu":
             default:
