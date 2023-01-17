@@ -84,7 +84,7 @@ export const Customer = {
                 let response;
 
                 if (id) {
-                    let url = new URL(this.url);
+                    let url = new URL(this.url, window.location);
                     url.search = new URLSearchParams({ id }).toString();
 
                     response = await fetch(url);
