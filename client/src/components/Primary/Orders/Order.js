@@ -26,7 +26,7 @@ const Order = props => {
     const [fetchItems, setFetchItems] = useState(false);
 
     const [isLoadingItems, setIsLoadingItems] = useState(false);
-    const [error, setError] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchOrderItems = async() => {
@@ -42,7 +42,7 @@ const Order = props => {
             }
         }
 
-        if (fetchItems) fetchOrderItems();
+        if (items.length === 0 && fetchItems) fetchOrderItems();
         // eslint-disable-next-line
     }, [fetchItems]);
 
