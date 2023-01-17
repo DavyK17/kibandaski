@@ -97,61 +97,112 @@
                 &:not(:first-of-type) {
                     margin: 1rem 0;
                 }
-                .item-body {
+                .order-body {
                     display: flex;
                     background-color: $lightgray;
                     padding: 1rem 0.5rem;
                     justify-content: space-between;
                     align-items: center;
                     .info {
-                        width: 75%;
+                        width: 100%;
                         p {
                             margin: unset;
                         }
-                        .name {
+                        .id {
+                            font-size: 0.675rem;
+                            margin-bottom: 0.25rem;
+                            opacity: 0.5;
+                        }
+                        .time {
                             width: 75%;
                             font-size: 1.25rem;
                             font-weight: 600;
                             margin-bottom: 0.25rem;
                         }
-                    }
-                    .price {
-                        display: flex;
-                        font-size: 1.5rem;
-                        font-weight: 700;
-                        align-items: center;
-                        .currency {
-                            font-size: 0.75rem;
-                            font-weight: 400;
-                            margin-right: 0.2rem;
+                        .view-items {
+                            background-color: unset;
+                            border: unset;
+                            color: $header-bg-color;
+                            font-family: $font-body;
+                            font-size: 1rem;
+                            margin: 0.25rem 0;
+                            padding: unset;
+                            transition: opacity 0.1s ease-in-out;
+                            &:hover,
+                            &:focus {
+                                cursor: pointer;
+                                opacity: 0.8;
+                                transition: opacity 0.1s ease-in-out;
+                            }
+                        }
+                        .items {
+                            display: none;
+                            &.show {
+                                display: block;
+                            }
+                            .item {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                .name {
+                                    font-size: 1rem;
+                                    .times {
+                                        font-size: 0.8rem;
+                                        font-weight: 300;
+                                        margin: 0 0.2rem;
+                                    }
+                                }
+                                .price {
+                                    display: flex;
+                                    width: 80px;
+                                    font-size: 1.5rem;
+                                    font-weight: 700;
+                                    align-items: center;
+                                    .currency {
+                                        font-size: 0.75rem;
+                                        font-weight: 400;
+                                        margin-right: 0.2rem;
+                                    }
+                                }
+                                &.total {
+                                    margin-top: 0.5rem;
+                                    padding: 0.5rem 0;
+                                    border-top: 1px solid black;
+                                    border-bottom: 1px solid black;
+                                    .name {
+                                        font-weight: 700;
+                                    }
+                                    .price {
+                                        color: $header-bg-color;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                .item-footer {
+                .order-footer {
                     display: grid;
                     background-color: $header-bg-color;
                     color: white;
                     padding: 0.5rem;
-                    grid-template: auto / 1fr 1fr 1fr;
-                    grid-template-areas: "id status button";
+                    grid-template: auto / 1fr 1fr;
+                    grid-template-areas: "status button";
                     align-items: center;
-                    .id {
-                        grid-area: id;
-                        font-size: 0.75rem;
-                        opacity: 0.4;
-                    }
                     .status {
                         grid-area: status;
                         font-size: 0.75rem;
                         opacity: 0.8;
-                        justify-self: center;
+                        justify-self: start;
+                    }
+                    .cancel-order,
+                    #iconOrderCancel {
+                        justify-self: end;
                     }
                     .cancel-order {
                         grid-area: button;
                         width: fit-content;
                         font-family: $font-body;
                         font-size: 0.75rem;
-                        justify-self: end;
                         border: unset;
                     }
                 }
