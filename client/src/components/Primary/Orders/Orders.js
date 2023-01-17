@@ -3,7 +3,8 @@ import Order from "./Order";
 import StatusSelect from "./StatusSelect";
 import { Customer } from "../../../api/Server";
 
-const Orders = () => {
+const Orders = props => {
+    const { windowWidth, iconHeight } = props;
     const Server = Customer.orders;
 
     const [orders, setOrders] = useState([]);
@@ -39,7 +40,7 @@ const Orders = () => {
         if (items.length > 0) return items.map(({ id, createdAt, status }, i) => {
             return (
                 <li key={i}>
-                    <Order id={id} createdAt={createdAt} status={status} cancelOrder={cancelOrder} />
+                    <Order id={id} createdAt={createdAt} status={status} windowWidth={windowWidth} iconHeight={iconHeight} cancelOrder={cancelOrder} />
                 </li>
             )
         });
