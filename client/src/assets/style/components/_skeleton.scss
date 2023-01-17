@@ -1,0 +1,46 @@
+/*
+    Adapted from "react-loading-skeleton/dist/skeleton.css";
+*/
+
+@import "../helper/variables";
+@keyframes react-loading-skeleton {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.react-loading-skeleton {
+    /* Enable animation */
+    background-color: $skeleton-base-color;
+    width: 500px;
+    height: 1.125rem;
+    border-radius: 0.25rem;
+    display: inline-flex;
+    line-height: 1;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    /* Necessary for overflow: hidden to work correctly in Safari */
+    &::after {
+        content: ' ';
+        display: $skeleton-pseudo-element-display;
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-image: linear-gradient( 90deg, $skeleton-base-color, $skeleton-highlight-color, $skeleton-base-color);
+        transform: translateX(-100%);
+        animation-name: react-loading-skeleton;
+        animation-direction: $skeleton-animation-direction;
+        animation-duration: $skeleton-animation-duration;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .react-loading-skeleton {
+        width: calc(100vw - 2rem);
+    }
+}
