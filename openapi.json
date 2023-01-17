@@ -1791,11 +1791,13 @@
                     "userId": "7355234",
                     "items": [{
                             "productId": "68472",
+                            "name": "Mandazi",
                             "quantity": 1,
                             "totalCost": 5
                         },
                         {
                             "productId": "52743",
+                            "name": "Tea",
                             "quantity": 1,
                             "totalCost": 20
                         }
@@ -1808,6 +1810,9 @@
                     "productId": {
                         "type": "string"
                     },
+                    "name": {
+                        "type": "string"
+                    },
                     "quantity": {
                         "type": "integer"
                     },
@@ -1817,6 +1822,7 @@
                 },
                 "example": {
                     "productId": "68472",
+                    "name": "Mandazi",
                     "quantity": 1,
                     "totalCost": 5
                 }
@@ -1877,24 +1883,28 @@
                     "createdAt": "2023-01-05T03:53:38.000Z",
                     "status": "fulfilled",
                     "items": [{
-                            "productId": "43193",
+                            "productId": "01075",
+                            "name": "Water",
                             "quantity": 1,
-                            "totalCost": 80
+                            "totalCost": 5
                         },
                         {
                             "productId": "83132",
+                            "name": "Sukuma wiki",
                             "quantity": 1,
                             "totalCost": 20
                         },
                         {
-                            "productId": "08053",
+                            "productId": "43193",
+                            "name": "Beef stew",
                             "quantity": 1,
-                            "totalCost": 30
+                            "totalCost": 80
                         },
                         {
-                            "productId": "01075",
+                            "productId": "08053",
+                            "name": "Ugali",
                             "quantity": 1,
-                            "totalCost": 5
+                            "totalCost": 30
                         }
                     ]
                 }
