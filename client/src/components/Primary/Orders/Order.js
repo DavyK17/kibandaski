@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+
 import { Customer } from "../../../api/Server";
 
 import capitalise from "../../../util/capitalise";
@@ -22,10 +24,22 @@ const Order = props => {
 
     const [items, setItems] = useState([]);
     const [fetchItems, setFetchItems] = useState(false);
+
+    const [isLoadingItems, setIsLoadingItems] = useState(false);
+    const [error, setError] = useState(true);
+
     useEffect(() => {
         const fetchOrderItems = async() => {
-            let order = await Server.getOrders(id);
-            setItems(order.items);
+            setIsLoadingItems(true);
+
+            try {
+                let order = await Server.getOrders(id);
+                setItems(order.items);
+                setIsLoadingItems(false);
+            } catch (err) {
+                setError(true);
+                console.log(err);
+            }
         }
 
         if (fetchItems) fetchOrderItems();
@@ -33,6 +47,9 @@ const Order = props => {
     }, [fetchItems]);
 
     const renderItems = () => {
+        if (isLoadingItems) return <Skeleton />;
+        if (error) return <p className="error">An unknown error occurred. Kindly refresh the page and try again.</p>;
+
         let total = items.map(({ totalCost }) => totalCost).reduce((a, b) => a + b, 0);
         let list = items.map(({ productId, name, quantity, totalCost}, i) => {
             return (
