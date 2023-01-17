@@ -22,9 +22,9 @@ const getOrders = async(req, res) => {
             let order = { id: result.rows[0].id, createdAt: result.rows[0].created_at, status: result.rows[0].status, items: [] };
 
             // Add each item on order to items array in order object
-            result = await pool.query("SELECT order_items.product_id AS product_id, order_items.quantity AS quantity, (order_items.quantity * products.price) AS total_cost FROM order_items JOIN products ON order_items.product_id = products.id WHERE order_items.order_id = $1", [id]);
-            result.rows.forEach(({ product_id, quantity, total_cost }) => {
-                let item = { productId: product_id, quantity, totalCost: total_cost };
+            result = await pool.query("SELECT order_items.product_id AS product_id, products.name AS name, order_items.quantity AS quantity, (order_items.quantity * products.price) AS total_cost FROM order_items JOIN products ON order_items.product_id = products.id WHERE order_items.order_id = $1", [id]);
+            result.rows.forEach(({ product_id, name, quantity, total_cost }) => {
+                let item = { productId: product_id, name, quantity, totalCost: total_cost };
                 order.items.push(item);
             });
 

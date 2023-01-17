@@ -24,9 +24,9 @@ const getCart = async(req, res) => {
         let cart = { id: result.rows[0].id, userId: result.rows[0].user_id, items: [] };
 
         // Add each item in cart to items array in cart object
-        result = await pool.query("SELECT cart_items.product_id AS product_id, cart_items.quantity AS quantity, (cart_items.quantity * products.price) AS total_cost FROM cart_items JOIN products ON cart_items.product_id = products.id WHERE cart_id = $1", [cartId]);
-        result.rows.forEach(({ product_id, quantity, total_cost }) => {
-            let item = { productId: product_id, quantity, totalCost: total_cost };
+        result = await pool.query("SELECT cart_items.product_id AS product_id, products.name AS name, cart_items.quantity AS quantity, (cart_items.quantity * products.price) AS total_cost FROM cart_items JOIN products ON cart_items.product_id = products.id WHERE cart_id = $1", [cartId]);
+        result.rows.forEach(({ product_id, name, quantity, total_cost }) => {
+            let item = { productId: product_id, name, quantity, totalCost: total_cost };
             cart.items.push(item);
         });
 
