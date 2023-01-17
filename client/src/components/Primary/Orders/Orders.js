@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+
 import Order from "./Order";
 import StatusSelect from "./StatusSelect";
+
 import { Customer } from "../../../api/Server";
 
 const Orders = props => {
@@ -9,12 +12,24 @@ const Orders = props => {
 
     const [orders, setOrders] = useState([]);
     const [items, setItems] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         const fetchOrders = async() => {
-            let orders = await Server.getOrders();
-            if (orders) {
-                setOrders(orders);
-                setItems(orders);
+            setIsLoading(true);
+
+            try {
+                let orders = await Server.getOrders();
+                if (orders) {
+                    setOrders(orders);
+                    setItems(orders);
+                    setIsLoading(false);
+                }
+            } catch (err) {
+                setError(true);
+                console.log(err);
             }
         }
 
@@ -37,6 +52,9 @@ const Orders = props => {
     }
 
     const renderItems = () => {
+        if (isLoading) return <Skeleton />;
+        if (error) return <p className="error">An error occurred loading your orders. Kindly refresh the page and try again.</p>;
+
         if (items.length > 0) return items.map(({ id, createdAt, status }, i) => {
             return (
                 <li key={i}>
@@ -45,7 +63,7 @@ const Orders = props => {
             )
         });
 
-        return  <p>No orders to show.</p>;
+        return <p>No orders to show.</p>;
     };
 
     return (
