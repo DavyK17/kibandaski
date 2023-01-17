@@ -6,7 +6,7 @@ const CartHome = props => {
     let location = useLocation();
     let navigate = useNavigate();
 
-    const primary = ["/", "/menu", "/admin"];
+    const primary = ["/", "/menu", "/orders", "/admin"];
     const secondary = ["/login", "/register", "/account", "/cart"];
     const checkPathFor = type => {
         let current;
