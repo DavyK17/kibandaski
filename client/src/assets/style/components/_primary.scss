@@ -122,10 +122,10 @@
                         .view-items {
                             background-color: unset;
                             border: unset;
-                            color: $header-bg-color;
+                            color: adjust-color($darkgray, $lightness: -5%);
                             font-family: $font-body;
                             font-size: 1rem;
-                            margin: 0.25rem 0;
+                            margin: 0.25rem 0 0.5rem;
                             padding: unset;
                             transition: opacity 0.1s ease-in-out;
                             &:hover,
@@ -139,6 +139,9 @@
                             display: none;
                             &.show {
                                 display: block;
+                            }
+                            .react-loading-skeleton {
+                                width: 100%;
                             }
                             .item {
                                 display: flex;
@@ -154,7 +157,7 @@
                                 }
                                 .price {
                                     display: flex;
-                                    width: 80px;
+                                    width: 85px;
                                     font-size: 1.5rem;
                                     font-weight: 700;
                                     align-items: center;
@@ -208,6 +211,12 @@
                 }
             }
         }
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .primary .category-select select {
+        width: 100%;
     }
 }
 
