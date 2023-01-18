@@ -6,7 +6,7 @@ import Nav from "./SecondaryNav";
 import capitalise from "../../util/capitalise";
 
 const Secondary = props => {
-    const { view, user, setUser, activeClassName } = props;
+    const { view, user, setUser, activeClassName, windowWidth, iconHeight } = props;
 
     const renderView = (view, type) => {
         switch (view) {
@@ -16,7 +16,7 @@ const Secondary = props => {
                 break;
             case "cart":
                 if (type === "string") return "cart";
-                if (type === "component") return <Cart user={user} />;
+                if (type === "component") return <Cart user={user} windowWidth={windowWidth} iconHeight={iconHeight} />;
                 break;
             case "register":
                 if (type === "string") return "register";
