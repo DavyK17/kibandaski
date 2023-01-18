@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
 import Item from "./Item";
@@ -8,8 +9,9 @@ import { Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Menu = props => {
-    const { windowWidth, iconHeight } = props;
+    const { user, windowWidth, iconHeight } = props;
     const Server = Customer.products;
+    let navigate = useNavigate();
 
     const [menu, setMenu] = useState([]);
     const [items, setItems] = useState([]);
@@ -56,6 +58,8 @@ const Menu = props => {
             if (items) return items.map(({ id, name, description, price, category }, i) => {
                 const addToCart = async e => {
                     e.preventDefault();
+                    if (!user) return navigate("/login");
+
                     const Server = Customer.cart;
                     const status = document.getElementById("status");
             
