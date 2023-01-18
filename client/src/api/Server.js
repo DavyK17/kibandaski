@@ -122,12 +122,12 @@ export const Customer = {
                 console.log(err);
             }
         },
-        addToCart: async function(productId, quantity = 1) {
+        addToCart: async function(id, quantity = 1) {
             try {
                 let response = await fetch(this.url, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ productId, quantity })
+                    body: JSON.stringify({ id, quantity })
                 });
 
                 if (response.ok) return response.text();
@@ -156,13 +156,17 @@ export const Customer = {
             get url() {
                 return this._url;
             },
-            updateItem: async function(id) {
+            updateItem: async function(id, quantity) {
                 try {
                     let url = new URL(this.url, window.location);
                     url.search = new URLSearchParams({ id }).toString();
 
-                    let response = await fetch(url, { method: "PUT" });
-                    if (response.ok) return response.text();
+                    let response = await fetch(url, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ quantity })
+                    });
+                    return response.text();
                 } catch (err) {
                     console.log(err);
                 }
@@ -173,7 +177,7 @@ export const Customer = {
                     url.search = new URLSearchParams({ id }).toString();
 
                     let response = await fetch(url, { method: "DELETE" });
-                    if (response.ok) return response.text();
+                    return response.text();
                 } catch (err) {
                     console.log(err);
                 }
