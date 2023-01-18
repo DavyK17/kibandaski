@@ -1,14 +1,20 @@
 .primary {
     background-color: snow;
     min-height: inherit;
-    .category-select select {
-        width: 250px;
-        color: $header-bg-color;
-        font-size: 1rem;
-        font-family: $font-header;
-        text-transform: uppercase;
+    .category-select-container {
         margin-bottom: 1rem;
-        padding: 0.2rem 0.25rem;
+        .category-select select {
+            width: 250px;
+            color: $header-bg-color;
+            font-size: 1rem;
+            font-family: $font-header;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding: 0.2rem 0.25rem;
+        }
+        #status {
+            text-align: end;
+        }
     }
     .menu {
         ul {
@@ -215,16 +221,26 @@
 }
 
 @media only screen and (max-width: 320px) {
-    .primary .category-select select {
-        width: 100%;
+    .primary {
+        .category-select-container {
+            .category-select select {
+                width: 100%;
+            }
+        }
     }
 }
 
 @media only screen and (max-width: 991px) {
     .primary {
-        .category-select {
-            text-align: center;
-            select {
+        .category-select-container {
+            .category-select {
+                text-align: center;
+                select {
+                    text-align: center;
+                    margin-bottom: 0.5rem;
+                }
+            }
+            #status {
                 text-align: center;
             }
         }
