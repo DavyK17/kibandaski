@@ -108,5 +108,19 @@ export const Customer = {
                 console.log(err);
             }
         }
+    },
+    cart: {
+        _url: `${root}/customer/cart`,
+        get url() {
+            return this._url;
+        },
+        getCart: async function() {
+            try {
+                let response = await fetch(this.url);
+                if (response.ok) return response.json();
+            } catch (err) {
+                console.log(err);
+            }
+        }
     }
 };
