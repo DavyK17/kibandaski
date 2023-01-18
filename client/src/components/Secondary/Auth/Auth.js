@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
+
 import { Auth as Server } from "../../../api/Server";
+import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Auth = props => {
     const { view, setUser } = props;
@@ -38,17 +40,7 @@ const Auth = props => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-
         const status = document.getElementById("status");
-        const displayErrorMessage = response => {
-            // Remove "Error: " from error message
-            response = response.split(" ");
-            response.shift();
-            response = response.join(" ");
-
-            // Display error message
-            status.textContent = response;
-        }
 
         if (view === "login") {
             status.textContent = "Logging in…";
