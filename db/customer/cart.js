@@ -124,6 +124,33 @@ const updateCartItem = async(req, res) => {
     }
 }
 
+const removeCartItem = async(req, res) => {
+    // Send error if no product ID provided
+    if (!req.query.id) return res.status(400).send("Error: No product ID provided.");
+
+    // VALIDATION AND SANITISATION
+    // Product ID
+    let productId = trim(req.query.id);
+    if (!isNumeric(productId, { no_symbols: true }) || !isLength(productId, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
+
+    // Cart ID
+    let cartId = trim(req.user.cartId);
+    if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
+
+    try { // Get item in cart
+        let result = await pool.query("SELECT product_id FROM cart_items WHERE cart_id = $1 AND product_id = $2", [cartId, productId]);
+
+        // Send error if item is not in cart
+        if (result.rows.length === 0) return res.status(404).send("Error: This item is not in the cart.");
+
+        // Remove item from cart
+        result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2 RETURNING product_id", [cartId, productId]);
+        res.status(204).send(`Removed from cart product with ID: ${result.rows[0].product_id}`);
+    } catch (err) {
+        res.status(500).send("An unknown error occurred. Kindly try again.");
+    }
+}
+
 const emptyCart = async(req, res) => {
     // Validate and sanitise cart ID
     let cartId = trim(req.user.cartId);
@@ -189,4 +216,4 @@ const checkout = async(req, res) => {
     }
 }
 
-module.exports = { getCart, addToCart, updateCartItem, emptyCart, checkout };
+module.exports = { getCart, addToCart, updateCartItem, removeCartItem, emptyCart, checkout };
