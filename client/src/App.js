@@ -36,7 +36,7 @@ const App = () => {
         
         if (type === 2) return (
             <Route path={path} element={
-                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} />
+                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} />
             } />
         )
 
