@@ -1369,6 +1369,82 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": ["Customer", "Cart"],
+                "description": "Remove an item from the cart",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Numeric ID of product to remove",
+                    "required": true
+                }],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of the operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Removed from cart product with ID: [product ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if no product ID provided or input is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: No product ID provided.",
+                                    "examples": [
+                                        "Error: No product ID provided.",
+                                        "Error: Invalid product ID provided."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "An error message (if cart ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid cart ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if item is not in cart)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: This item is not in the cart."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "A generic error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/customer/orders": {
