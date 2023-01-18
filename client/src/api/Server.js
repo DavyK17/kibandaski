@@ -127,10 +127,10 @@ export const Customer = {
                 let response = await fetch(this.url, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id, quantity })
+                    body: JSON.stringify({ productId: id, quantity })
                 });
 
-                if (response.ok) return response.text();
+                if (response.status !== 503) return response.text();
             } catch (err) {
                 console.log(err);
             }
@@ -166,7 +166,7 @@ export const Customer = {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ quantity })
                     });
-                    return response.text();
+                    if (response.status !== 503) return response.text();
                 } catch (err) {
                     console.log(err);
                 }
@@ -177,7 +177,10 @@ export const Customer = {
                     url.search = new URLSearchParams({ id }).toString();
 
                     let response = await fetch(url, { method: "DELETE" });
-                    return response.text();
+                    if (response.status !== 503) {
+                        if (!response.ok) return response.text();
+                        return;
+                    }
                 } catch (err) {
                     console.log(err);
                 }
