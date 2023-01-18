@@ -5,6 +5,7 @@ import Item from "./Item";
 import CategorySelect from "./CategorySelect";
 
 import { Customer } from "../../../api/Server";
+import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Menu = props => {
     const { windowWidth, iconHeight } = props;
@@ -47,16 +48,25 @@ const Menu = props => {
 
     const changeCategory = ({ target }) => setCategory(target.value);
 
-    const addToCart = e => {
-        e.preventDefault();
-    }
-
     const renderItems = () => {
         if (isLoading) return <Skeleton />;
         if (error) return <p className="error">An error occurred loading the menu. Kindly refresh the page and try again.</p>;
 
         let list = () => {
             if (items) return items.map(({ id, name, description, price, category }, i) => {
+                const addToCart = async e => {
+                    e.preventDefault();
+                    const Server = Customer.cart;
+                    const status = document.getElementById("status");
+            
+                    status.textContent = "Adding to cart…";
+                    let response = await Server.addToCart(id);
+                    if (!response.includes("Added to cart")) return displayErrorMessage(response);
+
+                    status.textContent = "Item added to cart";
+                    setTimeout(() => status.textContent = null, 3000);
+                }
+
                 return (
                     <li key={i}>
                         <Item id={id} name={name} description={description} price={price} category={category} windowWidth={windowWidth} iconHeight={iconHeight} addToCart={addToCart} />
