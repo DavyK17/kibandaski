@@ -21,7 +21,7 @@ const Primary = props => {
             case "menu":
             default:
                 if (type === "string") return "menu";
-                if (type === "component") return <Menu windowWidth={windowWidth} iconHeight={iconHeight} />;
+                if (type === "component") return <Menu user={user} windowWidth={windowWidth} iconHeight={iconHeight} />;
                 return undefined;
         }
     }
