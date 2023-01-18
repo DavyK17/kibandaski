@@ -67,7 +67,7 @@ const Cart = props => {
 
                     status.textContent = "Removing item…";
                     let response = await Server.item.removeItem(productId);
-                    if (!response.includes("Removed from cart")) return displayErrorMessage(response);
+                    if (typeof response === "string") return displayErrorMessage(response);
 
                     status.textContent = "Item removed successfully";
                     fetchCart();
