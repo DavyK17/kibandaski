@@ -99,7 +99,7 @@ export const Customer = {
         },
         cancelOrder: async function(id) {
             try {
-                let url = this.url;
+                let url = new URL(this.url, window.location);
                 url.search = new URLSearchParams({ id }).toString();
 
                 let response = await fetch(url, { method: "DELETE" });
@@ -120,6 +120,63 @@ export const Customer = {
                 if (response.ok) return response.json();
             } catch (err) {
                 console.log(err);
+            }
+        },
+        addToCart: async function(productId, quantity = 1) {
+            try {
+                let response = await fetch(this.url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ productId, quantity })
+                });
+
+                if (response.ok) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        emptyCart: async function(id) {
+            try {
+                let response = await fetch(this.url, { method: "DELETE" });
+                if (response.ok) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        checkout: async function() {
+            try {
+                let response = await fetch(`${this.url}/checkout`);
+                if (response.ok) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        item: {
+            _url: `${root}/customer/cart/item`,
+            get url() {
+                return this._url;
+            },
+            updateItem: async function(id) {
+                try {
+                    let url = new URL(this.url, window.location);
+                    url.search = new URLSearchParams({ id }).toString();
+
+                    let response = await fetch(url, { method: "PUT" });
+                    if (response.ok) return response.text();
+                } catch (err) {
+                    console.log(err);
+                }
+            },
+            removeItem: async function(id) {
+                try {
+                    let url = new URL(this.url, window.location);
+                    url.search = new URLSearchParams({ id }).toString();
+
+                    let response = await fetch(url, { method: "DELETE" });
+                    if (response.ok) return response.text();
+                } catch (err) {
+                    console.log(err);
+                }
             }
         }
     }
