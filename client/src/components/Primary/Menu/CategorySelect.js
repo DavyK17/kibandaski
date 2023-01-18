@@ -25,12 +25,15 @@ const CategorySelect = props => {
     }
 
     return (
-        <div className="category-select" data-testid="category-select">
-            <label htmlFor="category" className="sr-only">Category</label>
-            <select id="category" onChange={handleChange} defaultValue="all">
-                <option value="all">All items</option>
-                {renderOptions()}
-            </select>
+        <div className="category-select-container">
+            <div className="category-select" data-testid="category-select">
+                <label htmlFor="category" className="sr-only">Category</label>
+                <select id="category" onChange={handleChange} defaultValue="all">
+                    <option value="all">All items</option>
+                    {renderOptions()}
+                </select>
+            </div>
+            <p id="status"></p>
         </div>
     )
 }
