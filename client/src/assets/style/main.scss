@@ -35,7 +35,7 @@ em {
 }
 
 .error {
-    color: $header-bg-color;
+    color: adjust-color($color: $header-bg-color, $lightness: 20%);
 }
 
 // Adapted from Bootstrap
