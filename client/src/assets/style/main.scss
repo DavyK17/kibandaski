@@ -34,7 +34,8 @@ em {
     font-style: italic;
 }
 
-.error {
+.error,
+#status {
     color: adjust-color($color: $header-bg-color, $lightness: 20%);
 }
 
