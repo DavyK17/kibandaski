@@ -1226,7 +1226,7 @@
                     "201": {
                         "description": "Confirmation of the order",
                         "content": {
-                            "application/json": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Order placed with ID: [order ID]"
