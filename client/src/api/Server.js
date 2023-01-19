@@ -143,10 +143,14 @@ export const Customer = {
                 console.log(err);
             }
         },
-        checkout: async function() {
+        checkout: async function(phone) {
             try {
-                let response = await fetch(`${this.url}/checkout`);
-                if (response.ok) return response.text();
+                let response = await fetch(`${this.url}/checkout`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ phone })
+                });
+                if (response.status !== 503) return response.text();
             } catch (err) {
                 console.log(err);
             }
