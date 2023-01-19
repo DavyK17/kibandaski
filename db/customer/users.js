@@ -51,8 +51,10 @@ const createUser = async(req, res) => {
 
     // Phone number
     if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
-    phone = trim(typeof phone === "number" ? phone.toString() : phone);
-    if (!checkPhone(phone)) return res.status(400).send(`Error: Phone number must be Kenyan (starts with "254").`);
+    phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
+    if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only.");
+    if (!isLength(phone, { min: 12, max: 12 })) return res.status(400).send("Error: Invalid phone number provided (must be 254XXXXXXXXX).");
+    if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be Kenyan (starts with \"254\").");
 
     // Email
     if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
@@ -114,9 +116,11 @@ const updateUser = async(req, res) => {
 
         // Phone number
         phone = phone || old.phone;
-        if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send("Error: Phone number must be a number.");
-        phone = trim(typeof phone === "number" ? phone.toString() : phone);
-        if (!checkPhone(phone)) return res.status(400).send("Error: Phone number must be Kenyan (starts with \"254\").");
+        if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send("Error: Phone must be a number.");
+        phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
+        if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only.");
+        if (!isLength(phone, { min: 12, max: 12 })) return res.status(400).send("Error: Invalid phone number provided (must be 254XXXXXXXXX).");
+        if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be Kenyan (starts with \"254\").");
 
         // Email
         email = email || old.email;

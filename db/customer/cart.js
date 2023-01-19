@@ -185,10 +185,11 @@ const beginCheckout = async(req, res, next) => {
     // VALIDATION AND SANITISATION
     // Phone number
     let { phone } = req.body;
-    phone = sanitizeHtml(trim(phone));
-    if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only");
+    if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send("Error: Phone must be a number.");
+    phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
+    if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only.");
     if (!isLength(phone, { min: 12, max: 12 })) return res.status(400).send("Error: Invalid phone number provided (must be 254XXXXXXXXX).");
-    if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be a Safaricom number");
+    if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be a Safaricom number.");
 
     // User ID
     let userId = trim(req.user.id);
