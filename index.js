@@ -58,7 +58,7 @@ const apiRouter = require("./routers/index");
 app.use("/api", apiRouter);
 
 // Client
-app.get('/*', (req, res) => {
+app.get("/*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
