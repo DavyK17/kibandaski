@@ -117,10 +117,48 @@
                 }
             }
         }
+        .checkout {
+            width: 700px;
+            p {
+                margin-bottom: 0.5rem;
+            }
+            input,
+            button {
+                font-family: $font-body;
+                font-size: 1rem;
+            }
+            input {
+                width: 100%;
+                padding: 0.25rem;
+            }
+            .input,
+            .buttons {
+                width: 50%;
+                margin: 0.5rem 0;
+            }
+            .buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                button {
+                    width: 45%;
+                    background-color: $lightgray;
+                    border: 1px solid $darkgray;
+                    padding: 0.2rem 0.5rem;
+                    transition: background-color 0.1s ease-in-out;
+                    &:hover,
+                    &:focus {
+                        background-color: adjust-color($color: chocolate, $lightness: 42.5%);
+                        cursor: pointer;
+                        transition: background-color 0.1s ease-in-out;
+                    }
+                }
+            }
+        }
     }
 }
 
-@media only screen and (max-width: 991px) {
+@media only screen and (max-width: 767px) {
     .secondary {
         .cart {
             ul li {
@@ -145,6 +183,16 @@
                         grid-template: auto / 1fr 1fr 1fr;
                         grid-template-areas: "price name delete";
                     }
+                }
+            }
+            .checkout {
+                width: 100%;
+                input {
+                    width: 100%;
+                }
+                .input,
+                .buttons {
+                    width: 100%;
                 }
             }
         }
