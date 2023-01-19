@@ -190,5 +190,19 @@ export const Customer = {
                 }
             }
         }
+    },
+    users: {
+        _url: `${root}/customer/account`,
+        get url() {
+            return this._url;
+        },
+        getAccount: async function() {
+            try {
+                let response = await fetch(this.url);
+                if (response.ok) return response.json();
+            } catch (err) {
+                console.log(err);
+            }
+        }
     }
 };
