@@ -9,7 +9,7 @@ const sanitizeHtml = require("../../util/sanitizeHtml");
 const checkPhone = value => {
     if (value.match(/^254(11[0-5]|7(([0-2]|9)\d|4([0-6]|8)|5[7-9]|6[8-9]))\d{6}$/)) return true;
     return false;
-};
+}
 
 // FUNCTIONS
 const getCart = async(req, res) => {
