@@ -17,6 +17,12 @@ router.use("/admin", loggedIn, (req, res, next) => {
 const customerRouter = require("./customer");
 router.use("/customer", customerRouter);
 
+// M-Pesa payment callback route
+router.get("/payment/mpesa-callback", loggedIn, (req, res) => {
+    let result = req.body.Body.stkCallback.ResultDesc;
+    res.status(200).send(result);
+});
+
 // API documentation
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("../openapi.json");
