@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
 import ItemEdit from "./ItemEdit";
 import ItemDelete from "./ItemDelete";
+import CartCheckout from "./CartCheckout";
+import Checkout from "./Checkout";
 
 import { Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Cart = props => {
-    const { user, iconHeight, handleCheckout } = props;
+    const { user, iconHeight } = props;
     const Server = Customer.cart;
+    const status = document.getElementById("status");
 
     const { cartId } = user;
     const [cart, setCart] = useState();
@@ -34,12 +38,6 @@ const Cart = props => {
         // eslint-disable-next-line
     }, []);
 
-    const ItemCheckout = (
-        <svg id="iconCartCheckout" width={iconHeight} height={iconHeight} viewBox="0 0 24 24" onClick={handleCheckout}>
-            <path id="pathCartCheckout" style={{ fill:"#000000" }} d="M19.5 8c-2.485 0-4.5 2.015-4.5 4.5s2.015 4.5 4.5 4.5 4.5-2.015 4.5-4.5-2.015-4.5-4.5-4.5zm-.5 7v-2h-2v-1h2v-2l3 2.5-3 2.5zm-5.701-11.26c-.207-.206-.299-.461-.299-.711 0-.524.407-1.029 1.02-1.029.262 0 .522.1.721.298l3.783 3.783c-.771.117-1.5.363-2.158.726l-3.067-3.067zm3.92 14.84l-.571 1.42h-9.296l-3.597-8.961-.016-.039h9.441c.171-.721.46-1.395.848-2h-14.028v2h.643c.535 0 1.021.304 1.256.784l4.101 10.216h12l1.211-3.015c-.699-.03-1.368-.171-1.992-.405zm-6.518-14.84c.207-.206.299-.461.299-.711 0-.524-.407-1.029-1.02-1.029-.261 0-.522.1-.72.298l-4.701 4.702h2.883l3.259-3.26z" />
-        </svg>
-    )
-
     const renderItems = () => {
         if (isLoading) return <Skeleton />;
         if (error) return <p className="error">An unknown error occurred. Kindly refresh the page and try again.</p>;
@@ -50,8 +48,7 @@ const Cart = props => {
             if (cart) return cart.items.map(({ productId, name, quantity, totalCost}, i) => {
                 const changeItemQuantity = async e => {
                     e.preventDefault();
-                    const status = document.getElementById("status");
-            
+
                     status.textContent = "Updating quantity…";
                     let response = await Server.item.updateItem(productId, e.target[0].value);
                     if (!response.includes("Quantity updated in cart")) return displayErrorMessage(response);
@@ -63,7 +60,6 @@ const Cart = props => {
 
                 const removeCartItem = async e => {
                     e.preventDefault();
-                    const status = document.getElementById("status");
 
                     status.textContent = "Removing item…";
                     let response = await Server.item.removeItem(productId);
@@ -106,21 +102,61 @@ const Cart = props => {
                         <p className="price">
                             <span className="currency">Ksh</span><span>{total()}</span>
                         </p>
-                        {ItemCheckout}
+                        <CartCheckout iconHeight={iconHeight} handleClick={toggleCheckout} />
                     </div>
                 </li>
             </>
         )
     }
 
+    const [phone, setPhone] = useState();
+    const fetchPhone = async() => {
+        try {
+            let data = await Customer.users.getAccount();
+            setPhone(data.phone);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        fetchPhone();
+    }, []);
+
+    const [checkout, setCheckout] = useState(false);
+    let navigate = useNavigate();
+
+    const toggleCheckout = e => {
+        e.preventDefault();
+        setCheckout(checkout ? false : true);
+    }
+
+    const completeCheckout = async e => {
+        e.preventDefault();
+        
+        status.textContent = "Placing order…";
+        let response = await Server.checkout(e.target[0].value);
+        if (!response.includes("Order placed")) return displayErrorMessage(response);
+
+        status.textContent = "Order placed successfully";
+        setTimeout(() => {
+            navigate("/menu");
+            status.textContent = null;
+        }, 3000);
+    }
+
     return (
         <div className="cart">
-            <ul>
-                {renderItems()}
-            </ul>
+            {
+                checkout ? <Checkout phone={phone} handleBack={toggleCheckout} handleSubmit={completeCheckout} /> : (
+                    <ul>
+                        {renderItems()}
+                    </ul>
+                )
+            }
             <p id="status"></p>
         </div>
-    );
+    )
 }
 
 export default Cart;
