@@ -8,10 +8,6 @@ import capitalise from "../../util/capitalise";
 const Secondary = props => {
     const { view, user, setUser, activeClassName, iconHeight } = props;
 
-    const cartCheckout = e => {
-        e.preventDefault();
-    }
-
     const renderView = (view, type) => {
         switch (view) {
             case "account":
@@ -20,7 +16,7 @@ const Secondary = props => {
                 break;
             case "cart":
                 if (type === "string") return "cart";
-                if (type === "component") return <Cart user={user} iconHeight={iconHeight} handleCheckout={cartCheckout} />;
+                if (type === "component") return <Cart user={user} iconHeight={iconHeight} />;
                 break;
             case "register":
                 if (type === "string") return "register";
