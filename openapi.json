@@ -62,8 +62,14 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: Email must be a string.",
+                                    "example": "Error: First name must be a string.",
                                     "examples": [
+                                        "Error: First name must be a string.",
+                                        "Error: Last name must be a string.",
+                                        "Error: Phone must be a number.",
+                                        "Error: Phone must contain numbers only.",
+                                        "Error: Invalid phone number provided (must be 254XXXXXXXXX).",
+                                        "Error: Phone must be Kenyan (starts with \"254\").",
                                         "Error: Email must be a string.",
                                         "Error: Invalid email provided."
                                     ]
@@ -976,9 +982,12 @@
                                         "Error: No updates provided.",
                                         "Error: First name must be a string.",
                                         "Error: Last name must be a string.",
-                                        "Error: Phone number must be a number.",
-                                        "Error: Phone number must be Kenyan (starts with \"254\").",
-                                        "Error: Email must be a string."
+                                        "Error: Phone must be a number.",
+                                        "Error: Phone must contain numbers only.",
+                                        "Error: Invalid phone number provided (must be 254XXXXXXXXX).",
+                                        "Error: Phone must be Kenyan (starts with \"254\").",
+                                        "Error: Email must be a string.",
+                                        "Error: Invalid email provided."
                                     ]
                                 }
                             }
@@ -1216,12 +1225,32 @@
             }
         },
         "/customer/cart/checkout": {
-            "get": {
+            "post": {
                 "tags": ["Customer", "Cart"],
                 "description": "Check out cart",
                 "security": [{
                     "BasicAuth": []
                 }],
+                "requestBody": {
+                    "description": "Kenyan Safaricom phone number (starting with \"254\")",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "type": "string",
+                                        "minLength": 12,
+                                        "maxLength": 12
+                                    }
+                                },
+                                "example": {
+                                    "phone": "254712345678"
+                                }
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Confirmation of the order",
@@ -1230,6 +1259,23 @@
                                 "schema": {
                                     "type": "string",
                                     "example": "Order placed with ID: [order ID]"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "An error message (if phone number is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Phone must be a number.",
+                                    "examples": [
+                                        "Error: Phone must be a number.",
+                                        "Error: Phone must contain numbers only.",
+                                        "Error: Invalid phone number provided (must be 254XXXXXXXXX).",
+                                        "Error: Phone must be a Safaricom number."
+                                    ]
                                 }
                             }
                         }
