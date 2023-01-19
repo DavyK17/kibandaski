@@ -5,7 +5,7 @@ router.get("/", db.getCart);
 router.post("/", db.addToCart);
 router.delete("/", db.emptyCart);
 
-router.get("/checkout", db.checkout);
+router.post("/checkout", db.beginCheckout, db.getPaymentToken, db.completeCheckout);
 
 router.put("/item", db.updateCartItem);
 router.delete("/item", db.removeCartItem);
