@@ -4,6 +4,7 @@ import Skeleton from "react-loading-skeleton";
 
 import ItemEdit from "./ItemEdit";
 import ItemDelete from "./ItemDelete";
+import CartEmpty from "./CartEmpty";
 import CartCheckout from "./CartCheckout";
 import Checkout from "./Checkout";
 
@@ -61,6 +62,17 @@ const Cart = props => {
     // Checkout
     const [checkout, setCheckout] = useState(false);
     let navigate = useNavigate();
+
+    const emptyCart = async e => {
+        e.preventDefault();
+    
+        status.textContent = "Emptying cart…";
+        let response = await Server.emptyCart();
+        if (typeof response === "string") return displayErrorMessage(response);
+        
+        status.textContent = null;
+        fetchCart();
+    }
 
     const toggleCheckout = e => {
         e.preventDefault();
@@ -157,6 +169,7 @@ const Cart = props => {
                             <p className="price">
                                 <span className="currency">Ksh</span><span>{total()}</span>
                             </p>
+                            <CartEmpty iconHeight={iconHeight} handleClick={emptyCart} />
                             <CartCheckout iconHeight={iconHeight} handleClick={toggleCheckout} />
                         </div>
                     </li>
