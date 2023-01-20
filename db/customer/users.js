@@ -127,18 +127,21 @@ const updateUser = async(req, res) => {
         if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
 
-        // Send error if current password is incorrect
-        const currentPasswordMatch = await bcrypt.compare(trim(currentPassword), old.password);
-        if (!currentPasswordMatch) return res.status(401).send("Error: Incorrect password provided.");
+        // Do the following if new password provided
+        if (currentPassword && newPassword) {
+            // Send error if current password is incorrect
+            const currentPasswordMatch = await bcrypt.compare(trim(currentPassword), old.password);
+            if (!currentPasswordMatch) return res.status(401).send("Error: Incorrect password provided.");
+
+            // Send error if no updates made
+            const newPasswordMatch = await bcrypt.compare(newPassword, old.password);
+            if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && newPasswordMatch)
+                return res.status(400).send("Error: No updates provided.");
+        }
 
         // Hash new password if present
         const salt = await bcrypt.genSalt(17);
         const passwordHash = newPassword ? await bcrypt.hash(trim(newPassword), salt) : old.password;
-
-        // Send error if no updates made
-        const newPasswordMatch = await bcrypt.compare(newPassword, old.password);
-        if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && newPasswordMatch)
-            return res.status(400).send("Error: No updates provided.");
 
         // UPDATE USER DETAILS
         let text = "UPDATE users SET first_name = $1, last_name = $2, phone = $3, email = $4, password = $5 WHERE id = $6 RETURNING id";
@@ -146,7 +149,10 @@ const updateUser = async(req, res) => {
         result = await pool.query(text, values);
 
         // Confirm update
-        if (result.rows[0].id === userId) res.status(200).send("Account updated successfully");
+        if (result.rows[0].id === userId) {
+            req.user.email = email;
+            res.status(200).send("Account updated successfully");
+        };
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
