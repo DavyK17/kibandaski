@@ -21,7 +21,7 @@ export const Auth = {
                 body: JSON.stringify({ firstName, lastName, phone, email, password })
             });
 
-            if (response.ok) return response.text();
+            if (response.status !== 503) return response.text();
         } catch (err) {
             console.log(err);
         }
@@ -34,8 +34,10 @@ export const Auth = {
                 body: JSON.stringify({ email, password })
             });
 
-            if (!response.ok) return response.text();
-            return response.json();
+            if (response.status !== 503) {
+                if (!response.ok) return response.text();
+                return response.json();
+            }
         } catch (err) {
             console.log(err);
         }
@@ -222,7 +224,7 @@ export const Customer = {
                 console.log(err);
             }
         },
-        deleteAccount: async function () {
+        deleteAccount: async function() {
             try {
                 let response = await fetch(this.url, { method: "DELETE" });
                 if (response.status !== 503) {
