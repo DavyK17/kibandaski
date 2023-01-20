@@ -99,10 +99,10 @@ const updateUser = async(req, res) => {
         };
 
         // VALIDATION AND SANITISATION
-        let { firstName, lastName, phone, email, password } = req.body;
+        let { firstName, lastName, phone, email, currentPassword, newPassword } = req.body;
 
         // Send error if no details are provided
-        if (!firstName && !lastName && !phone && !email && !password) return res.status(400).send("Error: No updates provided.");
+        if (!firstName && !lastName && !phone && !email && !currentPassword && !newPassword) return res.status(400).send("Error: No updates provided.");
 
         // First name
         firstName = firstName || old.firstName;
@@ -127,13 +127,17 @@ const updateUser = async(req, res) => {
         if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
 
-        // Password
+        // Send error if current password is incorrect
+        const currentPasswordMatch = await bcrypt.compare(trim(currentPassword), old.password);
+        if (!currentPasswordMatch) return res.status(401).send("Error: Incorrect password provided.");
+
+        // Hash new password if present
         const salt = await bcrypt.genSalt(17);
-        const passwordHash = password ? await bcrypt.hash(trim(password), salt) : old.password;
+        const passwordHash = newPassword ? await bcrypt.hash(trim(newPassword), salt) : old.password;
 
         // Send error if no updates made
-        const passwordMatch = await bcrypt.compare(password, old.password);
-        if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && passwordMatch)
+        const newPasswordMatch = await bcrypt.compare(newPassword, old.password);
+        if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && newPasswordMatch)
             return res.status(400).send("Error: No updates provided.");
 
         // UPDATE USER DETAILS
