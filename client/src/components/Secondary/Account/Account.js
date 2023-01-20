@@ -7,7 +7,10 @@ import EditDetails from "./EditDetails";
 import { Auth, Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
-const Account = () => {
+const Account = props => {
+    // Destructure props
+    const { setUser } = props;
+
     // Define server, status and useNavigate()
     const Server = Customer.users;
     const status = document.getElementById("status");
@@ -53,11 +56,11 @@ const Account = () => {
         if (typeof response === "string") return displayErrorMessage(response);
 
         status.textContent = "Account deleted successfully";
-        response = await Auth.logout();
-        if (response === "Logout successful") {
+        setTimeout(() => {
+            setUser(null);
             navigate("/menu");
             status.textContent = null;
-        }
+        }, 3000);
     }
 
     // RENDERING
