@@ -35,12 +35,24 @@ const Auth = props => {
         </>
     )
 
-    const password = (
-        <>
-            <label className="sr-only" htmlFor="password">Password</label>
-            <input id="password" type="password" placeholder="Password" required />
-        </>
-    )
+    const password = () => {
+        if (view === "login") return (
+            <>
+                <label className="sr-only" htmlFor="password">Password</label>
+                <input id="password" type="password" placeholder="Password" required />
+            </>
+        )
+
+        if (view === "register") return (
+            <div className="password">
+                <label className="sr-only" htmlFor="password">Password</label>
+                <input id="password" type="password" placeholder="Password" required />
+    
+                <label className="sr-only" htmlFor="confirm-password">Confirm password</label>
+                <input type="password" id="confirm-password" placeholder="Confirm password" required />
+            </div>
+        )
+    } 
 
     // Define form submit function
     const handleSubmit = async e => {
@@ -55,26 +67,32 @@ const Auth = props => {
 
             setUser(response);
             status.textContent = null;
+            e.target.reset();
             navigate("/cart");
         }
 
         if (view === "register") {
             status.textContent = "Creating account…";
+
+            if (e.target[4].value && !e.target[5].value) return status.textContent = "Kindly confirm your password.";
+            if (e.target[4].value !== e.target[5].value) return status.textContent = "Passwords do not match.";
             
             let response = await Server.register(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value);
             if (!response.includes("User created")) return displayErrorMessage(response);
 
             status.textContent = "Account created. Kindly log in.";
+            e.target.reset();
+            setTimeout(() => status.textContent = null, 3000);
         }
     }
 
     // Return component
     return (
-        <form className="auth" autoComplete="off" onSubmit={handleSubmit}>
+        <form className="auth" autoComplete="off" onSubmit={handleSubmit} data-testid="auth">
             {view === "register" ? names : null}
             {view === "register" ? phone : null}
             {email}
-            {password}
+            {password()}
             <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
         </form>
     )
