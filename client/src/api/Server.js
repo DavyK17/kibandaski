@@ -209,6 +209,29 @@ export const Customer = {
             } catch (err) {
                 console.log(err);
             }
+        },
+        updateAccount: async function(firstName = null, lastName = null, phone = null, email = null, currentPassword = null, newPassword = null) {
+            try {
+                let response = await fetch(this.url, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ firstName, lastName, phone, email, currentPassword, newPassword })
+                });
+                if (response.status !== 503) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        deleteAccount: async function () {
+            try {
+                let response = await fetch(this.url, { method: "DELETE" });
+                if (response.status !== 503) {
+                    if (!response.ok) return response.text();
+                    return;
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 };
