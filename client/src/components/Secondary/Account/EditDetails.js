@@ -33,13 +33,20 @@ const EditDetails = props => {
                 </div>
             </div>
             <div className="password">
-                <h3>Password</h3>
+                <h3>Current password</h3>
                 <div className="input">
                     <label className="sr-only" htmlFor="current-password">Current password</label>
                     <input type="password" id="current-password" placeholder="Current password" />
-
+                </div>
+            </div>
+            <div className="password">
+                <h3>New password</h3>
+                <div className="input">
                     <label className="sr-only" htmlFor="new-password">New password</label>
                     <input type="password" id="new-password" placeholder="New password" />
+
+                    <label className="sr-only" htmlFor="confirm-password">Confirm password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm password" />
                 </div>
             </div>
             <div className="buttons">

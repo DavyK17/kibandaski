@@ -75,8 +75,15 @@ const Account = () => {
             const updateDetails = async e => {
                 e.preventDefault();
                 
+                if (!e.target[4].value && e.target[5].value && e.target[6].value) return status.textContent = "No current password provided.";
+                if (e.target[4].value) {
+                    if (e.target[5].value && !e.target[6].value) return status.textContent = "Kindly confirm your new password.";
+                    if (!e.target[5].value || !e.target[6].value) return status.textContent = "No new password provided.";
+                    if (e.target[5].value !== e.target[6].value) return status.textContent = "New passwords do not match.";
+                }
+                
                 status.textContent = "Updating details…";
-                let response = await Server.updateAccount(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value, e.target[5].value);
+                let response = await Server.updateAccount(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value, e.target[6].value);
                 if (response !== "Account updated successfully") return displayErrorMessage(response);
                 
                 status.textContent = null;
