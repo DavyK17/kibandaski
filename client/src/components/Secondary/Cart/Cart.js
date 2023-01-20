@@ -88,7 +88,7 @@ const Cart = props => {
         if (isLoading) return <Skeleton />;
 
         // Return error message if error
-        if (error) return <p className="error">An unknown error occurred. Kindly refresh the page and try again.</p>;
+        if (error) return <p className="error">An error occurred loading your cart. Kindly refresh the page and try again.</p>;
 
         // Do the following if cart has been fetched
         if (cart) {
