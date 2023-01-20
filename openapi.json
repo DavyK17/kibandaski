@@ -309,16 +309,12 @@
                         }
                     },
                     "404": {
-                        "description": "An error message (if no orders found or order does not exist)",
+                        "description": "An error message (if order does not exist)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: No orders found.",
-                                    "examples": [
-                                        "Error: No orders found.",
-                                        "Error: This order does not exist."
-                                    ]
+                                    "example": "Error: This order does not exist."
                                 }
                             }
                         }
@@ -376,17 +372,6 @@
                                 "schema": {
                                     "type": "string",
                                     "example": "Error: Invalid order ID provided."
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "An error message (if order does not exist)",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "example": "Error: This order does not exist."
                                 }
                             }
                         }
@@ -868,17 +853,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/usersCat"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "An error message (if no users found in role)",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "example": "Error: No users found in provided role."
                                 }
                             }
                         }
@@ -1569,16 +1543,12 @@
                         }
                     },
                     "404": {
-                        "description": "An error message (if no orders found or order does not exist)",
+                        "description": "An error message (if order does not exist)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: No orders found.",
-                                    "examples": [
-                                        "Error: No orders found.",
-                                        "Error: This order does not exist."
-                                    ]
+                                    "example": "Error: This order does not exist."
                                 }
                             }
                         }
@@ -1752,17 +1722,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/productsCat"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "An error message (if no products found in category)",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "example": "Error: No products found in provided category."
                                 }
                             }
                         }
