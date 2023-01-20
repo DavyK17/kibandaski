@@ -75,7 +75,7 @@ const Orders = props => {
         
                 status.textContent = "Order cancelled successfully";
                 fetchOrders();
-                status.textContent = null;
+                setTimeout(() => status.textContent = null, 3000);
             }
 
             // Return order

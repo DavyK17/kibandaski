@@ -110,7 +110,7 @@ const Cart = props => {
     
                     status.textContent = "Item quantity updated successfully";
                     fetchCart();
-                    status.textContent = null;
+                    setTimeout(() => status.textContent = null, 3000);
                 }
     
                 // Define function to remove cart item
@@ -123,7 +123,7 @@ const Cart = props => {
     
                     status.textContent = "Item removed successfully";
                     fetchCart();
-                    status.textContent = null;
+                    setTimeout(() => status.textContent = null, 3000);
                 }
     
                 // Return cart item
