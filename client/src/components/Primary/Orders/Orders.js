@@ -97,7 +97,7 @@ const Orders = props => {
                 </ul>
             </div>
         </>
-    );
+    )
 }
 
 export default Orders;

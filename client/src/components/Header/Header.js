@@ -3,8 +3,10 @@ import Logo from "./Logo";
 import LoginLogout from "./LoginLogout";
 
 const Header = props => {
+    // Destructure props
     const { user, setUser, windowWidth, iconHeight } = props;
 
+    // Return component
     return (
         <header>
             <h1 className="sr-only">Kibandaski</h1>

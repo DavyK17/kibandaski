@@ -2,19 +2,21 @@ import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 
 import { Customer } from "../../../api/Server";
-
 import capitalise from "../../../util/capitalise";
 
 const Order = props => {
+    // Destructure props and define server
     const { id, createdAt, status, windowWidth, iconHeight, cancelOrder } = props;
     const Server = Customer.orders;
 
+    // Define function to render order time
     const renderTime = createdAt => {
         let options = { day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true };
         let dateTime = new Intl.DateTimeFormat("en-KE", options);
         return dateTime.format(new Date(createdAt));
     }
     
+    // Define order cancel button and icon
     const cancelButton = <button className="cancel-order" onClick={cancelOrder}>Cancel order</button>;
     const cancelIcon = (
         <svg id="iconOrderCancel" width={iconHeight} height={iconHeight} viewBox="0 0 24 24">
@@ -22,35 +24,53 @@ const Order = props => {
         </svg>
     )
 
+    // Set state and define fetch function
     const [items, setItems] = useState([]);
     const [fetchItems, setFetchItems] = useState(false);
 
     const [isLoadingItems, setIsLoadingItems] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchOrderItems = async() => {
-            setIsLoadingItems(true);
+    const fetchOrderItems = async() => {
+        setIsLoadingItems(true);
 
-            try {
-                let order = await Server.getOrders(id);
-                setItems(order.items);
-                setIsLoadingItems(false);
-            } catch (err) {
-                setError(true);
-                console.log(err);
-            }
+        try {
+            let order = await Server.getOrders(id);
+            setItems(order.items);
+            setIsLoadingItems(false);
+        } catch (err) {
+            setError(true);
+            console.log(err);
         }
+    }
 
+    useEffect(() => {
         if (items.length === 0 && fetchItems) fetchOrderItems();
         // eslint-disable-next-line
     }, [fetchItems]);
 
-    const renderItems = () => {
-        if (isLoadingItems) return <Skeleton />;
-        if (error) return <p className="error">An unknown error occurred. Kindly refresh the page and try again.</p>;
+    // Define function to view order items
+    const viewItems = e => {
+        e.preventDefault();
+        setFetchItems(fetchItems ? false : true);
 
+        const items = document.getElementById(`items-${id}`);
+        items.classList.toggle("show");
+    }
+
+    // RENDERING
+    // Order items
+    const renderItems = () => {
+        // Return skeleton if loading items
+        if (isLoadingItems) return <Skeleton />;
+
+        // Return error message if error
+        if (error) return <p className="error">An error occurred loading order items. Kindly refresh the page and try again.</p>;
+
+        // Get total cost of order items
         let total = items.map(({ totalCost }) => totalCost).reduce((a, b) => a + b, 0);
+
+        // Get order items
         let list = items.map(({ productId, name, quantity, totalCost}, i) => {
             return (
                 <div key={i} className="item" id={`order-${id}-item-${productId}`}>
@@ -64,6 +84,7 @@ const Order = props => {
             )
         });
 
+        // Return order items
         return (
             <>
                 {list}
@@ -77,14 +98,7 @@ const Order = props => {
         )
     };
 
-    const viewItems = e => {
-        e.preventDefault();
-        setFetchItems(fetchItems ? false : true);
-
-        const items = document.getElementById(`items-${id}`);
-        items.classList.toggle("show");
-    }
-
+    // Component
     return (
         <>
             <div className="order-body">

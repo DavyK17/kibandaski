@@ -6,8 +6,10 @@ import Orders from "./Orders/Orders";
 import capitalise from "../../util/capitalise";
 
 const Primary = props => {
+    // Destructure props
     const { view, user, activeClassName, windowWidth, iconHeight } = props;
 
+    // Define function to render correct view
     const renderView = (view, type) => {
         switch (view) {
             case "admin":
@@ -26,6 +28,7 @@ const Primary = props => {
         }
     }
 
+    // Return component
     return (
             <section className="primary">
                 <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>

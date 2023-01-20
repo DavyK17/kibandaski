@@ -9,38 +9,45 @@ import { Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Menu = props => {
+    // Destructure props
     const { user, windowWidth, iconHeight } = props;
+
+    // Define server and useNavigate()
     const Server = Customer.products;
     let navigate = useNavigate();
 
+    // STATE + FUNCTIONS
+    // Menu and menu items
     const [menu, setMenu] = useState([]);
     const [items, setItems] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchProducts = async() => {
-            setIsLoading(true);
+    const fetchItems = async() => {
+        setIsLoading(true);
 
-            try {
-                let products = await Server.getProducts();
-                if (products) {
-                    setMenu(products);
-                    setItems(products);
-                    setIsLoading(false);
-                }
-            } catch (err) {
-                setError(true);
-                console.log(err);
+        try {
+            let products = await Server.getProducts();
+            if (products) {
+                setMenu(products);
+                setItems(products);
+                setIsLoading(false);
             }
+        } catch (err) {
+            setError(true);
+            console.log(err);
         }
+    }
 
-        fetchProducts();
+    useEffect(() => {
+        fetchItems();
         // eslint-disable-next-line
     }, []);
 
+    // Product category
     const [category, setCategory] = useState("all");
+    const changeCategory = ({ target }) => setCategory(target.value);
     useEffect(() => {
         if (category === "all") return setItems(menu);
         let items = menu.filter(item => item.category === category);
@@ -48,37 +55,42 @@ const Menu = props => {
         // eslint-disable-next-line
     }, [category]);
 
-    const changeCategory = ({ target }) => setCategory(target.value);
-
+    // RENDERING
+    // Menu items
     const renderItems = () => {
+        // Return skeleton if loading
         if (isLoading) return <Skeleton />;
+
+        // Return error message if error
         if (error) return <p className="error">An error occurred loading the menu. Kindly refresh the page and try again.</p>;
 
-        let list = () => {
-            if (items) return items.map(({ id, name, description, price, category }, i) => {
-                const addToCart = async e => {
-                    e.preventDefault();
-                    if (!user) return navigate("/login");
+        // Get menu items
+        let list = () => items.map(({ id, name, description, price, category }, i) => {
+            // Define function to add item to cart
+            const addToCart = async e => {
+                e.preventDefault();
+                if (!user) return navigate("/login");
 
-                    const Server = Customer.cart;
-                    const status = document.getElementById("status");
-            
-                    status.textContent = "Adding to cart…";
-                    let response = await Server.addToCart(id);
-                    if (!response.includes("Added to cart")) return displayErrorMessage(response);
+                const Server = Customer.cart;
+                const status = document.getElementById("status");
+        
+                status.textContent = "Adding to cart…";
+                let response = await Server.addToCart(id);
+                if (!response.includes("Added to cart")) return displayErrorMessage(response);
 
-                    status.textContent = "Item added to cart";
-                    setTimeout(() => status.textContent = null, 3000);
-                }
+                status.textContent = "Item added to cart";
+                setTimeout(() => status.textContent = null, 3000);
+            }
 
-                return (
-                    <li key={i}>
-                        <Item id={id} name={name} description={description} price={price} category={category} windowWidth={windowWidth} iconHeight={iconHeight} addToCart={addToCart} />
-                    </li>
-                )
-            });
-        };
+            // Return menu item
+            return (
+                <li key={i}>
+                    <Item id={id} name={name} description={description} price={price} category={category} windowWidth={windowWidth} iconHeight={iconHeight} addToCart={addToCart} />
+                </li>
+            )
+        });
 
+        // Return menu items
         return (
             <ul>
                 {list()}
@@ -86,6 +98,7 @@ const Menu = props => {
         )
     };
 
+    // Component
     return (
         <>
             <div className="menu">
@@ -93,7 +106,7 @@ const Menu = props => {
                 {renderItems()}
             </div>
         </>
-    );
+    )
 }
 
 export default Menu;

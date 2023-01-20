@@ -6,8 +6,10 @@ import Nav from "./SecondaryNav";
 import capitalise from "../../util/capitalise";
 
 const Secondary = props => {
+    // Destructure props
     const { view, user, setUser, activeClassName, iconHeight } = props;
 
+    // Define function to render correct view
     const renderView = (view, type) => {
         switch (view) {
             case "account":
@@ -30,6 +32,7 @@ const Secondary = props => {
         }
     }
 
+    // Return component
     return (
         <section className="secondary">
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>

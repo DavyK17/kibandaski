@@ -4,9 +4,13 @@ import { Auth as Server } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Auth = props => {
+    // Destructure props
     const { view, setUser } = props;
+
+    // Define useNavigate()
     let navigate = useNavigate();
 
+    // Define form elements
     const names = (
         <div className="names">
             <label className="sr-only" htmlFor="firstName">First name</label>
@@ -38,6 +42,7 @@ const Auth = props => {
         </>
     )
 
+    // Define form submit function
     const handleSubmit = async e => {
         e.preventDefault();
         const status = document.getElementById("status");
@@ -63,6 +68,7 @@ const Auth = props => {
         }
     }
 
+    // Return component
     return (
         <form className="auth" autoComplete="off" onSubmit={handleSubmit}>
             {view === "register" ? names : null}
@@ -71,7 +77,7 @@ const Auth = props => {
             {password}
             <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
         </form>
-    );
+    )
 }
 
 export default Auth;

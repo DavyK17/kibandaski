@@ -2,12 +2,18 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const CartHome = props => {
+    // Destructure props
     const { iconHeight, user } = props;
+
+    // Define useLocation() and useNavigate(0)
     let location = useLocation();
     let navigate = useNavigate();
 
+    // Define primary and secondary paths
     const primary = ["/", "/menu", "/orders", "/admin"];
     const secondary = ["/login", "/register", "/account", "/cart"];
+
+    // Define function to check whether current path is primary or secondary
     const checkPathFor = type => {
         let current;
         if (type === "primary") current = primary;
@@ -17,6 +23,7 @@ const CartHome = props => {
         return current.length > 0 ? true : false;
     }
 
+    // Define icons
     const Cart = (
         <svg id="iconCart" width={iconHeight} height={iconHeight} viewBox="0 0 24 24">
             <path id="pathCart" style={{ fill:"#ffffff" }} d="M4.558 7l4.701-4.702c.199-.198.46-.298.721-.298.613 0 1.02.505 1.02 1.029 0 .25-.092.504-.299.711l-3.26 3.26h-2.883zm12.001 0h2.883l-4.701-4.702c-.199-.198-.46-.298-.721-.298-.613 0-1.02.505-1.02 1.029 0 .25.092.504.299.711l3.26 3.26zm3.703 4l-.016.041-3.598 8.959h-9.296l-3.597-8.961-.016-.039h16.523zm3.738-2h-24v2h.643c.534 0 1.021.304 1.256.784l4.101 10.216h12l4.102-10.214c.233-.481.722-.786 1.256-.786h.642v-2z" />
@@ -29,19 +36,21 @@ const CartHome = props => {
         </svg>
     )
 
+    // Define click handler
     const handleClick = e => {
         e.preventDefault();
         if (e.target.id === "iconCart" && checkPathFor("primary") && user) navigate("/cart");
         if (e.target.id  === "iconHome" && checkPathFor("secondary")) navigate("/");
     }
     
+    // Set state
     let [icon, setIcon] = useState(user ? (checkPathFor("primary") ? Cart : Home) : Home);
     useEffect(() => {
-        if (user) setIcon(checkPathFor("primary") ? Cart : Home);
-        else setIcon(Home);
+        user ? setIcon(checkPathFor("primary") ? Cart : Home) : setIcon(Home);
         // eslint-disable-next-line
     }, [location, user]);
 
+    // Return component
     return (
         <span onClick={handleClick}>
             {icon}
