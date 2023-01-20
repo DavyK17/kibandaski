@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 
 import EditDetails from "./EditDetails";
 
-import { Auth, Customer } from "../../../api/Server";
+import { Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Account = props => {
