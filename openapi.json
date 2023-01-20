@@ -952,7 +952,24 @@
                                         "$ref": "#/components/schemas/names"
                                     },
                                     {
-                                        "$ref": "#/components/schemas/login"
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "currentPassword": {
+                                                "type": "string"
+                                            },
+                                            "newPassword": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "example": {
+                                            "email": "thisisan@email.com",
+                                            "currentPassword": "kibandaskiCustomer",
+                                            "newPassword": "kibandaskiCustomer2"
+                                        }
                                     }
                                 ]
                             }
@@ -994,12 +1011,16 @@
                         }
                     },
                     "401": {
-                        "description": "An error message (if user ID in session is invalid)",
+                        "description": "An error message (if user ID in session is invalid or current password is incorrect)",
                         "content": {
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "example": "Error: Invalid user ID in session."
+                                    "example": "Error: Invalid user ID in session.",
+                                    "examples": [
+                                        "Error: Invalid user ID in session.",
+                                        "Error: Incorrect password provided."
+                                    ]
                                 }
                             }
                         }
