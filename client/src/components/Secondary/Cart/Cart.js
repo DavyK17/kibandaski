@@ -84,11 +84,11 @@ const Cart = props => {
     // RENDERING
     // Cart items
     const renderItems = () => {
-        // Return skeleton if loading
-        if (isLoading) return <Skeleton />;
-
         // Return error message if error
         if (error) return <p className="error">An error occurred loading your cart. Kindly refresh the page and try again.</p>;
+
+        // Return skeleton if loading
+        if (isLoading) return <Skeleton />;
 
         // Do the following if cart has been fetched
         if (cart) {

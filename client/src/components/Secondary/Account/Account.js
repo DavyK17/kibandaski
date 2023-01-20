@@ -62,11 +62,11 @@ const Account = () => {
     // RENDERING
     // Details
     const renderBody = () => {
-        // Return skeleton if loading
-        if (isLoading) return <Skeleton />
-
         // Return error message if error
         if (error) return <p className="error">An error occurred loading your account details. Kindly refresh the page and try again.</p>;
+
+        // Return skeleton if loading
+        if (isLoading) return <Skeleton />;
 
         // Do the following if details have been fetched
         if (details) {

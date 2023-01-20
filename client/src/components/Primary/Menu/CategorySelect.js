@@ -37,11 +37,11 @@ const CategorySelect = props => {
     // RENDERING
     // Dropdown
     const renderBody = () => {
-        // Return skeleton if loading
-        if (isLoading) return <Skeleton />;
-
         // Return error message if error
         if (error) return <p className="error">An error occurred loading product categories. Kindly refresh the page and try again.</p>;
+
+        // Return skeleton if loading
+        if (isLoading) return <Skeleton />;
 
         // Define function to render product categories
         const renderOptions = () => categories.map((category, i) => <option key={i} value={category}>{capitalise(category)}</option>);

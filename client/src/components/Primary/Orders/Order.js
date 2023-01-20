@@ -61,11 +61,11 @@ const Order = props => {
     // RENDERING
     // Order items
     const renderItems = () => {
-        // Return skeleton if loading items
-        if (isLoadingItems) return <Skeleton />;
-
         // Return error message if error
         if (error) return <p className="error">An error occurred loading order items. Kindly refresh the page and try again.</p>;
+
+        // Return skeleton if loading items
+        if (isLoadingItems) return <Skeleton />;
 
         // Get total cost of order items
         let total = items.map(({ totalCost }) => totalCost).reduce((a, b) => a + b, 0);
