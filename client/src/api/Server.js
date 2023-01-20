@@ -103,7 +103,10 @@ export const Customer = {
                 url.search = new URLSearchParams({ id }).toString();
 
                 let response = await fetch(url, { method: "DELETE" });
-                if (response.ok) return response.text();
+                if (response.status !== 503) {
+                    if (!response.ok) return response.text();
+                    return;
+                }
             } catch (err) {
                 console.log(err);
             }
@@ -138,7 +141,10 @@ export const Customer = {
         emptyCart: async function(id) {
             try {
                 let response = await fetch(this.url, { method: "DELETE" });
-                if (response.ok) return response.text();
+                if (response.status !== 503) {
+                    if (!response.ok) return response.text();
+                    return;
+                }
             } catch (err) {
                 console.log(err);
             }
