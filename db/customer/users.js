@@ -126,6 +126,7 @@ const updateUser = async(req, res) => {
         email = email || old.email;
         if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
+        if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
 
         // Do the following if current password provided
         if (currentPassword) {
