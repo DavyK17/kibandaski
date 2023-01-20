@@ -127,16 +127,22 @@ const updateUser = async(req, res) => {
         if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
         email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
 
-        // Do the following if new password provided
-        if (currentPassword && newPassword) {
-            // Send error if current password is incorrect
-            const currentPasswordMatch = await bcrypt.compare(trim(currentPassword), old.password);
-            if (!currentPasswordMatch) return res.status(401).send("Error: Incorrect password provided.");
+        // Do the following if current password provided
+        if (currentPassword) {
+            // Send error if new password not provided
+            if (!newPassword) return res.status(400).send("Error: No new password provided.");
 
-            // Send error if no updates made
-            const newPasswordMatch = await bcrypt.compare(newPassword, old.password);
-            if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && newPasswordMatch)
-                return res.status(400).send("Error: No updates provided.");
+            // Do the following if new password provided
+            if (newPassword) {
+                // Send error if current password is incorrect
+                const currentPasswordMatch = await bcrypt.compare(trim(currentPassword), old.password);
+                if (!currentPasswordMatch) return res.status(401).send("Error: Incorrect password provided.");
+
+                // Send error if no updates made
+                const newPasswordMatch = await bcrypt.compare(newPassword, old.password);
+                if (old.firstName === firstName && old.lastName === lastName && old.phone === phone && old.email === email && newPasswordMatch)
+                    return res.status(400).send("Error: No updates provided.");
+            }
         }
 
         // Hash new password if present
