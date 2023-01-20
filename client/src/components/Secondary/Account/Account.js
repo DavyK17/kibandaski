@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 
 import EditDetails from "./EditDetails";
 
-import { Customer } from "../../../api/Server";
+import { Auth, Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Account = () => {
@@ -53,10 +53,11 @@ const Account = () => {
         if (typeof response === "string") return displayErrorMessage(response);
 
         status.textContent = "Account deleted successfully";
-        setTimeout(() => {
+        response = await Auth.logout();
+        if (response === "Logout successful") {
             navigate("/menu");
             status.textContent = null;
-        }, 3000);
+        }
     }
 
     // RENDERING
@@ -76,7 +77,7 @@ const Account = () => {
                 
                 status.textContent = "Updating details…";
                 let response = await Server.updateAccount(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value, e.target[5].value);
-                if (!response.includes("User updated")) return displayErrorMessage(response);
+                if (response !== "Account updated successfully") return displayErrorMessage(response);
                 
                 status.textContent = null;
                 setEdit(false);
