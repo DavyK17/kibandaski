@@ -34,6 +34,7 @@ const Account = () => {
 
     useEffect(() => {
         fetchDetails();
+        // eslint-disable-next-line
     }, []);
 
     // Edit details
@@ -69,24 +70,24 @@ const Account = () => {
 
         // Do the following if details have been fetched
         if (details) {
-            // Destructure details
-            const { firstName, lastName, phone, email } = details;
-
             // Define function to update details
             const updateDetails = async e => {
                 e.preventDefault();
-    
+                
                 status.textContent = "Updating details…";
                 let response = await Server.updateAccount(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value, e.target[5].value);
                 if (!response.includes("User updated")) return displayErrorMessage(response);
-
-                status.textContent = "Details updated successfully";
+                
+                status.textContent = null;
+                setEdit(false);
                 fetchDetails();
-                setTimeout(() => status.textContent = null, 3000);
             }
 
             // Return edit component if corresponding button is clicked
             if (edit) return <EditDetails handleBack={toggleEdit} handleSubmit={updateDetails} />;
+
+            // Destructure details
+            const { firstName, lastName, phone, email } = details;
 
             // Return details
             return (

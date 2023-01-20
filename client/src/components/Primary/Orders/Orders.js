@@ -68,14 +68,13 @@ const Orders = props => {
             const cancelOrder = async e => {
                 e.preventDefault();
                 const status = document.getElementById("status");
-        
+                
                 status.textContent = "Cancelling order…";
                 let response = await Server.cancelOrder(id);
                 if (typeof response === "string") return displayErrorMessage(response);
-        
-                status.textContent = "Order cancelled successfully";
+                
+                status.textContent = null;
                 fetchOrders();
-                setTimeout(() => status.textContent = null, 3000);
             }
 
             // Return order

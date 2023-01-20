@@ -103,14 +103,13 @@ const Cart = props => {
                 // Define function to change cart item quantity
                 const changeItemQuantity = async e => {
                     e.preventDefault();
-    
+                    
                     status.textContent = "Updating quantity…";
                     let response = await Server.item.updateItem(productId, e.target[0].value);
                     if (!response.includes("Quantity updated in cart")) return displayErrorMessage(response);
-    
-                    status.textContent = "Item quantity updated successfully";
+                    
+                    status.textContent = null;
                     fetchCart();
-                    setTimeout(() => status.textContent = null, 3000);
                 }
     
                 // Define function to remove cart item
@@ -120,10 +119,9 @@ const Cart = props => {
                     status.textContent = "Removing item…";
                     let response = await Server.item.removeItem(productId);
                     if (typeof response === "string") return displayErrorMessage(response);
-    
-                    status.textContent = "Item removed successfully";
+                    
+                    status.textContent = null;
                     fetchCart();
-                    setTimeout(() => status.textContent = null, 3000);
                 }
     
                 // Return cart item
