@@ -55,11 +55,8 @@ const getUsersByRole = async(req, res) => {
         // Get users in role
         let result = await pool.query("SELECT id, first_name, last_name, phone, email FROM users WHERE role = $1 ORDER BY id ASC", [role]);
 
-        // Send error if no users found in role
-        if (result.rows.length === 0) return res.status(404).send("Error: No users found in provided role.");
-
         // Add each user in role to users array
-        result.rows.forEach(({ id, first_name, last_name, phone, email }) => {
+        if (result.rows.length > 0) result.rows.forEach(({ id, first_name, last_name, phone, email }) => {
             let user = { id, firstName: first_name, lastName: last_name, phone: Number(phone), email };
             users.push(user);
         });

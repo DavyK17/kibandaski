@@ -33,11 +33,8 @@ const getOrders = async(req, res) => {
             // Get orders
             let result = await pool.query("SELECT id, user_id, created_at, status FROM orders ORDER BY created_at DESC");
 
-            // Send error if no orders found
-            if (result.rows.length === 0) return res.status(404).send("Error: No orders found.");
-
             // Add each order to orders array
-            result.rows.forEach(({ id, user_id, created_at, status }) => {
+            if (result.rows.length > 0) result.rows.forEach(({ id, user_id, created_at, status }) => {
                 let order = { id, userId: user_id, createdAt: created_at, status };
                 orders.push(order);
             });
@@ -62,11 +59,8 @@ const getOrdersByUser = async(req, res) => {
         // Get orders by user
         let result = await pool.query("SELECT id, created_at, status FROM orders WHERE user_id = $1 ORDER BY created_at DESC", [id]);
 
-        // Send error if no orders found by user
-        if (result.rows.length === 0) return res.status(404).send("Error: No orders found from provided user.");
-
         // Add each order to orders array
-        result.rows.forEach(({ id, created_at, status }) => {
+        if (result.rows.length > 0) result.rows.forEach(({ id, created_at, status }) => {
             let order = { id, createdAt: created_at, status };
             orders.push(order);
         });
