@@ -11,6 +11,10 @@
             text-transform: uppercase;
             margin-bottom: 1rem;
             padding: 0.2rem 0.25rem;
+            &:hover,
+            &:focus {
+                cursor: pointer;
+            }
         }
         #status {
             text-align: end;
