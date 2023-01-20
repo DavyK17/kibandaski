@@ -56,7 +56,6 @@ const CategorySelect = props => {
                         {renderOptions()}
                     </select>
                 </div>
-                <p id="status"></p>
             </>
         )
     }
