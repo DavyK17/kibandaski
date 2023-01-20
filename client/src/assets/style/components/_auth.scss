@@ -21,7 +21,8 @@
             transition: background-color 0.1s ease-in-out;
         }
     }
-    .names {
+    .names,
+    .password {
         display: flex;
         justify-content: space-between;
         gap: 1rem;
