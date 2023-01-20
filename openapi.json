@@ -978,7 +978,8 @@
                                         "Error: Invalid phone number provided (must be 254XXXXXXXXX).",
                                         "Error: Phone must be Kenyan (starts with \"254\").",
                                         "Error: Email must be a string.",
-                                        "Error: Invalid email provided."
+                                        "Error: Invalid email provided.",
+                                        "Error: No new password provided."
                                     ]
                                 }
                             }
