@@ -14,7 +14,7 @@ const Secondary = props => {
         switch (view) {
             case "account":
                 if (type === "string") return "account";
-                if (type === "component") return <Account />;
+                if (type === "component") return <Account setUser={setUser} />;
                 break;
             case "cart":
                 if (type === "string") return "cart";
