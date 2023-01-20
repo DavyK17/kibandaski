@@ -55,15 +55,13 @@ const Orders = props => {
         if (isLoading) return <Skeleton />;
         if (error) return <p className="error">An error occurred loading your orders. Kindly refresh the page and try again.</p>;
 
-        if (items.length > 0) return items.map(({ id, createdAt, status }, i) => {
+        return items.length === 0 ? <p>No orders to show.</p> : items.map(({ id, createdAt, status }, i) => {
             return (
                 <li key={i}>
                     <Order id={id} createdAt={createdAt} status={status} windowWidth={windowWidth} iconHeight={iconHeight} cancelOrder={cancelOrder} />
                 </li>
             )
         });
-
-        return <p>No orders to show.</p>;
     };
 
     return (
