@@ -1,19 +1,21 @@
 .primary {
     background-color: snow;
     min-height: inherit;
-    .category-select-container {
-        margin-bottom: 1rem;
-        .category-select select {
-            width: 250px;
-            color: $header-bg-color;
-            font-size: 1rem;
-            font-family: $font-header;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            padding: 0.2rem 0.25rem;
-            &:hover,
-            &:focus {
-                cursor: pointer;
+    .sort {
+        margin-bottom: 0.75rem;
+        .category-select-container {
+            .category-select select {
+                width: 250px;
+                color: $header-bg-color;
+                font-size: 1rem;
+                font-family: $font-header;
+                text-transform: uppercase;
+                margin-bottom: 1rem;
+                padding: 0.2rem 0.25rem;
+                &:hover,
+                &:focus {
+                    cursor: pointer;
+                }
             }
         }
         #status {
@@ -236,12 +238,14 @@
 
 @media only screen and (max-width: 991px) {
     .primary {
-        .category-select-container {
-            .category-select {
-                text-align: center;
-                select {
+        .sort {
+            .category-select-container {
+                .category-select {
                     text-align: center;
-                    margin-bottom: 0.5rem;
+                    select {
+                        text-align: center;
+                        margin-bottom: 0.5rem;
+                    }
                 }
             }
             #status {
