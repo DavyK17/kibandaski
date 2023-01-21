@@ -16,9 +16,8 @@ const Order = props => {
         return dateTime.format(new Date(createdAt));
     }
     
-    // Define order cancel button and icon
-    const cancelButton = <button className="cancel-order" onClick={cancelOrder}>Cancel order</button>;
-    const cancelIcon = (
+    // Define order cancel icon
+    const OrderCancel = (
         <svg id="iconOrderCancel" width={iconHeight} height={iconHeight} viewBox="0 0 24 24">
             <path id="pathOrderCancel" style={{ fill:"#ffffff" }} d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5 15.538l-3.592-3.548 3.546-3.587-1.416-1.403-3.545 3.589-3.588-3.543-1.405 1.405 3.593 3.552-3.547 3.592 1.405 1.405 3.555-3.596 3.591 3.55 1.403-1.416z"/>
         </svg>
@@ -112,8 +111,8 @@ const Order = props => {
                 </div>
             </div>
             <div className="order-footer">
-                <p className="status">{capitalise(status)}</p>
-                {status === "pending" ? (windowWidth > 991 ? cancelButton : cancelIcon) : null}
+                <p className="status" id={`order-${id}-status`}>{capitalise(status)}</p>
+                {status === "pending" ? <button className="cancel-order" onClick={cancelOrder}>{windowWidth > 991 ? "Cancel order" : OrderCancel}</button> : null}
             </div>
         </>
     )

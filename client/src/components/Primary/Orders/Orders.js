@@ -5,6 +5,8 @@ import Order from "./Order";
 import StatusSelect from "./StatusSelect";
 
 import { Customer } from "../../../api/Server";
+
+import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Orders = props => {
@@ -67,14 +69,22 @@ const Orders = props => {
             // Define function to cancel order
             const cancelOrder = async e => {
                 e.preventDefault();
-                const status = document.getElementById("status");
-                
-                status.textContent = "Cancelling order…";
+
+                const mainStatus = document.getElementById("status");
+                const cancelStatus = document.getElementById(`order-${id}-status`);
+
+                mainStatus.textContent = null;
+                cancelStatus.textContent = "Cancelling order…";
+
                 let response = await Server.cancelOrder(id);
-                if (typeof response === "string") return displayErrorMessage(response);
-                
-                status.textContent = null;
-                fetchOrders();
+                if (typeof response === "string") {
+                    displayErrorMessage(response);
+                    cancelStatus.textContent = "Error";
+                } else {
+                    fetchOrders();
+                }
+
+                setTimeout(() => cancelStatus.textContent = capitalise(status), 3000);
             }
 
             // Return order
