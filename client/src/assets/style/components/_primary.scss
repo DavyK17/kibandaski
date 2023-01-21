@@ -70,7 +70,7 @@
                     background-color: $header-bg-color;
                     color: white;
                     padding: 0.5rem;
-                    grid-template: auto / 1fr 1fr 1fr;
+                    grid-template: auto / 1fr 2fr 1fr;
                     grid-template-areas: "id category button";
                     align-items: center;
                     .id {
@@ -209,16 +209,13 @@
                         opacity: 0.8;
                         justify-self: start;
                     }
-                    .cancel-order,
-                    #iconOrderCancel {
-                        justify-self: end;
-                    }
                     .cancel-order {
                         grid-area: button;
                         width: fit-content;
                         font-family: $font-body;
                         font-size: 0.75rem;
                         border: unset;
+                        justify-self: end;
                     }
                 }
             }
