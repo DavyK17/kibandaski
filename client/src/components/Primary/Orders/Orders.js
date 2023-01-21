@@ -90,7 +90,9 @@ const Orders = props => {
     return (
         <>
             <div className="orders">
-                <StatusSelect handleChange={changeStatus} />
+                <div className="sort">
+                    <StatusSelect handleChange={changeStatus} />
+                </div>
                 <ul>
                     {renderOrders()}
                 </ul>
