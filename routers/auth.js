@@ -1,7 +1,7 @@
 /* IMPORTS */
 // General
 const router = require("express").Router();
-const db = require("../db/index");
+const db = require("../db/index").auth;
 const pool = require("../db/pool");
 
 // connect-ensure-login
@@ -12,7 +12,7 @@ const passport = require("passport");
 
 // Strategies
 const LocalStrategy = require("passport-local").Strategy;
-passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, db.auth.loginLocal));
+passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, db.loginLocal));
 
 // Serialize and Deserealize
 passport.serializeUser(async(user, done) => {
@@ -31,11 +31,11 @@ passport.deserializeUser((user, done) => done(null, user));
 // Login required
 router.all("/user", loggedIn, (req, res) => res.json(req.user));
 
-router.get("/logout", db.auth.logout);
+router.get("/logout", db.logout);
 
 // Logout required
 router.get("/register", loggedOut, (req, res) => res.send("Create a new account"));
-router.post("/register", loggedOut, db.customer.users.createUser);
+router.post("/register", loggedOut, db.register);
 
 router.post("/login", (req, res, next) => {
     passport.authenticate(["local"], (err, user) => {
