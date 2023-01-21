@@ -7,6 +7,8 @@ import CategorySelect from "./CategorySelect";
 import ItemSort from "./ItemSort";
 
 import { Customer } from "../../../api/Server";
+
+import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Menu = props => {
@@ -119,14 +121,21 @@ const Menu = props => {
                 if (!user) return navigate("/login");
 
                 const Server = Customer.cart;
-                const status = document.getElementById("status");
+                const mainStatus = document.getElementById("status");
+                const addStatus = document.getElementById(`item-${id}-status`);
         
-                status.textContent = "Adding to cart…";
-                let response = await Server.addToCart(id);
-                if (!response.includes("Added to cart")) return displayErrorMessage(response);
+                mainStatus.textContent = null;
+                addStatus.textContent = "Adding to cart…";
 
-                status.textContent = "Item added to cart";
-                setTimeout(() => status.textContent = null, 3000);
+                let response = await Server.addToCart(id);
+                if (!response.includes("Added to cart")) {
+                    displayErrorMessage(response);
+                    addStatus.textContent = "Error";
+                } else {
+                    addStatus.textContent = "Item added to cart";
+                }
+
+                setTimeout(() => addStatus.textContent = capitalise(category), 3000);
             }
 
             // Return menu item

@@ -25,7 +25,7 @@ const Item = props => {
             </div>
             <div className="item-footer">
                 <p className="id">#{id}</p>
-                <p className="category">{capitalise(category)}</p>
+                <p className="category" id={`item-${id}-status`}>{capitalise(category)}</p>
                 <button className="add-to-cart" onClick={addToCart}>{windowWidth > 991 ? "Add to Cart" : CartAdd}</button>
             </div>
         </>
