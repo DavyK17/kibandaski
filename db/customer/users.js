@@ -1,15 +1,11 @@
 // IMPORTS
 const bcrypt = require("bcrypt");
 const pool = require("../pool");
+
+const checkPhone = require("../../util/checkPhone");
 const idGen = require("../../util/idGen");
 const { isEmail, isNumeric, isLength, trim, escape, normalizeEmail } = require("validator");
 const sanitizeHtml = require("../../util/sanitizeHtml");
-
-// KENYAN PHONE NUMBER VALIDATOR
-const checkPhone = value => {
-    if (value.match(/^254((20|4[0-6]|5\d|6([0-2]|[4-9]))\d{7}|1[0-1]\d{7}|7\d{8})$/)) return true;
-    return false;
-};
 
 // FUNCTIONS
 const getUser = async(req, res) => {
@@ -120,7 +116,7 @@ const updateUser = async(req, res) => {
         phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
         if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only.");
         if (!isLength(phone, { min: 12, max: 12 })) return res.status(400).send("Error: Invalid phone number provided (must be 254XXXXXXXXX).");
-        if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be Kenyan (starts with \"254\").");
+        if (!checkPhone("general", phone)) return res.status(400).send("Error: Phone must be Kenyan (starts with \"254\").");
 
         // Email
         email = email || old.email;

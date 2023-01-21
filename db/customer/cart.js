@@ -1,15 +1,11 @@
 // IMPORTS
 const axios = require("axios");
 const pool = require("../pool");
+
+const checkPhone = require("../../util/checkPhone");
 const idGen = require("../../util/idGen");
 const { isNumeric, isLength, trim } = require("validator");
 const sanitizeHtml = require("../../util/sanitizeHtml");
-
-// M-PESA NUMBER VALIDATOR
-const checkPhone = value => {
-    if (value.match(/^254(11[0-5]|7(([0-2]|9)\d|4([0-6]|8)|5[7-9]|6[8-9]))\d{6}$/)) return true;
-    return false;
-}
 
 // FUNCTIONS
 const getCart = async(req, res) => {
@@ -189,7 +185,7 @@ const beginCheckout = async(req, res, next) => {
     phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
     if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only.");
     if (!isLength(phone, { min: 12, max: 12 })) return res.status(400).send("Error: Invalid phone number provided (must be 254XXXXXXXXX).");
-    if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be a Safaricom number.");
+    if (!checkPhone("safaricom", phone)) return res.status(400).send("Error: Phone must be a Safaricom number.");
 
     // User ID
     let userId = trim(req.user.id);
