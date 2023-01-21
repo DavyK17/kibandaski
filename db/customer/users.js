@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const pool = require("../pool");
 
 const checkPhone = require("../../util/checkPhone");
-const idGen = require("../../util/idGen");
 const { isEmail, isNumeric, isLength, trim, escape, normalizeEmail } = require("validator");
 const sanitizeHtml = require("../../util/sanitizeHtml");
 
@@ -24,56 +23,6 @@ const getUser = async(req, res) => {
             phone: parseInt(result.rows[0].phone),
             email: result.rows[0].email
         });
-    } catch (err) {
-        res.status(500).send("An unknown error occurred. Kindly try again.");
-    }
-}
-
-const createUser = async(req, res) => {
-    // Generate user ID and cart ID
-    const userId = idGen(7);
-    const cartId = idGen(7);
-
-    // VALIDATION AND SANITISATION
-    let { firstName, lastName, phone, email, password } = req.body;
-
-    // First name
-    if (typeof firstName !== "string") return res.status(400).send("Error: First name must be a string.");
-    firstName = sanitizeHtml(trim(escape(firstName)));
-
-    // Last name
-    if (typeof lastName !== "string") return res.status(400).send("Error: Last name must be a string.");
-    lastName = sanitizeHtml(trim(escape(lastName)));
-
-    // Phone number
-    if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
-    phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
-    if (!isNumeric(phone, { no_symbols: true })) return res.status(400).send("Error: Phone must contain numbers only.");
-    if (!isLength(phone, { min: 12, max: 12 })) return res.status(400).send("Error: Invalid phone number provided (must be 254XXXXXXXXX).");
-    if (!checkPhone(phone)) return res.status(400).send("Error: Phone must be Kenyan (starts with \"254\").");
-
-    // Email
-    if (typeof email !== "string") return res.status(400).send("Error: Email must be a string.");
-    email = sanitizeHtml(normalizeEmail(trim(escape(email)), { gmail_remove_dots: false }));
-    if (!isEmail(email)) return res.status(400).send("Error: Invalid email provided.");
-
-    // Password
-    const salt = await bcrypt.genSalt(17);
-    const passwordHash = await bcrypt.hash(trim(password), salt);
-
-    try {
-        // Send error if email already exists in database
-        let result = await pool.query("SELECT email FROM users WHERE email = $1", [email]);
-        if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists.");
-
-        // Add user to database
-        let text = `INSERT INTO users (id, first_name, last_name, phone, email, password, created_at) VALUES ($1, $2, $3, $4, $5, $6, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
-        let values = [userId, firstName, lastName, phone, email, passwordHash];
-        result = await pool.query(text, values);
-        res.status(201).send(`User created with ID: ${result.rows[0].id}`);
-
-        // Add user cart to database
-        result = await pool.query("INSERT INTO carts (id, user_id) VALUES ($1, $2) RETURNING id", [cartId, userId]);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
@@ -200,4 +149,4 @@ const deleteUser = async(req, res) => {
     }
 }
 
-module.exports = { getUser, createUser, updateUser, deleteUser };
+module.exports = { getUser, updateUser, deleteUser };
