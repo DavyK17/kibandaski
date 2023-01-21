@@ -22,7 +22,6 @@ const StatusSelect = props => {
                     {renderOptions()}
                 </select>
             </div>
-            <p id="status"></p>
         </div>
     )
 }
