@@ -54,7 +54,7 @@ const EditDetails = props => {
                 <button type="submit">Update details</button>
             </div>
         </form>
-    );
+    )
 }
 
 export default EditDetails;

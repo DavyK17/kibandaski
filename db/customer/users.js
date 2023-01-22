@@ -104,7 +104,7 @@ const updateUser = async(req, res) => {
         if (result.rows[0].id === userId) {
             req.user.email = email;
             res.status(200).send("Account updated successfully");
-        };
+        }
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
