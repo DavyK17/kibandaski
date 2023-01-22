@@ -64,7 +64,7 @@ const App = () => {
                     {renderRoute(2, "/login", user ? "account" : "login")}
 
                     <Route path="register">
-                        {renderRoute(2, "/confirm-federated", !user.confirmDetails ? "account" : "confirm-federated")}
+                        {renderRoute(2, "confirm-federated", user && !user.confirmDetails ? "account" : "confirm-federated")}
                         {renderRoute(2, "", user ? "account" : "register")}
                     </Route>
                     
