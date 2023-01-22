@@ -8,6 +8,13 @@ const idGen = require("../util/idGen");
 const { isEmail, isNumeric, isLength, trim, escape, normalizeEmail } = require("validator");
 const sanitizeHtml = require("../util/sanitizeHtml");
 
+// Login attempt log function
+const loginAttempt = async(id, ip, email, strategy, success) => {
+    let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, strategy, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), $4, $5)`;
+    let values = [id, ip, email, strategy, success];
+    return await pool.query(text, values);
+}
+
 // FUNCTIONS
 const register = async(req, res) => {
     // Generate user ID and cart ID
@@ -77,13 +84,8 @@ const loginLocal = async(req, email, password, done) => {
     // Get request IP address
     const ip = requestIP.getClientIp(req);
 
-    // Generate login attempt ID and define function to log attempts
+    // Generate login attempt ID
     const attemptId = idGen(15);
-    const logAttempt = async(success) => {
-        let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), ${success})`;
-        let values = [attemptId, ip, email];
-        return await pool.query(text, values);
-    }
 
     // Validate and sanitise email
     if (!email) return done({ status: 400, message: "Error: No email provided." });
@@ -99,23 +101,44 @@ const loginLocal = async(req, email, password, done) => {
 
         // Send error if user does not exist
         if (result.rows.length === 0) {
-            await logAttempt(false);
+            await loginAttempt(attemptId, ip, email, "local", false);
             return done({ status: 401, message: "Error: Incorrect email or password provided." });
         };
 
         // Send null if password hashes do not match
         const passwordMatch = await bcrypt.compare(password, result.rows[0].password);
         if (!passwordMatch) {
-            await logAttempt(false);
+            await loginAttempt(attemptId, ip, email, "local", false);
             return done({ status: 401, message: "Error: Incorrect email or password provided." });
         };
 
         // Add user to session
-        await logAttempt(true);
+        await loginAttempt(attemptId, ip, email, "local", true);
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
         return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
     }
 }
 
-module.exports = { logout, loginLocal, register };
+const loginGoogle = async(req, accessToken, refreshToken, profile, done) => {
+    // Send error if already logged in
+    if (req.user) return done({ status: 403, message: "Error: You are already logged in." });
+
+    // Get request IP address
+    const ip = requestIP.getClientIp(req);
+
+    // Generate login attempt ID
+    const attemptId = idGen(15);
+
+    // Continue from here - remaining tasks:
+    /// 1. Add federated credentials table to database
+    /// 2. Add user's Google details to federated credentials table
+    /// 3. Create account for user and link to federated credentials
+    /// 4. Redirect user to route where they can confirm their details (including adding a phone number and password)
+
+    // Add user to session
+    await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
+    // return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
+}
+
+module.exports = { register, logout, loginLocal, loginGoogle };
