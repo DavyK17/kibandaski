@@ -138,6 +138,9 @@ const deleteUser = async(req, res) => {
         result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [cartId]);
         result = await pool.query("DELETE FROM carts WHERE id = $1", [cartId]);
 
+        // Delete federated details
+        result = await pool.query("DELETE FROM federated_details WHERE user_id", [userId]);
+
         // Delete user and log out
         result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [userId]);
         if (result.rows[0].id === userId) req.logout(err => {
