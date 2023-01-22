@@ -24,9 +24,7 @@ const ConfirmDetails = props => {
                     <input type="password" id="confirm-password" placeholder="Confirm password" required />
                 </div>
             </div>
-            <div className="buttons">
-                <button type="submit">Confirm details</button>
-            </div>
+            <button type="submit">Confirm details</button>
         </form>
     )
 }
