@@ -4,8 +4,9 @@ const router = require("express").Router();
 const db = require("../db/index").auth;
 const pool = require("../db/pool");
 
-// connect-ensure-login
+// Authentication middleware
 const { loggedIn, loggedOut } = require("../middleware/authenticated");
+
 
 /* PASSPORT.JS */
 const passport = require("passport");
@@ -13,6 +14,15 @@ const passport = require("passport");
 // Strategies
 const LocalStrategy = require("passport-local").Strategy;
 passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, db.loginLocal));
+
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:8000/api/auth/login/google/callback",
+    passReqToCallback: true,
+    scope: ["email", "profile"]
+}, db.loginGoogle));
 
 // Serialize and Deserealize
 passport.serializeUser(async(user, done) => {
