@@ -10,6 +10,8 @@ const login = strategy => {
             req.login(user, (err) => {
                 if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
                 if (user.confirmDetails) return res.redirect("/register/confirm-federated");
+
+                if (strategy !== "local") return res.redirect("/cart");
                 res.json(user);
             });
         })(req, res);
