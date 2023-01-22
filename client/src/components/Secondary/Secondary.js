@@ -1,7 +1,10 @@
+import Nav from "./SecondaryNav";
+
 import Auth from "./Auth/Auth";
+import ConfirmFederated from "./Auth/ConfirmFederated";
+
 import Account from "./Account/Account";
 import Cart from "./Cart/Cart";
-import Nav from "./SecondaryNav";
 
 import capitalise from "../../util/capitalise";
 
@@ -22,7 +25,7 @@ const Secondary = props => {
                 break;
             case "confirm-federated":
                 if (type === "string") return "confirm federated details";
-                if (type === "component") return <Auth view={view} user={user} setUser={setUser} />;
+                if (type === "component") return <ConfirmFederated user={user} setUser={setUser} />;
                 break;
             case "register":
                 if (type === "string") return "register";
