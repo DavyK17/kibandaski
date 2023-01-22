@@ -93,8 +93,11 @@ const confirmFederatedDetails = async(req, res) => {
 
         // Confirm update
         if (result.rows[0].id === userId) {
+            // Update federated details confirmation status
+            result = await pool.query("UPDATE federated_credentials SET confirmed = $1 WHERE user_id = $2", [true, userId]);
+
             // Get updated user details
-            result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [req.user.email]);
+            result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [req.user.email]);
 
             // Add user to session
             req.user = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
