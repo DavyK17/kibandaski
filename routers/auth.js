@@ -40,13 +40,15 @@ passport.deserializeUser((user, done) => done(null, user));
 
 /* IMPLEMENTATION */
 router.get("/logout", db.logout);
-router.get("/register", loggedOut, (req, res) => res.send("Create a new account"));
-router.post("/register", loggedOut, db.register);
 router.all("/user", loggedIn, (req, res) => res.json(req.user));
 
 // Login router
 const loginRouter = require("./auth/login");
 router.use("/login", loginRouter);
+
+// Register router
+const registerRouter = require("./auth/register");
+router.use("/register", loggedOut, registerRouter);
 
 
 /* EXPORT */
