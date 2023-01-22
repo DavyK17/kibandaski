@@ -1,11 +1,4 @@
-const loggedIn = (req, res, next) => {
-    if (!req.user) return res.status(401).send("Error: You are not logged in.");
-    next();
-}
-
-const loggedOut = (req, res, next) => {
-    if (req.user) return res.status(403).send("Error: You are not logged out.");
-    next();
-}
+const loggedIn = (req, res, next) => req.user ? next() : res.status(401).send("Error: You are not logged in.");
+const loggedOut = (req, res, next) => req.user ? next() : res.status(403).send("Error: You are not logged out.");
 
 module.exports = { loggedIn, loggedOut };
