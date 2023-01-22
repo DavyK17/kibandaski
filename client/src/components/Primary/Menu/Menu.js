@@ -6,7 +6,7 @@ import Item from "./Item";
 import CategorySelect from "./CategorySelect";
 import ItemSort from "./ItemSort";
 
-import { Customer } from "../../../api/Server";
+import { Customer as Server } from "../../../api/Server";
 
 import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
@@ -16,7 +16,6 @@ const Menu = props => {
     const { user, windowWidth, iconHeight } = props;
 
     // Define server and useNavigate()
-    const Server = Customer.products;
     let navigate = useNavigate();
 
     // STATE + FUNCTIONS
@@ -31,7 +30,7 @@ const Menu = props => {
         setIsLoading(true);
 
         try {
-            let products = await Server.getProducts();
+            let products = await Server.products.getProducts();
             if (products) {
                 setMenu(products);
                 setItems(products);
@@ -120,14 +119,13 @@ const Menu = props => {
                 e.preventDefault();
                 if (!user) return navigate("/login");
 
-                const Server = Customer.cart;
                 const mainStatus = document.getElementById("status");
                 const addStatus = document.getElementById(`item-${id}-status`);
         
                 mainStatus.textContent = null;
                 addStatus.textContent = "Adding to cart…";
 
-                let response = await Server.addToCart(id);
+                let response = await Server.cart.addToCart(id);
                 if (!response.includes("Added to cart")) {
                     displayErrorMessage(response);
                     addStatus.textContent = "Error";
