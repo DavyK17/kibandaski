@@ -30,7 +30,10 @@ passport.serializeUser(async(user, done) => {
         let result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [user.id]);
         if (result.rows.length === 0) return done(null, false);
 
-        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
+        let data = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
+        if (user.confirmDetails) data.confirmDetails = user.confirmDetails;
+
+        return done(null, data);
     } catch (err) {
         return done(err);
     }
