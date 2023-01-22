@@ -5,7 +5,7 @@ const db = require("../db/index").auth;
 const pool = require("../db/pool");
 
 // Authentication middleware
-const { loggedIn, loggedOut } = require("../middleware/authenticated");
+const { loggedIn } = require("../middleware/authenticated");
 
 
 /* PASSPORT.JS */
@@ -51,7 +51,7 @@ router.use("/login", loginRouter);
 
 // Register router
 const registerRouter = require("./auth/register");
-router.use("/register", loggedOut, registerRouter);
+router.use("/register", registerRouter);
 
 
 /* EXPORT */
