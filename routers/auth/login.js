@@ -8,7 +8,8 @@ const login = strategy => {
         passport.authenticate(strategy, (err, user) => {
             if (err) return res.status(err.status).send(err.message);
             req.login(user, (err) => {
-                if (err) res.status(500).send("An unknown error occurred. Kindly try again.");
+                if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
+                if (user.confirmDetails) return res.redirect("/register/confirm-federated");
                 res.json(user);
             });
         })(req, res);
