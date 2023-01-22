@@ -23,10 +23,6 @@ const Secondary = props => {
                 if (type === "string") return "cart";
                 if (type === "component") return <Cart user={user} iconHeight={iconHeight} />;
                 break;
-            case "confirm-federated":
-                if (type === "string") return "confirm federated details";
-                if (type === "component") return <ConfirmFederated user={user} setUser={setUser} />;
-                break;
             case "register":
                 if (type === "string") return "register";
                 if (type === "component") return <Auth view={view} setUser={setUser} />;
@@ -43,8 +39,8 @@ const Secondary = props => {
     return (
         <section className="secondary">
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
-            {view === "confirm-federated" ? null : <Nav user={user} activeClassName={activeClassName} />}
-            {renderView(view, "component")}
+            {user && user.confirmDetails ? null : <Nav user={user} activeClassName={activeClassName} />}
+            {user && user.confirmDetails ? <ConfirmFederated user={user} setUser={setUser} /> : renderView(view, "component")}
             <p id="status"></p>
         </section>
     )
