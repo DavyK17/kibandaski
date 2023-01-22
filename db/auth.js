@@ -203,11 +203,22 @@ const loginGoogle = async(req, accessToken, refreshToken, profile, done) => {
             return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, confirmDetails: true });
         }
 
+        // Save details confirmation status
+        const confirmed = result.rows[0].confirmed;
+
         // Get user details
         result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
 
-        // Add user to session
+        // Log login attempt
         await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
+
+        // Add user details to be confirmed to session if not confirmed
+        if (!confirmed) {
+            const { id, email, role, cart_id } = result.rows[0];
+            return done(null, { id, email, role, cartId: cart_id, confirmDetails: true });
+        }
+
+        // Add user to session
         return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
     } catch (err) {
         return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
