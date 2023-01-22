@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { Auth as Server } from "../../../api/Server";
+import GoogleIcon from "../../../assets/icons/google.svg";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Auth = props => {
@@ -52,7 +53,7 @@ const Auth = props => {
                 <input type="password" id="confirm-password" placeholder="Confirm password" required />
             </div>
         )
-    } 
+    }
 
     // Define form submit function
     const handleSubmit = async e => {
@@ -93,7 +94,12 @@ const Auth = props => {
             {view === "register" ? phone : null}
             {email}
             {password()}
-            <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
+            <div className="buttons">
+                <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
+                <a className="google-login" href="/api/auth/login/google" title="Authenticate with Google">
+                    <img src={GoogleIcon} alt="Google icon" />
+                </a>
+            </div>
         </form>
     )
 }
