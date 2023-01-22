@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import Nav from "./PrimaryNav";
 import Admin from "./Admin/Admin";
 import Menu from "./Menu/Menu";
@@ -8,6 +10,10 @@ import capitalise from "../../util/capitalise";
 const Primary = props => {
     // Destructure props
     const { view, user, activeClassName, windowWidth, iconHeight } = props;
+
+    // Redirect to federated details confirmation if not confirmed
+    let navigate = useNavigate();
+    if (user && user.confirmDetails) return navigate("/register");
 
     // Define function to render correct view
     const renderView = (view, type) => {
