@@ -26,6 +26,22 @@ export const Auth = {
             console.log(err);
         }
     },
+    confirmFederatedDetails: async function(phone, password) {
+        try {
+            let response = await fetch(`${this.url}/register/confirm-federated`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone, password })
+            });
+
+            if (response.status !== 503) {
+                if (!response.ok) return response.text();
+                return response.json();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    },
     login: async function(email, password) {
         try {
             let response = await fetch(`${this.url}/login`, {
