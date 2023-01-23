@@ -60,10 +60,9 @@ const register = async(req, res) => {
     }
 }
 
-const confirmFederatedDetails = async(req, res) => {
+const confirmThirdPartyRegistration = async(req, res) => {
     // Send error if user is not authorised
-    const { id, provider, confirm } = req.user.federatedCredentials;
-    if (!id || !provider || !confirm) return res.status(401).send("Error: You are not authorised to perform this operation.");
+    if (!req.user.federatedCredentials[0]) return res.status(401).send("Error: You are not authorised to perform this operation.");
 
     // VALIDATION AND SANITISATION
     let { phone, password } = req.body;
@@ -89,7 +88,9 @@ const confirmFederatedDetails = async(req, res) => {
         // Confirm update
         if (result.rows[0].id === userId) {
             // Update federated details confirmation status
-            result = await pool.query("UPDATE federated_credentials SET confirmed = $1 WHERE provider = $2 AND user_id = $3", [true, provider, userId]);
+            let text = "UPDATE federated_credentials SET confirmed = $1 WHERE provider = $2 AND user_id = $3";
+            let values = [true, req.user.federatedCredentials[0].provider, userId];
+            result = await pool.query(text, values);
 
             // Get updated user details
             result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [req.user.email]);
@@ -151,12 +152,22 @@ const login = async(req, email, password, done) => {
             return done({ status: 401, message: "Error: Incorrect email or password provided." });
         }
 
+        // Create user object and third-party credentials array
+        let data = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
+        let federatedCredentials = [];
+
+        // Get third-party credentials
+        result = await pool.query("SELECT id, provider, confirmed FROM federated_credentials WHERE user_id = $1", [data.id]);
+
+        // Add each credential to array
+        if (result.rows.length > 0) result.rows.forEach(({ id, provider, confirmed }) => federatedCredentials.push({ id, provider, confirm: !confirmed }));
+
         // Add user to session
         await loginAttempt(attemptId, ip, email, "local", true);
-        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id, federatedCredentials: [] });
+        return done(null, {...data, federatedCredentials });
     } catch (err) {
         return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
     }
 }
 
-module.exports = { register, confirmFederatedDetails, logout, login };
+module.exports = { register, confirmThirdPartyRegistration, logout, login };
