@@ -1907,13 +1907,31 @@
                     },
                     "cartId": {
                         "type": "string"
+                    },
+                    "federatedCredentials": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "provider": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 },
                 "example": {
                     "id": "7355234",
                     "email": "thisisan@email.com",
                     "role": "customer",
-                    "cartId": "3599584"
+                    "cartId": "3599584",
+                    "federatedCredentials": [{
+                        "id": "012345678901234567890",
+                        "provider": "google"
+                    }]
                 }
             },
             "cart": {
@@ -2331,7 +2349,7 @@
                         "type": "string",
                         "format": "email"
                     },
-                    "federated": {
+                    "federatedCredentials": {
                         "type": "array",
                         "items": {
                             "type": "object",
@@ -2352,7 +2370,7 @@
                     "lastName": "Mkenya",
                     "phone": 254712345678,
                     "email": "thisisan@email.com",
-                    "federated": [{
+                    "federatedCredentials": [{
                         "id": "012345678901234567890",
                         "provider": "google"
                     }]
