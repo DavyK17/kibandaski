@@ -22,7 +22,7 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.NODE_ENV === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:8000"}/api/auth/login/google/callback`,
     passReqToCallback: true,
     scope: ["email", "profile"]
-}, db.google.login));
+}, db.third.login));
 
 // Serialize and Deserealize
 passport.serializeUser(async(user, done) => {
