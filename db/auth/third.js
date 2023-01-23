@@ -20,7 +20,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
 
         // Do the following if credentials don't exist
         if (result.rows.length === 0) {
-            // Link federated credentials to user if present confirmed
+            // Link federated credentials to user if present and confirmed
             if (req.user && !req.user.federatedCredentials) {
                 // Add credentials to database as confirmed
                 let text = "INSERT INTO federated_credentials (id, provider, user_id, confirmed) VALUES ($1, $2, $3, $4)";
@@ -28,7 +28,8 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
                 result = await pool.query(text, values);
 
                 // Return user to session
-                return done(null, req.user);
+                const federatedCredentials = { linked: true };
+                return done(null, {...req.user, federatedCredentials });
             }
 
             // Check for existing account with third-party email
@@ -61,11 +62,16 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
             return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, federatedCredentials });
         }
 
+        // Return user to session if third party account already linked
+        if (req.user) return done(null, req.user);
+
         // Save federated credentials details
         const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider, confirm: !result.rows[0].confirmed };
 
         // Get user details
-        result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
+        let text = "SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id JOIN federated_credentials ON federated_credentials.user_id = users.id WHERE federated_credentials.id = $1 AND federated_credentials.provider = $2";
+        let values = [profile.id, profile.provider];
+        result = await pool.query(text, values);
 
         // Log login attempt
         await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
@@ -92,8 +98,14 @@ const callback = strategy => {
                 // Return user object if local login
                 if (strategy === "local") return res.json(user);
 
-                // Redirect user to confirm account details if unconfirmed
-                if (user.federatedCredentials && user.federatedCredentials.confirm) return res.redirect("/register");
+                // Do the following if federatedCredentials object is present
+                if (user.federatedCredentials) {
+                    // Do the following if third-party account linked
+                    if (user.federatedCredentials.linked) return res.redirect("/account");
+
+                    // Redirect new user to confirm account details after linking third-party account
+                    if (user.federatedCredentials.confirm) return res.redirect("/register");
+                }
 
                 // Redirect user to cart
                 res.redirect("/cart");
