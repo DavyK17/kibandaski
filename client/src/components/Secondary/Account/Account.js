@@ -5,6 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import EditDetails from "./EditDetails";
 
 import { Customer } from "../../../api/Server";
+import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Account = props => {
@@ -74,6 +75,29 @@ const Account = props => {
 
         // Do the following if details have been fetched
         if (details) {
+            // List all providers of user's third-party credentials
+            const providers = details.federated.map(credential => credential.provider);
+
+            // Define function to return third-party link/unlink buttons
+            const renderThirdPartyButton = provider => {
+                let path = `/api/auth/login/${provider}`;
+                let title = providers.includes(provider) ? `Unlink ${capitalise(provider)} account` : `Link ${capitalise(provider)} account`;
+                let text = providers.includes(provider) ? `Unlink from ${capitalise(provider)}` : `Link to ${capitalise(provider)}`;
+
+                const unlink = async e => {
+                    e.preventDefault();
+
+                    status.textContent = `Unlinking from ${capitalise(provider)}…`;
+                    let response = await Server.unlinkThirdParty(provider);
+                    if (response !== `${capitalise(provider)} unlinked successfully`) return displayErrorMessage(response);
+
+                    status.textContent = null;
+                    fetchDetails();
+                }
+
+                return providers.includes(provider) ? <button title={title} onClick={unlink}>{text}</button> : <a href={path} title={title}>{text}</a>;
+            }
+
             // Define function to update details
             const updateDetails = async e => {
                 e.preventDefault();
@@ -117,7 +141,7 @@ const Account = props => {
                     </div>
                     <div className="buttons">
                         <button onClick={toggleEdit}>Edit details</button>
-                        {/* <a href="/api/auth/login/google" title="Link Google account">Link to Google</a> */}
+                        {renderThirdPartyButton("google")}
                         <button onClick={deleteAccount}>Delete account</button>
                     </div>
                 </>
