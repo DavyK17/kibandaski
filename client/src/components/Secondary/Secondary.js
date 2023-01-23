@@ -10,7 +10,7 @@ import capitalise from "../../util/capitalise";
 
 const Secondary = props => {
     // Destructure props
-    const { view, user, setUser, activeClassName, iconHeight } = props;
+    const { view, user, setUser, activeClassName, iconHeight, cfc } = props;
 
     // Define function to render correct view
     const renderView = (view, type) => {
@@ -39,8 +39,8 @@ const Secondary = props => {
     return (
         <section className="secondary">
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
-            {user && user.confirmDetails ? null : <Nav user={user} activeClassName={activeClassName} />}
-            {user && user.confirmDetails ? <ConfirmFederated user={user} setUser={setUser} /> : renderView(view, "component")}
+            {cfc ? null : <Nav user={user} activeClassName={activeClassName} />}
+            {cfc ? <ConfirmFederated setUser={setUser} /> : renderView(view, "component")}
             <p id="status"></p>
         </section>
     )

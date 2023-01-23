@@ -21,6 +21,9 @@ const App = () => {
         if (user) setUser(user);
     }
 
+    // Confirm federated credentials
+    const cfc = user && user.federatedCredentials && user.federatedCredentials.confirm;
+
     useEffect(() => {
         fetchUser();
     }, []);
@@ -35,13 +38,13 @@ const App = () => {
     const renderRoute = (type, path, view, exact = false) => {
         if (type === 1) return (
             <Route path={path} exact={exact} element={
-                <Primary view={view} user={user} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} />
+                <Primary view={view} user={user} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} cfc={cfc} />
             } />
         )
 
         if (type === 2) return (
             <Route path={path} element={
-                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} iconHeight={iconHeight} />
+                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} iconHeight={iconHeight} cfc={cfc} />
             } />
         )
 

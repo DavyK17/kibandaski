@@ -9,11 +9,11 @@ import capitalise from "../../util/capitalise";
 
 const Primary = props => {
     // Destructure props
-    const { view, user, activeClassName, windowWidth, iconHeight } = props;
+    const { view, user, activeClassName, windowWidth, iconHeight, cfc } = props;
 
     // Redirect to federated details confirmation if not confirmed
     let navigate = useNavigate();
-    if (user && user.confirmDetails) return navigate("/register");
+    if (cfc) return navigate("/register");
 
     // Define function to render correct view
     const renderView = (view, type) => {
