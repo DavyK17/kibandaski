@@ -1,7 +1,7 @@
 import Nav from "./SecondaryNav";
 
 import Auth from "./Auth/Auth";
-import ConfirmFederated from "./Auth/ConfirmFederated";
+import ConfirmThirdPartyRegistration from "./Auth/ConfirmThirdPartyRegistration";
 
 import Account from "./Account/Account";
 import Cart from "./Cart/Cart";
@@ -40,7 +40,7 @@ const Secondary = props => {
         <section className="secondary">
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
             {ctpr ? null : <Nav user={user} activeClassName={activeClassName} />}
-            {ctpr ? <ConfirmFederated setUser={setUser} /> : renderView(view, "component")}
+            {ctpr ? <ConfirmThirdPartyRegistration setUser={setUser} /> : renderView(view, "component")}
             <p id="status"></p>
         </section>
     )

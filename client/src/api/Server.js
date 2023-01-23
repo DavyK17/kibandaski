@@ -26,7 +26,7 @@ export const Auth = {
             console.log(err);
         }
     },
-    confirmFederatedDetails: async function(phone, password) {
+    confirmThirdPartyRegistration: async function(phone, password) {
         try {
             let response = await fetch(`${this.url}/register/confirm-federated`, {
                 method: "PUT",

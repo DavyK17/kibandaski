@@ -7,7 +7,7 @@ import ConfirmDetails from "./ConfirmDetails";
 import { Auth, Customer } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
-const ConfirmFederated = props => {
+const ConfirmThirdPartyRegistration = props => {
     // Destructure props
     const { setUser } = props;
 
@@ -49,7 +49,7 @@ const ConfirmFederated = props => {
     // Do the following if federated details have been fetched
     if (federatedDetails) {
         // Define function to confirm details
-        const confirmFederatedDetails = async e => {
+        const confirmThirdPartyRegistration = async e => {
             e.preventDefault();
             
             if (e.target[1].value && !e.target[2].value) return status.textContent = "Kindly confirm your password.";
@@ -57,7 +57,7 @@ const ConfirmFederated = props => {
             if (e.target[1].value !== e.target[2].value) return status.textContent = "Passwords do not match.";
 
             status.textContent = "Confirming details…";
-            let response = await Auth.confirmFederatedDetails(e.target[0].value, e.target[2].value);
+            let response = await Auth.confirmThirdPartyRegistration(e.target[0].value, e.target[2].value);
             if (typeof response !== "object") return displayErrorMessage(response);
 
             setUser(response);
@@ -67,8 +67,8 @@ const ConfirmFederated = props => {
         }
 
         // Return confirm details component
-        return <ConfirmDetails handleSubmit={confirmFederatedDetails} />
+        return <ConfirmDetails handleSubmit={confirmThirdPartyRegistration} />
     }
 }
 
-export default ConfirmFederated;
+export default ConfirmThirdPartyRegistration;
