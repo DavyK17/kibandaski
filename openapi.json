@@ -1050,6 +1050,60 @@
                 }
             }
         },
+        "/customer/account/unlink": {
+            "delete": {
+                "tags": ["Customer", "Users"],
+                "description": "Unlink current user from third-party account",
+                "security": [{
+                    "BasicAuth": []
+                }],
+                "parameters": [{
+                    "in": "query",
+                    "name": "provider",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Name of third-party from which to unlink account"
+                }],
+                "responses": {
+                    "204": {
+                        "description": "Confirmation of the operation"
+                    },
+                    "401": {
+                        "description": "An error message (if user ID in session is invalid)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: Invalid user ID in session."
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "An error message (if third-party credentials not found)",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Error: No credentials found for the given provider."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "A generic error message",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/customer/cart": {
             "get": {
                 "tags": ["Customer", "Cart"],
@@ -2276,6 +2330,20 @@
                     "email": {
                         "type": "string",
                         "format": "email"
+                    },
+                    "federated": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "provider": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 },
                 "example": {
@@ -2283,7 +2351,11 @@
                     "firstName": "Mwenyeji",
                     "lastName": "Mkenya",
                     "phone": 254712345678,
-                    "email": "thisisan@email.com"
+                    "email": "thisisan@email.com",
+                    "federated": [{
+                        "id": "012345678901234567890",
+                        "provider": "google"
+                    }]
                 }
             },
             "userId": {
