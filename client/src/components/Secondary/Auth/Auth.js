@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
-import { Auth as Server } from "../../../api/Server";
+import FacebookIcon from "../../../assets/icons/facebook.svg";
 import GoogleIcon from "../../../assets/icons/google.svg";
+
+import { Auth as Server } from "../../../api/Server";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Auth = props => {
@@ -96,8 +98,11 @@ const Auth = props => {
             {password()}
             <div className="buttons">
                 <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
-                <a className="google-login" href="/api/auth/login/google" title="Authenticate with Google">
+                <a className="third-party-login" href="/api/auth/login/google" title="Authenticate with Google">
                     <img src={GoogleIcon} alt="Google icon" />
+                </a>
+                <a className="third-party-login" href="/api/auth/login/facebook" title="Authenticate with Facebook">
+                    <img src={FacebookIcon} alt="Facebook icon" /> 
                 </a>
             </div>
         </form>
