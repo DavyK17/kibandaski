@@ -8,26 +8,6 @@ const loginAttempt = require("../../util/loginAttempt");
 
 // FUNCTIONS
 const login = async(req, accessToken, refreshToken, profile, done) => {
-    // Link Google credentials if confirmed user already in session
-    if (req.user && !req.user.confirmDetails) {
-        try { // Get Google credentials
-            let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2 AND user_id = $3", [profile.id, profile.provider, req.user.id]);
-
-            // Send error if credentials already exist
-            if (result.rows.length > 0) return done({ status: 403, message: "Error: Your Google credentials are already linked to your account." });
-
-            // Add credentials to database as confirmed
-            let text = "INSERT INTO federated_credentials (id, provider, user_id, confirmed) VALUES ($1, $2, $3, $4)";
-            let values = [profile.id, profile.provider, req.user.id, true];
-            result = await pool.query(text, values);
-
-            // Return user to session
-            return done(null, req.user, { redirect: "/account" });
-        } catch (err) {
-            return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
-        }
-    }
-
     // Get request IP address
     const ip = requestIP.getClientIp(req);
 
@@ -68,6 +48,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
 
         // Save details confirmation status
         const confirmed = result.rows[0].confirmed;
+        const provider = result.rows[0].provider;
 
         // Get user details
         result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
@@ -78,7 +59,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         // Add user details to be confirmed to session if not confirmed
         if (!confirmed) {
             const { id, email, role, cart_id } = result.rows[0];
-            return done(null, { id, email, role, cartId: cart_id, confirmDetails: true });
+            return done(null, { id, email, role, cartId: cart_id, confirmDetails: true, provider });
         }
 
         // Add user to session
