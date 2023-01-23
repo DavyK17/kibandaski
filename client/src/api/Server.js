@@ -26,12 +26,12 @@ export const Auth = {
             console.log(err);
         }
     },
-    confirmFederatedDetails: async function(phone, password) {
+    confirmFederatedDetails: async function(provider, phone, password) {
         try {
             let response = await fetch(`${this.url}/register/confirm-federated`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ phone, password })
+                body: JSON.stringify({ provider, phone, password })
             });
 
             if (response.status !== 503) {
