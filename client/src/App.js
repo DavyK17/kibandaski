@@ -21,8 +21,8 @@ const App = () => {
         if (user) setUser(user);
     }
 
-    // Confirm federated credentials
-    const cfc = user && user.federatedCredentials && user.federatedCredentials.confirm;
+    // Complete third-party registration
+    const ctpr = user && user.federatedCredentials[0].confirm;
 
     useEffect(() => {
         fetchUser();
@@ -38,13 +38,13 @@ const App = () => {
     const renderRoute = (type, path, view, exact = false) => {
         if (type === 1) return (
             <Route path={path} exact={exact} element={
-                <Primary view={view} user={user} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} cfc={cfc} />
+                <Primary view={view} user={user} activeClassName={activeClassName} windowWidth={windowWidth} iconHeight={iconHeight} ctpr={ctpr} />
             } />
         )
 
         if (type === 2) return (
             <Route path={path} element={
-                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} iconHeight={iconHeight} cfc={cfc} />
+                <Secondary view={view} user={user} setUser={setUser} activeClassName={activeClassName} iconHeight={iconHeight} ctpr={ctpr} />
             } />
         )
 

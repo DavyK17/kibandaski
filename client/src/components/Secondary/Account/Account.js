@@ -76,7 +76,7 @@ const Account = props => {
         // Do the following if details have been fetched
         if (details) {
             // List all providers of user's third-party credentials
-            const providers = details.federated.map(credential => credential.provider);
+            const providers = details.federatedCredentials.map(credential => credential.provider);
 
             // Define function to return third-party link/unlink buttons
             const renderThirdPartyButton = provider => {
