@@ -5,4 +5,6 @@ router.get("/", db.getUser);
 router.put("/", db.updateUser);
 router.delete("/", db.deleteUser);
 
+router.delete("/unlink", db.unlinkThirdParty);
+
 module.exports = router;
