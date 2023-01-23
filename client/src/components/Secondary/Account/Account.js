@@ -117,6 +117,7 @@ const Account = props => {
                     </div>
                     <div className="buttons">
                         <button onClick={toggleEdit}>Edit details</button>
+                        <a href="/api/auth/login/google" title="Link Google account">Link to Google</a>
                         <button onClick={deleteAccount}>Delete account</button>
                     </div>
                 </>
