@@ -177,7 +177,8 @@
             margin-bottom: 0.5rem;
         }
         input,
-        button {
+        button,
+        a {
             font-family: $font-body;
             font-size: 1rem;
         }
@@ -185,11 +186,17 @@
             width: 50%;
             padding: 0.25rem;
         }
-        button {
+        button,
+        a {
+            display: flex;
             background-color: $lightgray;
             border: 1px solid $darkgray;
+            color: initial;
+            text-decoration: none;
             margin-bottom: 0.75rem;
             padding: 0.2rem 0.5rem;
+            justify-content: center;
+            align-items: center;
             transition: background-color 0.1s ease-in-out;
             &:hover,
             &:focus {
@@ -210,12 +217,12 @@
             }
         }
         .buttons {
-            width: 60%;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             margin-bottom: unset;
-            button {
-                width: 45%;
+            button,
+            a {
+                width: 30%;
             }
         }
     }
@@ -274,9 +281,9 @@
                 width: 100%;
             }
             .buttons {
-                flex-direction: column;
-                button {
-                    width: 55%;
+                button,
+                a {
+                    width: 75%;
                 }
             }
         }
