@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const db = require("../../db/index").auth;
+const db = require("../../db/index").auth.local;
 const { loggedIn, loggedOut } = require("../../middleware/authenticated");
 
 router.get("/", loggedOut, (req, res) => res.send("Create a new account"));

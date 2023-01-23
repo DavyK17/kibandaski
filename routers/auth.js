@@ -13,7 +13,7 @@ const passport = require("passport");
 
 // Strategies
 const LocalStrategy = require("passport-local").Strategy;
-passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, db.loginLocal));
+passport.use(new LocalStrategy({ usernameField: "email", passReqToCallback: true }, db.local.login));
 
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 passport.use(new GoogleStrategy({
@@ -22,7 +22,7 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.NODE_ENV === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:8000"}/api/auth/login/google/callback`,
     passReqToCallback: true,
     scope: ["email", "profile"]
-}, db.loginGoogle));
+}, db.google.login));
 
 // Serialize and Deserealize
 passport.serializeUser(async(user, done) => {
@@ -42,7 +42,7 @@ passport.deserializeUser((user, done) => done(null, user));
 
 
 /* IMPLEMENTATION */
-router.get("/logout", db.logout);
+router.get("/logout", db.local.logout);
 router.all("/user", loggedIn, (req, res) => res.json(req.user));
 
 // Login router
