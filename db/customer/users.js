@@ -24,10 +24,10 @@ const getUser = async(req, res) => {
 
         // Get third-party credentials
         result = await pool.query("SELECT id, provider FROM federated_credentials WHERE user_id = $1", [id]);
-        let federated = result.rows;
+        let federatedCredentials = result.rows;
 
         // Send user
-        res.status(200).json({...user, federated });
+        res.status(200).json({...user, federatedCredentials });
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
@@ -174,7 +174,7 @@ const unlinkThirdParty = async(req, res) => {
 
         // Delete third-party credentials
         result = await pool.query("DELETE FROM federated_credentials WHERE user_id = $1 AND provider = $2", [userId, provider]);
-        res.status(204).send(`${provider.charAt(0).toUpperCase() + provider.slice(1)} credentials unlinked successfully.`)
+        res.status(204).send(`${provider.charAt(0).toUpperCase() + provider.slice(1)} credentials unlinked successfully.`);
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
