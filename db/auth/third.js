@@ -15,12 +15,12 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
     // Generate login attempt ID
     const attemptId = idGen(15);
 
-    try { // Get federated credentials
+    try { // Get third-party credentials
         let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2", [profile.id, profile.provider]);
 
         // Do the following if credentials don't exist
         if (result.rows.length === 0) {
-            // Link federated credentials to user if present and confirmed
+            // Link third-party credentials to user if present and confirmed
             if (req.user && !req.user.federatedCredentials) {
                 // Add credentials to database as confirmed
                 let text = "INSERT INTO federated_credentials (id, provider, user_id, confirmed) VALUES ($1, $2, $3, $4)";
@@ -54,7 +54,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
             // Add user cart to database
             result = await pool.query("INSERT INTO carts (id, user_id) VALUES ($1, $2)", [cartId, userId]);
 
-            // Add federated credentials to database
+            // Add third-party credentials to database
             result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id) VALUES ($1, $2, $3)", [profile.id, profile.provider, userId]);
 
             // Add user details to be confirmed to session
@@ -65,7 +65,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         // Return user to session if third party account already linked
         if (req.user) return done(null, req.user);
 
-        // Save federated credentials details
+        // Save third-party credentials details
         const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider, confirm: !result.rows[0].confirmed };
 
         // Get user details

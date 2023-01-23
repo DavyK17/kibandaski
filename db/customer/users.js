@@ -22,7 +22,7 @@ const getUser = async(req, res) => {
             email: result.rows[0].email
         };
 
-        // Get federated credentials
+        // Get third-party credentials
         result = await pool.query("SELECT id, provider FROM federated_credentials WHERE user_id = $1", [id]);
         let federated = result.rows;
 
@@ -143,7 +143,7 @@ const deleteUser = async(req, res) => {
         result = await pool.query("DELETE FROM cart_items WHERE cart_id = $1", [cartId]);
         result = await pool.query("DELETE FROM carts WHERE id = $1", [cartId]);
 
-        // Delete federated credentials
+        // Delete third-party credentials
         result = await pool.query("DELETE FROM federated_credentials WHERE user_id = $1", [userId]);
 
         // Delete user and log out
@@ -166,13 +166,13 @@ const unlinkThirdParty = async(req, res) => {
     let userId = trim(req.user.id);
     if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
-    try { // Get federated credentials
+    try { // Get third-party credentials
         let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2", [userId, provider]);
 
         // Send error if credentials do not exist
         if (result.rows.length === 0) return res.status(404).send("Error: No credentials found for the given provider.");
 
-        // Delete federated credentials
+        // Delete third-party credentials
         result = await pool.query("DELETE FROM federated_credentials WHERE user_id = $1 AND provider = $2", [userId, provider]);
         res.status(204).send(`${provider.charAt(0).toUpperCase() + word.slice(1)} credentials unlinked successfully.`)
     } catch (err) {
