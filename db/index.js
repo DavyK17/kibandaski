@@ -1,6 +1,6 @@
 // AUTHENTICATION FUNCTIONS
 const authLocal = require("./auth/local");
-const authGoogle = require("./auth/google");
+const authThird = require("./auth/third");
 
 // ADMIN FUNCTIONS
 const ordersA = require("./admin/orders");
@@ -17,7 +17,7 @@ const usersC = require("./customer/users");
 module.exports = {
     auth: {
         local: authLocal,
-        google: authGoogle
+        third: authThird
     },
     admin: {
         orders: ordersA,
