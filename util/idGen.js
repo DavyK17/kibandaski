@@ -1,3 +1,4 @@
+// Numeric string ID generator
 const idGen = length => {
     const chars = "0123456789";
     const charLength = chars.length;
@@ -7,4 +8,5 @@ const idGen = length => {
     return result;
 }
 
+// Export
 module.exports = idGen;
