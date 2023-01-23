@@ -46,10 +46,10 @@ const getUsers = async(req, res) => {
 }
 
 const getUsersByRole = async(req, res) => {
-    try { // Sanitise role
-        let role = sanitizeHtml(trim(escape(req.params.role))).toLowerCase();
+    // Sanitise role
+    let role = sanitizeHtml(trim(escape(req.params.role))).toLowerCase();
 
-        // Create users array
+    try { // Create users array
         let users = [];
 
         // Get users in role

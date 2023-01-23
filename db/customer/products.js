@@ -29,10 +29,10 @@ const getProducts = async(req, res) => {
 }
 
 const getProductsByCategory = async(req, res) => {
-    try { // Sanitise category
-        let category = sanitizeHtml(trim(escape(req.params.category))).toLowerCase();
+    // Sanitise category
+    let category = sanitizeHtml(trim(escape(req.params.category))).toLowerCase();
 
-        // Get products in category
+    try { // Get products in category
         let result = await pool.query("SELECT id, name, description, price FROM products WHERE category = $1 ORDER BY id ASC", [category]);
 
         // Send products in category
