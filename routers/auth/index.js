@@ -27,13 +27,27 @@ passport.use(new GoogleStrategy({
 // Serialize and Deserealize
 passport.serializeUser(async(user, done) => {
     try {
+        // Get user details
         let result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [user.id]);
+
+        // Return false if details not found
         if (result.rows.length === 0) return done(null, false);
 
+        // Create user object and third-party credentials array
         let data = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
-        if (user.federatedCredentials) data.federatedCredentials = user.federatedCredentials;
+        let federatedCredentials = [];
 
-        return done(null, data);
+        // Get all third-party credentials
+        result = await pool.query("SELECT id, provider FROM federated_credentials WHERE user_id = $1", [user.id]);
+
+        // Add each credential to array if present
+        if (result.rows.length > 0) result.rows.forEach(({ id, provider }) => {
+            let credential = { id, provider, confirm: false };
+            federatedCredentials.push(credential);
+        });
+
+        // Return user object
+        return done(null, {...data, federatedCredentials });
     } catch (err) {
         return done(err);
     }
