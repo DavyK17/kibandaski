@@ -14,15 +14,20 @@ const getUser = async(req, res) => {
 
         // Get user
         let result = await pool.query("SELECT id, first_name, last_name, phone, email FROM users WHERE id = $1", [id]);
-
-        // Send user
-        res.status(200).json({
+        let user = {
             id: result.rows[0].id,
             firstName: result.rows[0].first_name,
             lastName: result.rows[0].last_name,
             phone: parseInt(result.rows[0].phone),
             email: result.rows[0].email
-        });
+        };
+
+        // Get federated credentials
+        result = await pool.query("SELECT id, provider FROM federated_credentials WHERE user_id = $1", [id]);
+        let federated = result.rows;
+
+        // Send user
+        res.status(200).json({...user, federated });
     } catch (err) {
         res.status(500).send("An unknown error occurred. Kindly try again.");
     }
