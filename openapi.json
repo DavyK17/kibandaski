@@ -1918,6 +1918,9 @@
                                 },
                                 "provider": {
                                     "type": "string"
+                                },
+                                "confirm": {
+                                    "type": "boolean"
                                 }
                             }
                         }
@@ -1930,7 +1933,8 @@
                     "cartId": "3599584",
                     "federatedCredentials": [{
                         "id": "012345678901234567890",
-                        "provider": "google"
+                        "provider": "google",
+                        "confirm": false
                     }]
                 }
             },
@@ -2359,6 +2363,9 @@
                                 },
                                 "provider": {
                                     "type": "string"
+                                },
+                                "confirm": {
+                                    "type": "boolean"
                                 }
                             }
                         }
@@ -2372,7 +2379,8 @@
                     "email": "thisisan@email.com",
                     "federatedCredentials": [{
                         "id": "012345678901234567890",
-                        "provider": "google"
+                        "provider": "google",
+                        "confirm": false
                     }]
                 }
             },
