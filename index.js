@@ -37,7 +37,10 @@ const sessionConfig = {
     name: "kibandaski_sid",
     resave: false,
     saveUninitialized: false,
-    cookie: { sameSite: "strict", secure: false }
+    cookie: {
+        sameSite: "lax", // necessary to enable access to req.user during Passport authentication for linking third-party accounts
+        secure: false
+    }
 }
 
 if (app.get("env") === "production") {
