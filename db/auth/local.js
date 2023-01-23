@@ -95,10 +95,18 @@ const confirmThirdPartyRegistration = async(req, res) => {
             // Get updated user details
             result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [req.user.email]);
 
-            // Add user to session
-            req.user = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
+            // Create user object and third-party credentials array
+            let data = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
+            let federatedCredentials = [];
 
-            // Return user object
+            // Get third-party credentials
+            result = await pool.query("SELECT id, provider, confirmed FROM federated_credentials WHERE user_id = $1", [userId]);
+
+            // Add each credential to array
+            if (result.rows.length > 0) result.rows.forEach(({ id, provider, confirmed }) => federatedCredentials.push({ id, provider, confirm: !confirmed }));
+
+            // Update and return user object in session
+            req.user = {...data, federatedCredentials };
             res.json(req.user);
         }
     } catch (err) {

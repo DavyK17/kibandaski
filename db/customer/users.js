@@ -22,9 +22,12 @@ const getUser = async(req, res) => {
             email: result.rows[0].email
         };
 
-        // Get third-party credentials
-        result = await pool.query("SELECT id, provider FROM federated_credentials WHERE user_id = $1", [id]);
-        let federatedCredentials = result.rows;
+        // Get third-party credentials and create federated credentials array
+        result = await pool.query("SELECT id, provider, confirmed FROM federated_credentials WHERE user_id = $1", [id]);
+        let federatedCredentials = [];
+
+        // Add each credential to array
+        if (result.rows.length > 0) result.rows.forEach(({ id, provider, confirmed }) => federatedCredentials.push({ id, provider, confirm: !confirmed }));
 
         // Send user
         res.status(200).json({...user, federatedCredentials });
