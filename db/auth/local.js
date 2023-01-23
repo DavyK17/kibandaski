@@ -67,6 +67,10 @@ const confirmFederatedDetails = async(req, res) => {
     // VALIDATION AND SANITISATION
     let { provider, phone, password } = req.body;
 
+    // Provider
+    if (typeof provider !== "string") return res.status(400).send("Error: Provider must be a string.");
+    provider = sanitizeHtml(trim(escape(provider)));
+
     // Phone number
     if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
     phone = sanitizeHtml(trim(typeof phone === "number" ? phone.toString() : phone));
@@ -83,12 +87,12 @@ const confirmFederatedDetails = async(req, res) => {
     if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     try { // Update user details
-        let result = await pool.query("UPDATE users SET provider = $1, phone = $2, password = $3 WHERE id = $3 RETURNING id", [provider, phone, passwordHash, userId]);
+        let result = await pool.query("UPDATE users SET phone = $1, password = $2 WHERE id = $3 RETURNING id", [phone, passwordHash, userId]);
 
         // Confirm update
         if (result.rows[0].id === userId) {
             // Update federated details confirmation status
-            result = await pool.query("UPDATE federated_credentials SET confirmed = $1 WHERE user_id = $2", [true, userId]);
+            result = await pool.query("UPDATE federated_credentials SET confirmed = $1 WHERE provider = $2 AND user_id = $3", [true, provider, userId]);
 
             // Get updated user details
             result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [req.user.email]);
