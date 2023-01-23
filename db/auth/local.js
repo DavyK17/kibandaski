@@ -1,19 +1,13 @@
 // IMPORTS
 const bcrypt = require("bcrypt");
-const pool = require("./pool");
+const pool = require("../pool");
 const requestIP = require("request-ip");
 
-const checkPhone = require("../util/checkPhone");
-const idGen = require("../util/idGen");
+const checkPhone = require("../../util/checkPhone");
+const idGen = require("../../util/idGen");
+const loginAttempt = require("../../util/loginAttempt");
 const { isEmail, isNumeric, isLength, trim, escape, normalizeEmail } = require("validator");
-const sanitizeHtml = require("../util/sanitizeHtml");
-
-// Login attempt log function
-const loginAttempt = async(id, ip, email, strategy, success) => {
-    let text = `INSERT INTO login_attempts (id, ip, email, attempted_at, strategy, successful) VALUES ($1, $2, $3, to_timestamp(${Date.now()} / 1000), $4, $5)`;
-    let values = [id, ip, email, strategy, success];
-    return await pool.query(text, values);
-}
+const sanitizeHtml = require("../../util/sanitizeHtml");
 
 // FUNCTIONS
 const register = async(req, res) => {
@@ -71,7 +65,7 @@ const confirmFederatedDetails = async(req, res) => {
     if (!req.user.confirmDetails) return res.status(401).send("Error: You are not authorised to perform this operation.");
 
     // VALIDATION AND SANITISATION
-    let { phone, password } = req.body;
+    let { provider, phone, password } = req.body;
 
     // Phone number
     if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
@@ -89,7 +83,7 @@ const confirmFederatedDetails = async(req, res) => {
     if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     try { // Update user details
-        let result = await pool.query("UPDATE users SET phone = $1, password = $2 WHERE id = $3 RETURNING id", [phone, passwordHash, userId]);
+        let result = await pool.query("UPDATE users SET provider = $1, phone = $2, password = $3 WHERE id = $3 RETURNING id", [provider, phone, passwordHash, userId]);
 
         // Confirm update
         if (result.rows[0].id === userId) {
@@ -121,7 +115,7 @@ const logout = (req, res) => {
     });
 }
 
-const loginLocal = async(req, email, password, done) => {
+const login = async(req, email, password, done) => {
     // Send error if already logged in
     if (req.user) return done({ status: 403, message: "Error: You are already logged in." });
 
@@ -164,68 +158,4 @@ const loginLocal = async(req, email, password, done) => {
     }
 }
 
-const loginGoogle = async(req, accessToken, refreshToken, profile, done) => {
-    // Send error if already logged in
-    if (req.user) return done({ status: 403, message: "Error: You are already logged in." });
-
-    // Get request IP address
-    const ip = requestIP.getClientIp(req);
-
-    // Generate login attempt ID
-    const attemptId = idGen(15);
-
-    try { // Get Google credentials
-        let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2", [profile.id, profile.provider]);
-
-        // Create user account if details don't exist
-        if (result.rows.length === 0) {
-            // Send error if email already exists in database
-            result = await pool.query("SELECT email FROM users WHERE email = $1", [profile.emails[0].value]);
-            if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists.");
-
-            // Generate user ID and cart ID
-            const userId = idGen(7);
-            const cartId = idGen(7);
-
-            // Generate password hash
-            const salt = await bcrypt.genSalt(17);
-            const passwordHash = await bcrypt.hash(process.env.GENERIC_PASSWORD, salt);
-
-            // Add user to database
-            let text = `INSERT INTO users (id, first_name, last_name, phone, email, password, created_at) VALUES ($1, $2, $3, $4, $5, $6, to_timestamp(${Date.now()} / 1000)) RETURNING id`;
-            let values = [userId, profile.name.givenName, profile.name.familyName, "254700000000", profile.emails[0].value, passwordHash];
-            result = await pool.query(text, values);
-
-            // Add user cart to database
-            result = await pool.query("INSERT INTO carts (id, user_id) VALUES ($1, $2)", [cartId, userId]);
-
-            // Add Google credentials to database
-            result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id) VALUES ($1, $2, $3)", [profile.id, profile.provider, userId]);
-
-            // Add user details to be confirmed to session
-            return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, confirmDetails: true });
-        }
-
-        // Save details confirmation status
-        const confirmed = result.rows[0].confirmed;
-
-        // Get user details
-        result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
-
-        // Log login attempt
-        await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
-
-        // Add user details to be confirmed to session if not confirmed
-        if (!confirmed) {
-            const { id, email, role, cart_id } = result.rows[0];
-            return done(null, { id, email, role, cartId: cart_id, confirmDetails: true });
-        }
-
-        // Add user to session
-        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
-    } catch (err) {
-        return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
-    }
-}
-
-module.exports = { register, confirmFederatedDetails, logout, loginLocal, loginGoogle };
+module.exports = { register, confirmFederatedDetails, logout, login };
