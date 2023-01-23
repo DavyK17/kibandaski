@@ -250,6 +250,17 @@ export const Customer = {
             } catch (err) {
                 console.log(err);
             }
+        },
+        unlinkThirdParty: async function(provider) {
+            try {
+                let url = new URL(`${this.url}/unlink`, window.location);
+                url.search = new URLSearchParams({ provider }).toString();
+
+                let response = await fetch(url);
+                if (response.status !== 503) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 };
