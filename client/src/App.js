@@ -22,7 +22,7 @@ const App = () => {
     }
 
     // Complete third-party registration
-    const ctpr = user && user.federatedCredentials[0].confirm;
+    const ctpr = user && user.federatedCredentials[0] && user.federatedCredentials[0].confirm;
 
     useEffect(() => {
         fetchUser();
