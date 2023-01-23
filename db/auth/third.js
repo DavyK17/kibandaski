@@ -18,10 +18,23 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
     try { // Get federated credentials
         let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2", [profile.id, profile.provider]);
 
-        // Create user account if credentials don't exist
+        // Do the following if credentials don't exist
         if (result.rows.length === 0) {
-            // Send error if email already exists in database
+            // Link federated credentials to user if present confirmed
+            if (req.user && !req.user.federatedCredentials) {
+                // Add credentials to database as confirmed
+                let text = "INSERT INTO federated_credentials (id, provider, user_id, confirmed) VALUES ($1, $2, $3, $4)";
+                let values = [profile.id, profile.provider, req.user.id, true];
+                result = await pool.query(text, values);
+
+                // Return user to session
+                return done(null, req.user);
+            }
+
+            // Check for existing account with third-party email
             result = await pool.query("SELECT email FROM users WHERE email = $1", [profile.emails[0].value]);
+
+            // Send error if email already exists in database
             if (result.rows.length > 0) return done({ status: 409, message: "Error: A user with the provided email already exists." });
 
             // Generate user ID and cart ID
