@@ -15,14 +15,14 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
     // Generate login attempt ID
     const attemptId = idGen(15);
 
-    try { // Get Google credentials
+    try { // Get federated credentials
         let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2", [profile.id, profile.provider]);
 
         // Create user account if credentials don't exist
         if (result.rows.length === 0) {
             // Send error if email already exists in database
             result = await pool.query("SELECT email FROM users WHERE email = $1", [profile.emails[0].value]);
-            if (result.rows.length > 0) return res.status(409).send("Error: A user with the provided email already exists.");
+            if (result.rows.length > 0) return done({ status: 409, message: "Error: A user with the provided email already exists." });
 
             // Generate user ID and cart ID
             const userId = idGen(7);
@@ -40,7 +40,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
             // Add user cart to database
             result = await pool.query("INSERT INTO carts (id, user_id) VALUES ($1, $2)", [cartId, userId]);
 
-            // Add Google credentials to database
+            // Add federated credentials to database
             result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id) VALUES ($1, $2, $3)", [profile.id, profile.provider, userId]);
 
             // Add user details to be confirmed to session
@@ -49,9 +49,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         }
 
         // Save federated credentials details
-        const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider };
-        const confirmed = result.rows[0].confirmed;
-        if (!confirmed) federatedCredentials.confirm = !confirmed;
+        const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider, confirm: !result.rows[0].confirmed };
 
         // Get user details
         result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
@@ -59,14 +57,8 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         // Log login attempt
         await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
 
-        // Add user details to be confirmed to session if not confirmed
-        if (!confirmed) {
-            const { id, email, role, cart_id } = result.rows[0];
-            return done(null, { id, email, role, cartId: cart_id, federatedCredentials });
-        }
-
         // Add user to session
-        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
+        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id, federatedCredentials });
     } catch (err) {
         return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
     }
@@ -79,30 +71,8 @@ const callback = strategy => {
             // Send error if present
             if (err) return res.status(err.status).send(err.message);
 
-            // Link user (if present and confirmed) to federated credentials
-            if (strategy !== "local" && !user.federatedCredentials) {
-                try { // Get federated credentials
-                    let result = await pool.query("SELECT * FROM federated_credentials WHERE provider = $1 AND user_id = $2", [strategy, user.id]);
-
-                    // Send error if credentials already exist
-                    if (result.rows.length > 0) {
-                        let provider = strategy.charAt(0).toUpperCase() + strategy.slice(1);
-                        return res.status(403).send(`Error: Your ${provider} credentials are already linked to your account.`);
-                    }
-
-                    // Add credentials to database as confirmed
-                    const { id, provider } = user.federatedCredentials;
-                    result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id, confirmed) VALUES ($1, $2, $3, $4)", [id, provider, req.user.id, true]);
-
-                    // Redirect user to cart
-                    res.redirect("/cart");
-                } catch (err) {
-                    res.status(500).send("An unknown error occurred. Kindly try again.");
-                }
-            }
-
             // Authenticate user
-            req.login(user, (err) => {
+            req.login(user, async(err) => {
                 // Send error if present
                 if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
 
@@ -110,7 +80,7 @@ const callback = strategy => {
                 if (strategy === "local") return res.json(user);
 
                 // Redirect user to confirm account details if unconfirmed
-                if (user.federatedCredentials.confirm) return res.redirect("/register");
+                if (user.federatedCredentials && user.federatedCredentials.confirm) return res.redirect("/register");
 
                 // Redirect user to cart
                 res.redirect("/cart");
