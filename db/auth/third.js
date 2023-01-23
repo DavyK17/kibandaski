@@ -1,5 +1,6 @@
 // IMPORTS
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 const pool = require("../pool");
 const requestIP = require("request-ip");
 
@@ -43,12 +44,12 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
             result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id) VALUES ($1, $2, $3)", [profile.id, profile.provider, userId]);
 
             // Add user details to be confirmed to session
-            return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, confirmDetails: true, provider: profile.provider });
+            const federatedCredentials = { id: profile.id, provider: profile.provider, confirm: true };
+            return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, federatedCredentials });
         }
 
-        // Save details confirmation status
-        const confirmed = result.rows[0].confirmed;
-        const provider = result.rows[0].provider;
+        // Save federated credentials details
+        const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider, confirm: !result.rows[0].confirmed };
 
         // Get user details
         result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
@@ -57,9 +58,9 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
 
         // Add user details to be confirmed to session if not confirmed
-        if (!confirmed) {
+        if (!result.rows[0].confirmed) {
             const { id, email, role, cart_id } = result.rows[0];
-            return done(null, { id, email, role, cartId: cart_id, confirmDetails: true, provider });
+            return done(null, { id, email, role, cartId: cart_id, federatedCredentials });
         }
 
         // Add user to session
@@ -69,4 +70,51 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
     }
 }
 
-module.exports = { login };
+const callback = strategy => {
+    // Return authentication middleware function
+    return (req, res) => {
+        passport.authenticate(strategy, async(err, user) => {
+            // Send error if present
+            if (err) return res.status(err.status).send(err.message);
+
+            // Link user (if present and confirmed) to federated credentials
+            if (strategy !== "local" && !user.federatedCredentials) {
+                try { // Get federated credentials
+                    let result = await pool.query("SELECT * FROM federated_credentials WHERE provider = $1 AND user_id = $2", [strategy, user.id]);
+
+                    // Send error if credentials already exist
+                    if (result.rows.length > 0) {
+                        let provider = strategy.charAt(0).toUpperCase() + strategy.slice(1);
+                        return res.status(403).send(`Error: Your ${provider} credentials are already linked to your account.`);
+                    }
+
+                    // Add credentials to database as confirmed
+                    const { id, provider } = user.federatedCredentials;
+                    result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id, confirmed) VALUES ($1, $2, $3, $4)", [id, provider, req.user.id, true]);
+
+                    // Redirect user to cart
+                    res.redirect("/cart");
+                } catch (err) {
+                    res.status(500).send("An unknown error occurred. Kindly try again.");
+                }
+            }
+
+            // Authenticate user
+            req.login(user, (err) => {
+                // Send error if present
+                if (err) return res.status(500).send("An unknown error occurred. Kindly try again.");
+
+                // Return user object if local login
+                if (strategy === "local") return res.json(user);
+
+                // Redirect user to confirm account details if unconfirmed
+                if (user.federatedCredentials.confirm) return res.redirect("/register");
+
+                // Redirect user to cart
+                res.redirect("/cart");
+            });
+        })(req, res);
+    }
+}
+
+module.exports = { login, callback };
