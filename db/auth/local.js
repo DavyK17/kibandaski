@@ -62,14 +62,10 @@ const register = async(req, res) => {
 
 const confirmFederatedDetails = async(req, res) => {
     // Send error if user is not authorised
-    if (!req.user.confirmDetails) return res.status(401).send("Error: You are not authorised to perform this operation.");
+    if (!req.user.confirmDetails || !req.user.provider) return res.status(401).send("Error: You are not authorised to perform this operation.");
 
     // VALIDATION AND SANITISATION
-    let { provider, phone, password } = req.body;
-
-    // Provider
-    if (typeof provider !== "string") return res.status(400).send("Error: Provider must be a string.");
-    provider = sanitizeHtml(trim(escape(provider)));
+    let { phone, password } = req.body;
 
     // Phone number
     if (typeof phone !== "number" && typeof phone !== "string") return res.status(400).send(`Error: Phone number must be a number.`);
@@ -92,7 +88,7 @@ const confirmFederatedDetails = async(req, res) => {
         // Confirm update
         if (result.rows[0].id === userId) {
             // Update federated details confirmation status
-            result = await pool.query("UPDATE federated_credentials SET confirmed = $1 WHERE provider = $2 AND user_id = $3", [true, provider, userId]);
+            result = await pool.query("UPDATE federated_credentials SET confirmed = $1 WHERE provider = $2 AND user_id = $3", [true, req.user.provider, userId]);
 
             // Get updated user details
             result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [req.user.email]);
