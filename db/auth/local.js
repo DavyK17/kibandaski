@@ -153,7 +153,7 @@ const login = async(req, email, password, done) => {
 
         // Add user to session
         await loginAttempt(attemptId, ip, email, "local", true);
-        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id });
+        return done(null, { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id, federatedCredentials: [] });
     } catch (err) {
         return done({ status: 500, message: "An unknown error occurred. Kindly try again." });
     }
