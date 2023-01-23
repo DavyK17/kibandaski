@@ -1,18 +1,18 @@
 const router = require("express").Router();
-const { loggedIn } = require("../middleware/authenticated");
+const { loggedIn } = require("../../middleware/authenticated");
 
 // No login
-const productsRouter = require("./customer/products");
+const productsRouter = require("./products");
 router.use("/products", productsRouter);
 
 // Login required
-const accountRouter = require("./customer/account");
+const accountRouter = require("./account");
 router.use("/account", loggedIn, accountRouter);
 
-const cartRouter = require("./customer/cart");
+const cartRouter = require("./cart");
 router.use("/cart", loggedIn, cartRouter);
 
-const ordersRouter = require("./customer/orders");
+const ordersRouter = require("./orders");
 router.use("/orders", loggedIn, ordersRouter);
 
 // Export

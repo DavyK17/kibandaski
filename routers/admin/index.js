@@ -1,13 +1,13 @@
 const router = require("express").Router();
 
 // Routers
-const ordersRouter = require("./admin/orders");
+const ordersRouter = require("./orders");
 router.use("/orders", ordersRouter);
 
-const productsRouter = require("./admin/products");
+const productsRouter = require("./products");
 router.use("/products", productsRouter);
 
-const usersRouter = require("./admin/users");
+const usersRouter = require("./users");
 router.use("/users", usersRouter);
 
 // Export
