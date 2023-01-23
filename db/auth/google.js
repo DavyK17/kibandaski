@@ -63,7 +63,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
             result = await pool.query("INSERT INTO federated_credentials (id, provider, user_id) VALUES ($1, $2, $3)", [profile.id, profile.provider, userId]);
 
             // Add user details to be confirmed to session
-            return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, confirmDetails: true });
+            return done(null, { id: userId, email: profile.emails[0].value, role: "customer", cartId: cartId, confirmDetails: true, provider: profile.provider });
         }
 
         // Save details confirmation status
