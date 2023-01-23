@@ -31,10 +31,7 @@ passport.serializeUser(async(user, done) => {
         if (result.rows.length === 0) return done(null, false);
 
         let data = { id: result.rows[0].id, email: result.rows[0].email, role: result.rows[0].role, cartId: result.rows[0].cart_id };
-        if (user.confirmDetails && user.provider) {
-            data.confirmDetails = user.confirmDetails;
-            data.provider = user.provider;
-        }
+        if (user.federatedCredentials) data.federatedCredentials = user.federatedCredentials;
 
         return done(null, data);
     } catch (err) {
