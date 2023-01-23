@@ -89,7 +89,7 @@ const Account = props => {
 
                     status.textContent = `Unlinking from ${capitalise(provider)}…`;
                     let response = await Server.unlinkThirdParty(provider);
-                    if (response !== `${capitalise(provider)} unlinked successfully`) return displayErrorMessage(response);
+                    if (typeof response === "string") return displayErrorMessage(response);
 
                     status.textContent = null;
                     fetchDetails();
