@@ -49,7 +49,9 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         }
 
         // Save federated credentials details
-        const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider, confirm: !result.rows[0].confirmed };
+        const federatedCredentials = { id: result.rows[0].id, provider: result.rows[0].provider };
+        const confirmed = result.rows[0].confirmed;
+        if (!confirmed) federatedCredentials.confirm = !confirmed;
 
         // Get user details
         result = await pool.query("SELECT users.id AS id, users.email AS email, users.password AS password, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE email = $1", [profile.emails[0].value]);
@@ -58,7 +60,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
 
         // Add user details to be confirmed to session if not confirmed
-        if (!result.rows[0].confirmed) {
+        if (!confirmed) {
             const { id, email, role, cart_id } = result.rows[0];
             return done(null, { id, email, role, cartId: cart_id, federatedCredentials });
         }
