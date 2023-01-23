@@ -157,4 +157,27 @@ const deleteUser = async(req, res) => {
     }
 }
 
-module.exports = { getUser, updateUser, deleteUser };
+const unlinkThirdParty = async(req, res) => {
+    // VALIDATION AND SANITISATION
+    // Third-party provider
+    let provider = sanitizeHtml(trim(escape(req.query.provider))).toLowerCase();
+
+    // User ID
+    let userId = trim(req.user.id);
+    if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
+
+    try { // Get federated credentials
+        let result = await pool.query("SELECT * FROM federated_credentials WHERE id = $1 AND provider = $2", [userId, provider]);
+
+        // Send error if credentials do not exist
+        if (result.rows.length === 0) return res.status(404).send("Error: No credentials found for the given provider.");
+
+        // Delete federated credentials
+        result = await pool.query("DELETE FROM federated_credentials WHERE user_id = $1 AND provider = $2", [userId, provider]);
+        res.status(204).send(`${provider.charAt(0).toUpperCase() + word.slice(1)} credentials unlinked successfully.`)
+    } catch (err) {
+        res.status(500).send("An unknown error occurred. Kindly try again.");
+    }
+}
+
+module.exports = { getUser, updateUser, deleteUser, unlinkThirdParty };
