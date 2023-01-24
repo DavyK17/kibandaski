@@ -9,7 +9,7 @@ import capitalise from "../../util/capitalise";
 
 const Admin = props => {
     // Destructure props and define useNavigate()
-    const { view, user, activeClassName, iconHeight, ctpr } = props;
+    const { view, user, activeClassName, windowWidth, iconHeight, ctpr } = props;
     let navigate = useNavigate();
 
     // Redirect user to account details if not admin
@@ -23,7 +23,7 @@ const Admin = props => {
         switch (view) {
             case "products":
                 if (type === "string") return "products";
-                if (type === "component") return <Products iconHeight={iconHeight} />;
+                if (type === "component") return <Products windowWidth={windowWidth} iconHeight={iconHeight} />;
                 break;
             case "users":
                 if (type === "string") return "users";
