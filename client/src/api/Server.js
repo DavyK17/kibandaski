@@ -68,7 +68,121 @@ export const Auth = {
     }
 };
 
-export const Admin = {};
+export const Admin = {
+    orders: {
+        _url: `${root}/admin/orders`,
+        get url() {
+            return this._url;
+        },
+        getOrders: async function(id = null, userId = null) {
+            try {
+                let url;
+                let response;
+
+                if (id) {
+                    url = new URL(this.url, window.location);
+                    url.search = new URLSearchParams({ id }).toString();
+
+                    response = await fetch(url);
+                    if (response.ok) return response.json();
+                }
+
+                url = userId ? `${this.url}/${userId}` : this.url;
+                response = await fetch(`${url}`);
+                if (response.ok) return response.json();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        acknowledgeOrder: async function(id) {
+            try {
+                let url = new URL(`${this.url}/acknowledge`, window.location);
+                url.search = new URLSearchParams({ id }).toString();
+
+                let response = await fetch(url);
+                if (response.status !== 503) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        fulfillOrder: async function(id) {
+            try {
+                let url = new URL(`${this.url}/fulfill`, window.location);
+                url.search = new URLSearchParams({ id }).toString();
+
+                let response = await fetch(url);
+                if (response.status !== 503) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    },
+    products: {
+        _url: `${root}/admin/products`,
+        get url() {
+            return this._url;
+        },
+        createProduct: async function(name, description, price, category) {
+            try {
+                let response = await fetch(this.url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, description, price, category })
+                });
+                if (response.status !== 503) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        updateProduct: async function(id, name, description, price, category) {
+            try {
+                let url = new URL(this.url, window.location);
+                url.search = new URLSearchParams({ id }).toString();
+
+                let response = await fetch(url, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, description, price, category })
+                });
+                if (response.status !== 503) return response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        deleteProduct: async function(id) {
+            try {
+                let url = new URL(this.url, window.location);
+                url.search = new URLSearchParams({ id }).toString();
+
+                let response = await fetch(url, { method: "DELETE" });
+                if (response.status !== 503) {
+                    if (!response.ok) return response.text();
+                    return;
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    },
+    users: {
+        _url: `${root}/admin/users`,
+        get url() {
+            return this._url;
+        },
+        getUsers: async function(role = null) {
+            try {
+                let url = role ? `
+                $ { this.url }
+                /${role}` : this.url;
+                let response = await fetch(`${url}`);
+                if (response.ok) return response.json();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    }
+};
+
 export const Customer = {
     products: {
         _url: `${root}/customer/products`,
