@@ -112,7 +112,7 @@ const callback = strategy => {
                 if (user.federatedCredentials[0].confirm) return res.redirect("/register");
 
                 // Redirect user to redirect path if provided
-                if (redirect) return res.redirect(redirect);
+                if (typeof redirect === "string") return res.redirect(redirect);
 
                 // Redirect user to cart
                 res.redirect("/cart");
