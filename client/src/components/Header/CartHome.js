@@ -41,8 +41,8 @@ const CartHome = props => {
     // Define click handler
     const handleClick = e => {
         e.preventDefault();
-        if (e.target.id === "iconCart" && checkPathFor("primary") && user) navigate("/cart");
-        if (e.target.id  === "iconHome" && (checkPathFor("secondary") || checkPathFor("admin"))) navigate("/");
+        if ((e.target.classList[0] === "iconCart" || e.target.classList[0] === "pathCart") && checkPathFor("primary") && user) navigate("/cart");
+        if ((e.target.classList[0] === "iconHome" || e.target.classList[0] === "pathHome") && (checkPathFor("secondary") || checkPathFor("admin"))) navigate("/");
     }
     
     // Set state
