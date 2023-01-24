@@ -24,6 +24,13 @@ passport.use(new GoogleStrategy({
     scope: ["email", "profile"]
 }, db.third.login));
 
+const FacebookStrategy = require("passport-facebook").Strategy;
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: `${process.env.NODE_ENV === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:8000"}/api/auth/login/facebook/callback`,
+}, db.third.login));
+
 // Serialize and Deserealize
 passport.serializeUser(async(user, done) => {
     try {
