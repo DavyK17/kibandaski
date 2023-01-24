@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header/Header";
@@ -22,12 +22,12 @@ const App = () => {
         if (user) setUser(user);
     }
 
-    // Complete third-party registration
-    const ctpr = user && user.federatedCredentials.length > 0 && user.federatedCredentials[0].confirm;
-
-    useEffect(() => {
+    useMemo(() => {
         fetchUser();
     }, []);
+
+    // Complete third-party registration
+    const ctpr = user && user.federatedCredentials.length > 0 && user.federatedCredentials[0].confirm;
 
     // Window width
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
