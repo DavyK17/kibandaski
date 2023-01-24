@@ -81,9 +81,10 @@ const Cart = props => {
 
     const completeCheckout = async e => {
         e.preventDefault();
+        let phone = e.target[0].value;
         
         status.textContent = "Placing order…";
-        let response = await Server.checkout(e.target[0].value);
+        let response = await Server.checkout(phone);
         if (!response.includes("Order placed")) return displayErrorMessage(response);
 
         status.textContent = "Order placed successfully";
@@ -115,9 +116,10 @@ const Cart = props => {
                 // Define function to change cart item quantity
                 const changeItemQuantity = async e => {
                     e.preventDefault();
+                    let newQuantity = e.target[0].value;
                     
                     status.textContent = "Updating quantity…";
-                    let response = await Server.item.updateItem(productId, e.target[0].value);
+                    let response = await Server.item.updateItem(productId, newQuantity);
                     if (!response.includes("Quantity updated in cart")) return displayErrorMessage(response);
                     
                     status.textContent = null;

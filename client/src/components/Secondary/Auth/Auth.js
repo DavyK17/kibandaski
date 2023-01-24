@@ -76,9 +76,11 @@ const Auth = props => {
         const status = document.getElementById("status");
 
         if (view === "login") {
+            let email = e.target[0].value;
+            let password = e.target[1].value;
             status.textContent = "Logging in…";
 
-            let response = await Server.login(e.target[0].value, e.target[1].value);
+            let response = await Server.login(email, password);
             if (typeof response !== "object") return displayErrorMessage(response);
 
             setUser(response);
@@ -90,10 +92,16 @@ const Auth = props => {
         if (view === "register") {
             status.textContent = "Creating account…";
 
-            if (e.target[4].value && !e.target[5].value) return status.textContent = "Kindly confirm your password.";
-            if (e.target[4].value !== e.target[5].value) return status.textContent = "Passwords do not match.";
+            let password = e.target[4].value;
+            let confirmPassword = e.target[5].value;
+            if (password && !confirmPassword) return status.textContent = "Kindly confirm your password.";
+            if (password !== confirmPassword) return status.textContent = "Passwords do not match.";
             
-            let response = await Server.register(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value);
+            let firstName = e.target[0].value;
+            let lastName = e.target[1].value;
+            let phone = e.target[2].value;
+            let email = e.target[3].value;
+            let response = await Server.register(firstName, lastName, phone, email, confirmPassword);
             if (!response.includes("User created")) return displayErrorMessage(response);
 
             status.textContent = "Account created. Kindly log in.";

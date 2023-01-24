@@ -52,12 +52,15 @@ const ConfirmThirdPartyRegistration = props => {
         const confirmThirdPartyRegistration = async e => {
             e.preventDefault();
             
-            if (e.target[1].value && !e.target[2].value) return status.textContent = "Kindly confirm your password.";
-            if (!e.target[1].value || !e.target[2].value) return status.textContent = "No password provided.";
-            if (e.target[1].value !== e.target[2].value) return status.textContent = "Passwords do not match.";
+            let password = e.target[1].value;
+            let confirmPassword = e.target[2].value;
+            if (password && !confirmPassword) return status.textContent = "Kindly confirm your password.";
+            if (!password || !confirmPassword) return status.textContent = "No password provided.";
+            if (password !== confirmPassword) return status.textContent = "Passwords do not match.";
 
+            let phone = e.target[0].value;
             status.textContent = "Confirming details…";
-            let response = await Auth.confirmThirdPartyRegistration(e.target[0].value, e.target[2].value);
+            let response = await Auth.confirmThirdPartyRegistration(phone, confirmPassword);
             if (typeof response !== "object") return displayErrorMessage(response);
 
             setUser(response);

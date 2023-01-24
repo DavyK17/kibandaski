@@ -102,15 +102,22 @@ const Account = props => {
             const updateDetails = async e => {
                 e.preventDefault();
                 
-                if (!e.target[4].value && e.target[5].value && e.target[6].value) return status.textContent = "No current password provided.";
-                if (e.target[4].value) {
-                    if (e.target[5].value && !e.target[6].value) return status.textContent = "Kindly confirm your new password.";
-                    if (!e.target[5].value || !e.target[6].value) return status.textContent = "No new password provided.";
-                    if (e.target[5].value !== e.target[6].value) return status.textContent = "New passwords do not match.";
+                let currentPassword = e.target[4].value;
+                let newPassword = e.target[5].value;
+                let confirmPassword = e.target[6].value;
+                if (!currentPassword && newPassword && confirmPassword) return status.textContent = "No current password provided.";
+                if (currentPassword) {
+                    if (newPassword && !confirmPassword) return status.textContent = "Kindly confirm your new password.";
+                    if (!newPassword || !confirmPassword) return status.textContent = "No new password provided.";
+                    if (newPassword !== confirmPassword) return status.textContent = "New passwords do not match.";
                 }
                 
+                let firstName = e.target[0].value;
+                let lastName = e.target[1].value;
+                let phone = e.target[2].value;
+                let email = e.target[3].value;
                 status.textContent = "Updating details…";
-                let response = await Server.updateAccount(e.target[0].value, e.target[1].value, e.target[2].value, e.target[3].value, e.target[4].value, e.target[6].value);
+                let response = await Server.updateAccount(firstName, lastName, phone, email, currentPassword, confirmPassword);
                 if (response !== "Account updated successfully") return displayErrorMessage(response);
                 
                 status.textContent = null;
