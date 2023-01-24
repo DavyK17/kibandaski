@@ -80,18 +80,18 @@
                             margin-right: 0.2rem;
                         }
                     }
-                    #iconCartEmpty {
+                    .iconCartEmpty {
                         grid-area: quantity;
                         justify-self: center;
                     }
-                    #iconCartCheckout,
-                    #iconCartItemDelete {
+                    .iconCartCheckout,
+                    .iconCartItemDelete {
                         grid-area: delete;
                         justify-self: end;
                     }
-                    #iconCartEmpty,
-                    #iconCartCheckout,
-                    #iconCartItemDelete {
+                    .iconCartEmpty,
+                    .iconCartCheckout,
+                    .iconCartItemDelete {
                         transition: opacity 0.15s ease-in-out;
                         &:hover,
                         &:focus {
@@ -252,10 +252,10 @@
                     &.total {
                         grid-template-areas: "name name name" "price delete quantity";
                     }
-                    #iconCartEmpty {
+                    .iconCartEmpty {
                         justify-self: end;
                     }
-                    #iconCartCheckout {
+                    .iconCartCheckout {
                         justify-self: center;
                     }
                 }
