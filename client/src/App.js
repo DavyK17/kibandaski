@@ -51,7 +51,7 @@ const App = () => {
 
         if (type === 3) return (
             <Route path={path} element={
-                <Admin view={view} activeClassName={activeClassName} iconHeight={iconHeight} ctpr={ctpr} />
+                <Admin view={view} user={user} activeClassName={activeClassName} iconHeight={iconHeight} ctpr={ctpr} />
             } />
         )
 
