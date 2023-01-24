@@ -125,11 +125,11 @@ const Account = props => {
                 fetchDetails();
             }
 
-            // Return edit component if corresponding button is clicked
-            if (edit) return <EditDetails handleBack={toggleEdit} handleSubmit={updateDetails} />;
-
             // Destructure details
             const { firstName, lastName, phone, email } = details;
+
+            // Return edit component if corresponding button is clicked
+            if (edit) return <EditDetails details={{ firstName, lastName, phone, email }} handleBack={toggleEdit} handleSubmit={updateDetails} />;
 
             // Return details
             return (

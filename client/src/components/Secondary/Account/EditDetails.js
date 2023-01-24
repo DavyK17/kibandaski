@@ -1,6 +1,7 @@
 const EditDetails = props => {
-    // Destructure props
-    const { handleBack, handleSubmit } = props;
+    // Destructure props and details
+    const { details, handleBack, handleSubmit } = props;
+    const { firstName, lastName, phone, email } = details;
 
     // Kenyan phone number regex
     const phoneRegex = /^254((20|4[0-6]|5\d|6([0-2]|[4-9]))\d{7}|1[0-1]\d{7}|7\d{8})$/;
@@ -12,24 +13,24 @@ const EditDetails = props => {
                 <h3>Name</h3>
                 <div className="input">
                     <label className="sr-only" htmlFor="first-name">First name</label>
-                    <input type="text" id="first-name" placeholder="First name" />
+                    <input type="text" id="first-name" placeholder="First name" defaultValue={firstName} />
 
                     <label className="sr-only" htmlFor="last-name">Last name</label>
-                    <input type="text" id="last-name" placeholder="Last name" />
+                    <input type="text" id="last-name" placeholder="Last name" defaultValue={lastName} />
                 </div>
             </div>
             <div className="phone">
                 <h3>Phone number</h3>
                 <div className="input">
                     <label className="sr-only" htmlFor="phone">Phone number</label>
-                    <input type="tel" id="phone" placeholder="i.e. 254XXXXXXXXX" pattern={phoneRegex.toString().replaceAll("/", "")} />
+                    <input type="tel" id="phone" placeholder="i.e. 254XXXXXXXXX" pattern={phoneRegex.toString().replaceAll("/", "")} defaultValue={phone} />
                 </div>
             </div>
             <div className="email">
                 <h3>Email address</h3>
                 <div className="input">
                     <label className="sr-only" htmlFor="email">Email address</label>
-                    <input type="email" id="email" placeholder="Email address" />
+                    <input type="email" id="email" placeholder="Email address" defaultValue={email} />
                 </div>
             </div>
             <div className="password">
