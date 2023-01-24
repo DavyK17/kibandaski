@@ -29,6 +29,9 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: `${process.env.NODE_ENV === "production" ? "https://kibandaski.up.railway.app" : "http://localhost:8000"}/api/auth/login/facebook/callback`,
+    passReqToCallback: true,
+    scope: ["email"],
+    profileFields: ["id", "email", "first_name", "last_name"]
 }, db.third.login));
 
 // Serialize and Deserealize
