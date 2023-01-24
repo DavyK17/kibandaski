@@ -142,6 +142,7 @@ const Account = props => {
                     <div className="buttons">
                         <button onClick={toggleEdit}>Edit details</button>
                         {renderThirdPartyButton("google")}
+                        {renderThirdPartyButton("facebook")}
                         <button onClick={deleteAccount}>Delete account</button>
                     </div>
                 </>
