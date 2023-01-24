@@ -46,7 +46,7 @@ const ConfirmThirdPartyRegistration = props => {
     // Return skeleton if loading
     if (isLoading) return <Skeleton />;
 
-    // Do the following if federated details have been fetched
+    // Do the following if third-party details have been fetched
     if (federatedDetails) {
         // Define function to confirm details
         const confirmThirdPartyRegistration = async e => {

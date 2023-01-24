@@ -87,7 +87,7 @@ const confirmThirdPartyRegistration = async(req, res) => {
 
         // Confirm update
         if (result.rows[0].id === userId) {
-            // Update federated details confirmation status
+            // Update third-party details confirmation status
             let text = "UPDATE federated_credentials SET confirmed = $1 WHERE provider = $2 AND user_id = $3";
             let values = [true, req.user.federatedCredentials[0].provider, userId];
             result = await pool.query(text, values);

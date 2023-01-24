@@ -10,7 +10,7 @@ const Primary = props => {
     // Destructure props
     const { view, user, activeClassName, windowWidth, iconHeight, ctpr } = props;
 
-    // Redirect to federated details confirmation if not confirmed
+    // Redirect to third-party details confirmation if not confirmed
     let navigate = useNavigate();
     if (ctpr) return navigate("/register");
 
