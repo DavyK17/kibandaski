@@ -10,14 +10,16 @@ const CartHome = props => {
     let navigate = useNavigate();
 
     // Define primary and secondary paths
-    const primary = ["/", "/menu", "/orders", "/admin"];
+    const primary = ["/", "/menu", "/orders"];
     const secondary = ["/login", "/register", "/account", "/cart"];
+    const admin = ["/admin/orders", "/admin/products", "/admin/users"];
 
     // Define function to check whether current path is primary or secondary
     const checkPathFor = type => {
         let current;
         if (type === "primary") current = primary;
         if (type === "secondary") current = secondary;
+        if (type === "admin") current = admin;
 
         current = current.filter(pathname => location.pathname === pathname);
         return current.length > 0 ? true : false;
@@ -40,7 +42,7 @@ const CartHome = props => {
     const handleClick = e => {
         e.preventDefault();
         if (e.target.id === "iconCart" && checkPathFor("primary") && user) navigate("/cart");
-        if (e.target.id  === "iconHome" && checkPathFor("secondary")) navigate("/");
+        if (e.target.id  === "iconHome" && (checkPathFor("secondary") || checkPathFor("admin"))) navigate("/");
     }
     
     // Set state
