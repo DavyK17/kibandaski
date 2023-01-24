@@ -23,7 +23,7 @@ const Admin = props => {
         switch (view) {
             case "products":
                 if (type === "string") return "products";
-                if (type === "component") return <Products windowWidth={windowWidth} iconHeight={iconHeight} />;
+                if (type === "component") return <Products user={user} windowWidth={windowWidth} iconHeight={iconHeight} />;
                 break;
             case "users":
                 if (type === "string") return "users";
