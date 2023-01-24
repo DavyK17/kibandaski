@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 import Nav from "./PrimaryNav";
-import Admin from "./Admin/Admin";
 import Menu from "./Menu/Menu";
 import Orders from "./Orders/Orders";
 
@@ -18,10 +17,6 @@ const Primary = props => {
     // Define function to render correct view
     const renderView = (view, type) => {
         switch (view) {
-            case "admin":
-                if (type === "string") return "admin";
-                if (type === "component") return <Admin user={user} />;
-                break;
             case "orders":
                 if (type === "string") return "orders";
                 if (type === "component") return <Orders windowWidth={windowWidth} iconHeight={iconHeight} />;
