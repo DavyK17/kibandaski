@@ -4,6 +4,7 @@ import FacebookIcon from "../../../assets/icons/facebook.svg";
 import GoogleIcon from "../../../assets/icons/google.svg";
 
 import { Auth as Server } from "../../../api/Server";
+import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Auth = props => {
@@ -12,6 +13,9 @@ const Auth = props => {
 
     // Define useNavigate()
     let navigate = useNavigate();
+
+    // Define third-party icons
+    const icons = { google: GoogleIcon, facebook: FacebookIcon };
 
     // Define form elements
     const names = (
@@ -57,6 +61,15 @@ const Auth = props => {
         )
     }
 
+    // Define function to return third-party link/unlink buttons
+    const renderThirdPartyButton = provider => {
+        return (
+            <a className="third-party-login" href={`/api/auth/login/${provider}`} title={`Authenticate with ${capitalise(provider)}`}>
+                <img src={icons[provider]} alt={`${capitalise(provider)} icon`} />
+            </a>
+        )
+    }
+
     // Define form submit function
     const handleSubmit = async e => {
         e.preventDefault();
@@ -98,12 +111,8 @@ const Auth = props => {
             {password()}
             <div className="buttons">
                 <button type="submit">{view === "register" ? "Register" : "Log in"}</button>
-                <a className="third-party-login" href="/api/auth/login/google" title="Authenticate with Google">
-                    <img src={GoogleIcon} alt="Google icon" />
-                </a>
-                <a className="third-party-login" href="/api/auth/login/facebook" title="Authenticate with Facebook">
-                    <img src={FacebookIcon} alt="Facebook icon" /> 
-                </a>
+                {renderThirdPartyButton("google")}
+                {renderThirdPartyButton("facebook")}
             </div>
         </form>
     )
