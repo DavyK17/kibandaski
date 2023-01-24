@@ -409,7 +409,7 @@
                     "200": {
                         "description": "Confirmation of the acknowledgement",
                         "content": {
-                            "application/json": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Order acknowledged with ID: [order ID]"
@@ -492,7 +492,7 @@
                     "200": {
                         "description": "Confirmation of the fulfillment",
                         "content": {
-                            "application/json": {
+                            "text/plain": {
                                 "schema": {
                                     "type": "string",
                                     "example": "Order fulfilled with ID: [order ID]"
