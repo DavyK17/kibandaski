@@ -12,6 +12,10 @@ router.all("/", (req, res) => res.send("Kindly log in with your account details"
 router.get("/google", passport.authenticate("google"));
 router.get("/google/callback", callback("google"));
 
+// Facebook
+router.get("/facebook", passport.authenticate("facebook"));
+router.get("/facebook/callback", callback("facebook"));
+
 
 /* EXPORT */
 module.exports = router;
