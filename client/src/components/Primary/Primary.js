@@ -31,11 +31,11 @@ const Primary = props => {
 
     // Return component
     return (
-            <section className="primary">
-                <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
-                <Nav user={user} activeClassName={activeClassName} />
-                {renderView(view, "component")}
-            </section>
+        <section className="primary">
+            <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
+            <Nav user={user} activeClassName={activeClassName} />
+            {renderView(view, "component")}
+        </section>
     )
 }
 
