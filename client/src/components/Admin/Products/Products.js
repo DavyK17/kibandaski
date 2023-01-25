@@ -24,6 +24,7 @@ const Products = props => {
     // Menu and menu items
     const [menu, setMenu] = useState([]);
     const [items, setItems] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -36,7 +37,18 @@ const Products = props => {
             if (products) {
                 setMenu(products);
                 setItems(products);
-                setIsLoading(false);
+
+                let categories = await Customer.products.getCategories();
+                if (categories) {
+                    let sorted = categories.sort((a, b) => {
+                        if (a < b) return -1;
+                        if (b > a) return 1;
+                        return 0;
+                    });
+                    
+                    setCategories(sorted);
+                    setIsLoading(false);
+                }
             }
         } catch (err) {
             setError(true);
@@ -217,9 +229,15 @@ const Products = props => {
         <>
             <div className="products">
                 <div className="sort">
-                    <CategorySelect handleChange={changeCategory} />
-                    {items.length > 1 ? <ItemSort type="name" handleNameSortChange={sortItemsByName} /> : null}
-                    {items.length > 1 ? <ItemSort type="price" handlePriceSortChange={sortItemsByPrice} /> : null}
+                    {categories ? <CategorySelect categories={categories} handleChange={changeCategory} /> : null}
+                    {
+                        categories && items.length > 1 ? (
+                            <>
+                                <ItemSort type="name" handleNameSortChange={sortItemsByName} />
+                                <ItemSort type="price" handlePriceSortChange={sortItemsByPrice} />
+                            </>
+                        ) : null
+                    }
                     <button onClick={() => setEdit({ id: "new" })}>Create product</button>
                     <p id="status"></p>
                 </div>
