@@ -147,8 +147,12 @@ const Products = props => {
                     deleteStatus.textContent = "Product deleted";
                 }
 
-                setTimeout(() => deleteStatus.textContent = capitalise(category), 3000);
                 fetchItems();
+
+                setCategory("all");
+                const category = document.getElementById("category");
+                for (let i = 0; i < category.options.length; i++) category.options[i].defaultSelected ? category.selectedIndex = i : category.selectedIndex = 0;
+                document.getElementById("menu-sort").selectedIndex = 0;
             }
 
             // Return menu item
@@ -185,6 +189,7 @@ const Products = props => {
         if (!response.includes("Product created")) return displayErrorMessage(response);
 
         status.textContent = null;
+        setCategory("all");
         setEdit(null);
         fetchItems();
     }
@@ -204,6 +209,7 @@ const Products = props => {
         if (!response.includes("Product updated")) return displayErrorMessage(response);
 
         status.textContent = null;
+        setCategory("all");
         setEdit(null);
         fetchItems();
     }
