@@ -100,12 +100,6 @@ const updateProduct = async(req, res) => {
         // Send error if no updates made
         if (old.name === name && old.description === description && old.price === price && old.category === category) return res.status(400).send("Error: No updates provided.");
 
-        // Send error if another product of the desired name already exists
-        if (req.body.name) {
-            result = await pool.query("SELECT * FROM products WHERE name = $1", [name]);
-            if (result.rows.length > 0) return res.status(409).send("Error: A product with the provided name already exists.");
-        }
-
         // Update product
         result = await pool.query("UPDATE products SET name = $1, description = $2, price = $3, category = $4 WHERE id = $5 RETURNING id", [name, description, price, category, id]);
         res.status(200).send(`Product updated with ID: ${result.rows[0].id}`);
