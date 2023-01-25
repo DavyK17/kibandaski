@@ -16,23 +16,23 @@ const EditProduct = props => {
                             {id === "new" ? null : <span className="id">#{id}</span>}
                         </div>
                         <label className="sr-only" htmlFor="name">Name</label>
-                        <input type="text" id="name" placeholder="Name" defaultValue={name} />
+                        <input type="text" id="name" placeholder="Name" defaultValue={name} required={id === "new" ? true : false} />
                     </div>
                     <div className="price">
                         <h3>Price</h3>
                         <label className="sr-only" htmlFor="price">Price</label>
-                        <input type="number" id="price" placeholder="Price" min={0} pattern="[0-9]+" defaultValue={price} />
+                        <input type="number" id="price" placeholder="Price" min={0} pattern="[0-9]+" defaultValue={price} required={id === "new" ? true : false} />
                     </div>
                 </div>
                 <div className="description">
                     <h3>Description</h3>
                     <label className="sr-only" htmlFor="description">Description</label>
-                    <textarea id="description" placeholder="Name" defaultValue={description}></textarea>
+                    <textarea id="description" placeholder="Name" defaultValue={description} required={id === "new" ? true : false}></textarea>
                 </div>
                 <div className="category">
                     <h3>Category</h3>
                     <label className="sr-only" htmlFor="category">Category</label>
-                    <input type="text" id="category" placeholder="Category" defaultValue={category ? capitalise(category) : null} />
+                    <input type="text" id="category" placeholder="Category" defaultValue={category ? capitalise(category) : null} required={id === "new" ? true : false} />
                 </div>
                 <div className="buttons">
                     <button type="submit">{ id === "new" ? "Create product" : "Update product"}</button>
