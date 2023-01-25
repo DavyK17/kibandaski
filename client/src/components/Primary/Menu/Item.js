@@ -20,7 +20,7 @@ const Item = props => {
                     <p className="description">{description}</p>
                 </div>
                 <p className="price">
-                    <span className="currency">Ksh</span><span>{price}</span>
+                    <span className="currency">Ksh</span><span>{price.toLocaleString("en-KE")}</span>
                 </p>
             </div>
             <div className="item-footer">
