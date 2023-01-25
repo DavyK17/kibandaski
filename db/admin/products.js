@@ -95,7 +95,7 @@ const updateProduct = async(req, res) => {
         price = Math.round(price);
 
         // Category
-        category = sanitizeHtml(trim(escape(category || old.category)));
+        category = sanitizeHtml(trim(escape(category || old.category))).toLowerCase();
 
         // Send error if no updates made
         if (old.name === name && old.description === description && old.price === price && old.category === category) return res.status(400).send("Error: No updates provided.");
