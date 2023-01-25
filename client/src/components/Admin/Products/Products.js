@@ -229,7 +229,7 @@ const Products = props => {
         <>
             <div className="products">
                 <div className="sort">
-                    {categories ? <CategorySelect categories={categories} handleChange={changeCategory} /> : null}
+                    {categories ? <CategorySelect categories={categories} category={category} handleChange={changeCategory} /> : null}
                     {
                         categories && items.length > 1 ? (
                             <>
