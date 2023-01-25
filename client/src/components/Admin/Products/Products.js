@@ -65,8 +65,7 @@ const Products = props => {
     const [category, setCategory] = useState("all");
     const changeCategory = ({ target }) => {
         setCategory(target.value);
-        document.getElementById("sort-name").selectedIndex = 0;
-        document.getElementById("sort-price").selectedIndex = 0;
+        document.getElementById("menu-sort").selectedIndex = 0;
     } 
 
     useEffect(() => {
@@ -79,41 +78,32 @@ const Products = props => {
     // Edit product
     const [edit, setEdit] = useState(null);
 
-
-    // SORTING
-    // By name
-    const sortItemsByName = ({ target }) => {
+    // Define function to sort items
+    const sortItems = ({ target }) => {
         let original = category === "all" ? menu : menu.filter(item => item.category === category);
         let toSort = [].concat(category === "all" ? items : items.filter(item => item.category === category));
 
         const sorted = toSort.sort((a, b) => {
-            const nameA = a.name.toLowerCase();
-            const nameB = b.name.toLowerCase();
-    
-            if (target.value === "ascending") {
-                if (nameA < nameB) return -1;
-                if (nameA > nameB) return 1;
+            if (target.value.includes("name")) {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+        
+                if (target.value === "name-ascending") {
+                    if (nameA < nameB) return -1;
+                    if (nameA > nameB) return 1;
+                }
+        
+                if (target.value === "name-descending") {
+                    if (nameA > nameB) return -1;
+                    if (nameA < nameB) return 1;
+                }
             }
-    
-            if (target.value === "descending") {
-                if (nameA > nameB) return -1;
-                if (nameA < nameB) return 1;
+
+            if (target.value.includes("price")) {
+                if (target.value === "price-ascending") return a.price - b.price;
+                if (target.value === "price-descending") return b.price - a.price;
             }
 
-            return 0;
-        });
-
-        setItems(target.value === "default" ? original : sorted);
-    } 
-
-    // By price
-    const sortItemsByPrice = ({ target }) => {
-        let original = category === "all" ? menu : menu.filter(item => item.category === category);
-        let toSort = [].concat(category === "all" ? items : items.filter(item => item.category === category));
-
-        const sorted = toSort.sort((a, b) => {
-            if (target.value === "ascending") return a.price - b.price;
-            if (target.value === "descending") return b.price - a.price;
             return 0;
         });
 
@@ -230,14 +220,7 @@ const Products = props => {
             <div className="products">
                 <div className="sort">
                     {categories ? <CategorySelect categories={categories} category={category} handleChange={changeCategory} /> : null}
-                    {
-                        categories && items.length > 1 ? (
-                            <>
-                                <ItemSort type="name" handleNameSortChange={sortItemsByName} />
-                                <ItemSort type="price" handlePriceSortChange={sortItemsByPrice} />
-                            </>
-                        ) : null
-                    }
+                    {categories && items.length > 1 ? <ItemSort handleSortChange={sortItems} /> : null}
                     <button onClick={() => setEdit({ id: "new" })}>Create product</button>
                     <p id="status"></p>
                 </div>
