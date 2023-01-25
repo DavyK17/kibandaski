@@ -8,8 +8,6 @@ import ItemSort from "../../Primary/Menu/ItemSort";
 import EditProduct from "./EditProduct";
 
 import { Admin, Customer } from "../../../api/Server";
-
-import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Products = props => {
