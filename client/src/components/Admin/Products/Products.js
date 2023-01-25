@@ -13,12 +13,9 @@ import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Products = props => {
-    // Destructure props
+    // Destructure props and define server
     const { user, windowWidth, iconHeight } = props;
-
-    // Define server and status
     const Server = Admin.products;
-    const status = document.getElementById("status");
 
     // Define server and useNavigate()
     let navigate = useNavigate();
@@ -174,6 +171,8 @@ const Products = props => {
     // Define function to add new product
     const addProduct = async e => {
         e.preventDefault();
+        const status = document.getElementById("status");
+
         let name = e.target[0].value;
         let price = e.target[1].value;
         let description = e.target[2].value;
@@ -191,6 +190,8 @@ const Products = props => {
     // Define function to update product details
     const updateDetails = async e => {
         e.preventDefault();
+        const status = document.getElementById("status");
+
         let name = e.target[0].value;
         let price = e.target[1].value;
         let description = e.target[2].value;
