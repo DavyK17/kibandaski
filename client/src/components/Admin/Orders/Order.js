@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 
-import { Customer } from "../../../api/Server";
+import { Admin } from "../../../api/Server";
 import capitalise from "../../../util/capitalise";
 import renderOrderTime from "../../../util/renderOrderTime";
 
@@ -11,7 +11,7 @@ const Order = props => {
     const { id, userId, createdAt, status } = details;
 
     // Define server
-    const Server = Customer.orders;
+    const Server = Admin.orders;
     
     // Define order acknowledge icon
     const OrderAcknowledge = (
