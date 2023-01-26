@@ -35,7 +35,10 @@
             }
         }
         #status {
+            width: 250px;
             text-align: end;
+            overflow-wrap: anywhere;
+            margin-top: 1rem;
         }
         .user-search {
             display: flex;
