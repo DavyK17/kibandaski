@@ -117,7 +117,7 @@ const Order = props => {
         <>
             <div className="order-body">
                 <div className="info">
-                    <p className="id">#{id}</p>
+                    <p className="id"><span>{userId}</span><span className="separator"> | </span><span>#{id}</span></p>
                     <p className="time">{renderOrderTime(createdAt)}</p>
                     <button className="view-items" onClick={viewItems}>{ fetchItems ? "Hide items" : "View items"}</button>
                     <div id={`items-${id}`} className="items">
