@@ -8,6 +8,7 @@ import ItemSort from "../../Primary/Menu/ItemSort";
 import EditProduct from "./EditProduct";
 
 import { Admin, Customer } from "../../../api/Server";
+import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Products = props => {
@@ -141,15 +142,16 @@ const Products = props => {
                 if (typeof response === "string") {
                     displayErrorMessage(response);
                     deleteStatus.textContent = "Error";
-                } else {
-                    deleteStatus.textContent = "Product deleted";
+                    return setTimeout(() => deleteStatus.textContent = capitalise(category), 3000);
                 }
 
+                deleteStatus.textContent = "Product deleted";
                 fetchItems();
 
                 setCategory("all");
-                const category = document.getElementById("category");
-                for (let i = 0; i < category.options.length; i++) category.options[i].defaultSelected ? category.selectedIndex = i : category.selectedIndex = 0;
+                const categorySelect = document.getElementById("category");
+                for (let i = 0; i < categorySelect.options.length; i++)
+                    categorySelect.options[i].defaultSelected ? categorySelect.selectedIndex = i : categorySelect.selectedIndex = 0;
                 document.getElementById("menu-sort").selectedIndex = 0;
             }
 
