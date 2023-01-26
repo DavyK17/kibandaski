@@ -3,18 +3,15 @@ import Skeleton from "react-loading-skeleton";
 
 import { Customer } from "../../../api/Server";
 import capitalise from "../../../util/capitalise";
+import renderOrderTime from "../../../util/renderOrderTime";
 
 const Order = props => {
-    // Destructure props and define server
-    const { id, createdAt, status, windowWidth, iconHeight, cancelOrder } = props;
-    const Server = Customer.orders;
+    // Destructure props and details
+    const { details, windowWidth, iconHeight, cancelOrder } = props;
+    const { id, createdAt, status } = details;
 
-    // Define function to render order time
-    const renderTime = createdAt => {
-        let options = { day: "numeric", month: "long", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true };
-        let dateTime = new Intl.DateTimeFormat("en-KE", options);
-        return dateTime.format(new Date(createdAt));
-    }
+    // Define server
+    const Server = Customer.orders;
     
     // Define order cancel icon
     const OrderCancel = (
@@ -103,7 +100,7 @@ const Order = props => {
             <div className="order-body">
                 <div className="info">
                     <p className="id">#{id}</p>
-                    <p className="time">{renderTime(createdAt)}</p>
+                    <p className="time">{renderOrderTime(createdAt)}</p>
                     <button className="view-items" onClick={viewItems}>{ fetchItems ? "Hide items" : "View items"}</button>
                     <div id={`items-${id}`} className="items">
                         {renderItems()}

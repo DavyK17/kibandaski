@@ -90,7 +90,7 @@ const Orders = props => {
             // Return order
             return (
                 <li key={i}>
-                    <Order id={id} createdAt={createdAt} status={status} windowWidth={windowWidth} iconHeight={iconHeight} cancelOrder={cancelOrder} />
+                    <Order details={{ id, createdAt, status }} windowWidth={windowWidth} iconHeight={iconHeight} cancelOrder={cancelOrder} />
                 </li>
             )
         });
