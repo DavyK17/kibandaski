@@ -32,7 +32,7 @@ const Admin = props => {
             case "orders":
             default:
                 if (type === "string") return "orders";
-                if (type === "component") return <Orders iconHeight={iconHeight} />;
+                if (type === "component") return <Orders windowWidth={windowWidth} iconHeight={iconHeight} />;
                 return undefined;
         }
     }
