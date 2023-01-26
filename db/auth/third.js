@@ -20,6 +20,10 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
 
         // Do the following if user is logged in
         if (req.user) {
+            // Send error if user is protected for demonstration purposes
+            let protectedCheck = await pool.query("SELECT protected FROM users WHERE id = $1", [req.user.id]);
+            if (protectedCheck.rows[0].protected) return done({ status: 403, message: "Error: This account cannot be linked to a third party." });
+
             // Link user to third-party credentials if none found
             if (result.rows.length === 0) {
                 // Add credentials to database as confirmed

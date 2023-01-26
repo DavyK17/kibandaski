@@ -42,7 +42,12 @@ const updateUser = async(req, res) => {
     if (!isNumeric(userId, { no_symbols: true }) || !isLength(userId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid user ID in session.");
 
     try { // Retrieve existing details from database if not provided in body
-        let result = await pool.query("SELECT first_name, last_name, phone, email, password FROM users WHERE id = $1", [userId]);
+        let result = await pool.query("SELECT first_name, last_name, phone, email, password, protected FROM users WHERE id = $1", [userId]);
+
+        // Send error if user is protected for demonstration purposes
+        if (result.rows[0].protected) return res.status(403).send("Error: This account cannot be updated.");
+
+        // Create existing details object
         let old = {
             firstName: result.rows[0].first_name,
             lastName: result.rows[0].last_name,
@@ -129,11 +134,15 @@ const deleteUser = async(req, res) => {
     if (!isNumeric(cartId, { no_symbols: true }) || !isLength(cartId, { min: 7, max: 7 })) return res.status(401).send("Error: Invalid cart ID in session.");
 
     try { // DELETE USER
+        // Send error if user is protected for demonstration purposes
+        let result = await pool.query("SELECT protected FROM users WHERE id = $1", [userId]);
+        if (result.rows[0].protected) return res.status(403).send("Error: This account cannot be deleted.");
+
         // Create orders array
         let orders = [];
 
         // Add each order by user to orders array
-        let result = await pool.query("SELECT id FROM orders WHERE user_id = $1", [userId]);
+        result = await pool.query("SELECT id FROM orders WHERE user_id = $1", [userId]);
         result.rows.forEach(row => orders.push(row.id));
 
         // Delete each order and its items in orders array
