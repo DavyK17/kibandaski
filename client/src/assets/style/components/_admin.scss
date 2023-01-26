@@ -37,6 +37,26 @@
         #status {
             text-align: end;
         }
+        .user-search {
+            display: flex;
+            gap: calc(0.02 * 250px);
+            input {
+                width: calc(0.83 * 250px);
+                color: $header-bg-color;
+                font-size: 1rem;
+                font-family: $font-header;
+                text-transform: uppercase;
+                padding: 0.2rem 0.25rem;
+            }
+            button {
+                width: calc(0.15 * 250px);
+                height: fit-content;
+                background-color: $header-bg-color;
+                border: 1px solid $darkgray;
+                border-radius: 2px;
+                padding: 0.25rem;
+            }
+        }
     }
     .orders {
         ul {
