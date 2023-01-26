@@ -66,6 +66,9 @@
                             font-size: 0.675rem;
                             margin-bottom: 0.25rem;
                             opacity: 0.5;
+                            .separator {
+                                color: $header-bg-color;
+                            }
                         }
                         .time {
                             width: 75%;
