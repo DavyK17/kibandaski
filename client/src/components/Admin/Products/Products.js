@@ -159,8 +159,8 @@ const Products = props => {
             return (
                 <li key={i}>
                     <Item
-                        id={id} name={name} description={description} price={price} category={category}
-                        windowWidth={windowWidth} iconHeight={iconHeight} editProduct={editProduct} deleteProduct={deleteProduct}
+                        details={{ id, name, description, price, category }} windowWidth={windowWidth} iconHeight={iconHeight}
+                        editProduct={editProduct} deleteProduct={deleteProduct}
                     />
                 </li>
             )
