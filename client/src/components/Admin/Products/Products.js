@@ -12,11 +12,11 @@ import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Products = props => {
-    // Destructure props and define server
+    // Destructure props
     const { user, windowWidth, iconHeight } = props;
-    const Server = Admin.products;
 
     // Define server and useNavigate()
+    const Server = Admin.products;
     let navigate = useNavigate();
 
     // STATE + FUNCTIONS
@@ -172,7 +172,7 @@ const Products = props => {
                 {list()}
             </ul>
         )
-    };
+    }
 
     // Define function to add new product
     const addProduct = async e => {
