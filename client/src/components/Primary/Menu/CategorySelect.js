@@ -1,7 +1,7 @@
 import capitalise from "../../../util/capitalise";
 
 const CategorySelect = props => {
-    // Destructure props and define server
+    // Destructure props
     const { categories, category, handleChange } = props;
 
     // RENDERING
