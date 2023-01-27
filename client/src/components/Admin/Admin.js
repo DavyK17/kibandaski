@@ -27,7 +27,7 @@ const Admin = props => {
                 break;
             case "users":
                 if (type === "string") return "users";
-                if (type === "component") return <Users />;
+                if (type === "component") return <Users windowWidth={windowWidth} iconHeight={iconHeight} />;
                 break;
             case "orders":
             default:
