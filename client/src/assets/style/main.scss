@@ -36,6 +36,17 @@ em {
     font-style: italic;
 }
 
+a {
+    color: $header-bg-color;
+    text-decoration: none;
+    transition: color 0.1s ease-in-out;
+    &:hover,
+    &:focus {
+        color: adjust-color($color: $header-bg-color, $lightness: 20%);
+        transition: color 0.1s ease-in-out;
+    }
+}
+
 .error,
 #status {
     color: adjust-color($color: $header-bg-color, $lightness: 20%);
