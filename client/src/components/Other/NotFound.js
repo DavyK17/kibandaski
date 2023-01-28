@@ -13,7 +13,7 @@ const NotFound = () => {
 
     // Return component
     return (
-        <section className="not-found">
+        <section className="not-found" data-testid="not-found">
             <h2>Not Found</h2>
             <p>The page you requested <span className="path">({location.pathname})</span> does not exist. <a href="/#" onClick={goBack}>Click here</a> to go back to the previous page.</p>
         </section>
