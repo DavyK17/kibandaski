@@ -16,6 +16,11 @@ describe("Home page", () => {
         expect(header).toBeInTheDocument();
     });
 
+    test("shows footer", () => {
+        let footer = screen.getByTestId("footer"); 
+        expect(footer).toBeInTheDocument();
+    });
+
     test("shows menu on initial render", () => {
         let menu = screen.getByTestId("menu");
         expect(menu).toBeInTheDocument();
