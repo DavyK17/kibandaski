@@ -342,6 +342,78 @@
             }
         }
     }
+    .users {
+        ul {
+            margin: unset;
+            padding: unset;
+            list-style-type: none;
+            li {
+                display: flex;
+                width: 700px;
+                border: 1px solid rgba(0, 0, 0, 0.75);
+                flex-direction: column;
+                &:not(:first-of-type) {
+                    margin: 1rem 0;
+                }
+                .user-body {
+                    display: flex;
+                    background-color: $lightgray;
+                    padding: 1rem 0.5rem;
+                    justify-content: space-between;
+                    align-items: center;
+                    .info {
+                        width: 100%;
+                        p {
+                            margin: unset;
+                        }
+                        .email {
+                            font-size: 0.675rem;
+                            margin-bottom: 0.25rem;
+                            opacity: 0.5;
+                        }
+                        .name {
+                            width: 75%;
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                            margin-bottom: 0.25rem;
+                        }
+                        .phone {
+                            color: $header-bg-color;
+                            // font-weight: 300;
+                        }
+                    }
+                }
+                .user-footer {
+                    display: grid;
+                    background-color: $header-bg-color;
+                    color: white;
+                    padding: 0.5rem;
+                    grid-template: auto / 1fr 2fr 1fr;
+                    grid-template-areas: "id role button";
+                    align-items: center;
+                    .id {
+                        grid-area: id;
+                        font-size: 0.75rem;
+                        opacity: 0.4;
+                    }
+                    .role {
+                        grid-area: role;
+                        font-size: 0.75rem;
+                        justify-self: center;
+                        opacity: 0.8;
+                    }
+                    .view-orders {
+                        grid-area: button;
+                        width: fit-content;
+                        font-family: $font-body;
+                        font-size: 0.75rem;
+                        justify-self: end;
+                        border: unset;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 320px) {
@@ -455,6 +527,22 @@
                 }
             }
         }
+        .users {
+            ul li {
+                width: 100%;
+                .view-orders {
+                    background-color: unset;
+                    padding: unset;
+                    transition: opacity 0.15s ease-in-out;
+                    &:hover,
+                    &:focus {
+                        cursor: pointer;
+                        opacity: 0.8;
+                        transition: opacity 0.15s ease-in-out;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -484,6 +572,25 @@
             flex-direction: row-reverse;
             justify-content: space-between;
             .buttons button {
+                background-color: $lightgray;
+                border: unset;
+                font-family: $font-body;
+                font-size: 0.75rem;
+                padding: 0.2rem 0.5rem;
+                transition: background-color 0.1s ease-in-out;
+                &:hover,
+                &:focus {
+                    background-color: adjust-color($color: chocolate, $lightness: 42.5%);
+                    cursor: pointer;
+                    transition: background-color 0.1s ease-in-out;
+                }
+            }
+        }
+        .users {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            .view-orders {
                 background-color: $lightgray;
                 border: unset;
                 font-family: $font-body;
