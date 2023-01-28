@@ -9,12 +9,14 @@ const PrimaryNav = props => {
     let location = useLocation();
 
     // Define function to render menu item
-    const renderMenuItem = (name, path = null) => {
-        const check = (isActive) => name === "menu" ? (isActive || location.pathname === "/") : isActive;
+    const renderMenuItem = (name, path = `/${name}`) => {
+        const check = isActive => name === "menu" ?
+            (isActive || location.pathname.includes("/menu") || location.pathname === "/") :
+            (isActive || location.pathname.includes(path));
 
         return (
             <li>
-                <NavLink className={({ isActive }) => check(isActive) ? activeClassName : undefined} to={path ? path : `/${name}`} end>{capitalise(name)}</NavLink>
+                <NavLink className={({ isActive }) => check(isActive) ? activeClassName : undefined} to={path} end>{capitalise(name)}</NavLink>
             </li>
         )
     }
