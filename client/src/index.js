@@ -4,7 +4,7 @@ import {BrowserRouter as Router } from "react-router-dom";
 
 import App from "./App";
 import "./assets/style/reset.css";
-import "./assets/style/main.scss";
+import "./assets/style/style.scss";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
