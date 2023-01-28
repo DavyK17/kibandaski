@@ -65,7 +65,10 @@ const App = () => {
             <main>
                 <Routes>
                     {renderRoute(1, "/", "menu", true)}
-                    {renderRoute(1, "/menu", "menu")}
+                    <Route path="/menu">
+                        {renderRoute(1, ":category", "menu")}
+                        {renderRoute(1, "", "menu")}
+                    </Route>
                     {renderRoute(1, "/orders", user ? "orders" : "login")}
 
                     {renderRoute(2, "/account", user ? "account" : "login")}
@@ -74,9 +77,21 @@ const App = () => {
                     {renderRoute(2, "/register", user ? "account" : "register")}
 
                     <Route path="/admin">
-                        {renderRoute(3, "orders", user ? "orders" : "login")}
-                        {renderRoute(3, "products", user ? "products" : "login")}
-                        {renderRoute(3, "users", user ? "users" : "login")}
+                        <Route path="orders">
+                            {renderRoute(3, ":userId", user ? "orders" : "login")}
+                            {renderRoute(3, "", user ? "orders" : "login")}
+                        </Route>
+
+                        <Route path="products">
+                            {renderRoute(3, ":category", user ? "products" : "login")}
+                            {renderRoute(3, "", user ? "products" : "login")}
+                        </Route>
+
+                        <Route path="users">
+                            {renderRoute(3, ":role", user ? "users" : "login")}
+                            {renderRoute(3, "", user ? "users" : "login")}
+                        </Route>
+
                         {renderRoute(3, "", user ? "orders" : "login")}
                     </Route>
 

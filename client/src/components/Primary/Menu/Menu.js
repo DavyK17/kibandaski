@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
 import Item from "./Item";
@@ -15,8 +15,9 @@ const Menu = props => {
     // Destructure props
     const { user, windowWidth, iconHeight } = props;
 
-    // Define server and useNavigate()
+    // Define useNavigate() and useParams()
     let navigate = useNavigate();
+    let params = useParams();
 
     // STATE + FUNCTIONS
     // Menu and menu items
@@ -34,6 +35,9 @@ const Menu = props => {
             let products = await Server.products.getProducts();
             if (products) {
                 setMenu(products);
+
+                if (params.category) products = products.filter(item => item.category === params.category);
+                setItems(products);
                 setItems(products);
 
                 let categories = await Server.products.getCategories();
@@ -64,7 +68,16 @@ const Menu = props => {
     const changeCategory = ({ target }) => {
         setCategory(target.value);
         document.getElementById("menu-sort").selectedIndex = 0;
-    } 
+    }
+
+    useEffect(() => {
+        if (params.category) {
+            setCategory(params.category);
+            const categorySelect = document.getElementById("category");
+            for (let option of categorySelect.options) if (option.value === params.category) option.selected = true;
+        }
+        // eslint-disable-next-line
+    }, [categories]);
 
     useEffect(() => {
         if (category === "all") return setItems(menu);

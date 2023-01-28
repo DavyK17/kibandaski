@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import trim from "validator/lib/trim";
 
@@ -12,9 +13,12 @@ import capitalise from "../../../util/capitalise";
 import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Orders = props => {
-    // Destructure props and define server
+    // Destructure props
     const { windowWidth, iconHeight } = props;
+
+    // Define server and useParams()
     const Server = Admin.orders;
+    let params = useParams();
 
     // STATE + FUNCTIONS
     // Orders
@@ -31,6 +35,11 @@ const Orders = props => {
             let orders = await Server.getOrders();
             if (orders) {
                 setOrders(orders);
+
+                if (params.userId) {
+                    orders = orders.filter(order => order.userId === params.userId);
+                    document.getElementById("search").value = params.userId;
+                }
                 setRenderedOrders(orders);
                 setIsLoading(false);
             }
