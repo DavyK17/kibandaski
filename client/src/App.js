@@ -98,6 +98,9 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
+            <footer data-testid="footer">
+                <p>Demo web app built by <a href="https://davyk17.github.io/" target="_blank" rel="noopener noreferrer">Davy Kamanzi</a></p>
+            </footer>
         </>
     )
 }
