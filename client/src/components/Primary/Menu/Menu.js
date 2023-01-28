@@ -171,7 +171,7 @@ const Menu = props => {
     // Component
     return (
         <>
-            <div className="menu">
+            <div className="menu" data-testid="menu">
                 <div className="sort">
                     {categories ? <CategorySelect categories={categories} category={category} handleChange={changeCategory} /> : null}
                     {categories && items.length > 1 ? <ItemSort handleSortChange={sortItems} /> : null}

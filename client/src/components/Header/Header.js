@@ -8,7 +8,7 @@ const Header = props => {
 
     // Return component
     return (
-        <header>
+        <header data-testid="header">
             <h1 className="sr-only">Kibandaski</h1>
             <nav>
                 <ul>
