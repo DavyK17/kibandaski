@@ -2,6 +2,8 @@ import { BrowserRouter as Router, MemoryRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import Header from "../../components/Header/Header";
 
+import { user } from "../util/dataMock";
+
 describe("Header component", () => {
     describe("Unauthenticated", () => {
         beforeEach(() => {
@@ -29,17 +31,7 @@ describe("Header component", () => {
     });
 
     describe("Authenticated", () => {
-        let userMock = {
-            id: "7355234",
-            email: "thisisan@email.com",
-            role: "admin",
-            cartId: "3599584",
-            federatedCredentials: [{
-                id: "1234567890",
-                provider: "google",
-                confirm: false
-            }]
-        };
+        let userMock = user("admin");
 
         describe("General", () => {
             beforeEach(() => {

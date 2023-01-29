@@ -1,7 +1,9 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { render } from "@testing-library/react";
 import SecondaryNav from "../../components/Secondary/SecondaryNav";
+
 import testNavItem from "../util/testNavItem";
+import { user } from "../util/dataMock";
 
 // Define tests
 describe("Secondary section navigation", () => {
@@ -21,17 +23,7 @@ describe("Secondary section navigation", () => {
     });
 
     describe("Authenticated", () => {
-        let userMock = {
-            id: "7355234",
-            email: "thisisan@email.com",
-            role: "customer",
-            cartId: "3599584",
-            federatedCredentials: [{
-                id: "1234567890",
-                provider: "google",
-                confirm: false
-            }]
-        };
+        let userMock = user("customer");
 
         beforeEach(() => {
             render(

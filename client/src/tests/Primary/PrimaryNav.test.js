@@ -1,7 +1,9 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { render } from "@testing-library/react";
 import PrimaryNav from "../../components/Primary/PrimaryNav";
+
 import testNavItem from "../util/testNavItem";
+import { user } from "../util/dataMock";
 
 // Define tests
 describe("Primary section navigation", () => {
@@ -21,17 +23,7 @@ describe("Primary section navigation", () => {
 
     describe("Authenticated", () => {
         describe("Customer", () => {
-            let userMock = {
-                id: "7355234",
-                email: "thisisan@email.com",
-                role: "customer",
-                cartId: "3599584",
-                federatedCredentials: [{
-                    id: "1234567890",
-                    provider: "google",
-                    confirm: false
-                }]
-            };
+            let userMock = user("customer");
 
             beforeEach(() => {
                 render(
@@ -47,17 +39,7 @@ describe("Primary section navigation", () => {
         });
 
         describe("Admin", () => {
-            let userMock = {
-                id: "7355234",
-                email: "thisisan@email.com",
-                role: "admin",
-                cartId: "3599584",
-                federatedCredentials: [{
-                    id: "1234567890",
-                    provider: "google",
-                    confirm: false
-                }]
-            };
+            let userMock = user("admin");
 
             beforeEach(() => {
                 render(
