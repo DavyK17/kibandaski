@@ -71,7 +71,7 @@ const Account = props => {
         if (error) return <p className="error">An error occurred loading your account details. Kindly refresh the page and try again.</p>;
 
         // Return skeleton if loading
-        if (isLoading) return <Skeleton />;
+        if (isLoading) return <Skeleton containerTestId="account-details-loading" />;
 
         // Do the following if details have been fetched
         if (details) {

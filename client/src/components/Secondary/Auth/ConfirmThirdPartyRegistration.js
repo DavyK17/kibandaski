@@ -44,7 +44,7 @@ const ConfirmThirdPartyRegistration = props => {
     if (error) return <p className="error">An unknown error occurred. Kindly refresh the page and try again.</p>;
 
     // Return skeleton if loading
-    if (isLoading) return <Skeleton />;
+    if (isLoading) return <Skeleton containerTestId="ctpr-loading" />;
 
     // Do the following if third-party details have been fetched
     if (federatedDetails) {

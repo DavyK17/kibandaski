@@ -126,7 +126,7 @@ const Menu = props => {
         if (error) return <p className="error">An error occurred loading the menu. Kindly refresh the page and try again.</p>;
 
         // Return skeleton if loading
-        if (isLoading) return <Skeleton />;
+        if (isLoading) return <Skeleton containerTestId="menu-loading" />;
 
         // Get menu items
         let list = () => items.map(({ id, name, description, price, category }, i) => {
