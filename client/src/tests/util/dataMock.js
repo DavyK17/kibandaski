@@ -230,3 +230,28 @@ export const orders = [{
         status: "fulfilled"
     }
 ];
+
+export const order = {
+    id: "1257125257",
+    createdAt: "2023-01-22T21:56:29.000Z",
+    status: "cancelled",
+    items: [{
+            productId: "32512",
+            name: "Ndengu",
+            quantity: 1,
+            totalCost: 20
+        },
+        {
+            productId: "33249",
+            name: "Soda",
+            quantity: 1,
+            totalCost: 30
+        },
+        {
+            productId: "33688",
+            name: "Chapati",
+            quantity: 1,
+            totalCost: 10
+        }
+    ]
+};
