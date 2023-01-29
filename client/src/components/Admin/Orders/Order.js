@@ -89,15 +89,19 @@ const Order = props => {
 
         // Return order items
         return (
-            <>
+            <div id={`items-${id}`} className={`items${items.length === 0 ? null : " show"}`} data-testid="admin-order-items">
                 {list}
-                <div className="item total" id={`order-${id}-total`}>
-                    <p className="name">Total</p>
-                    <p className="price">
-                        <span className="currency">Ksh</span><span>{total}</span>
-                    </p>
-                </div>
-            </>
+                {
+                    items.length === 0 ? null : (
+                        <div className="item total" id={`order-${id}-total`}>
+                            <p className="name">Total</p>
+                            <p className="price">
+                                <span className="currency">Ksh</span><span>{total}</span>
+                            </p>
+                        </div>
+                    )
+                }
+            </div>
         )
     };
 
@@ -120,9 +124,7 @@ const Order = props => {
                     <p className="id"><span>{userId}</span><span className="separator"> | </span><span>#{id}</span></p>
                     <p className="time">{renderOrderTime(createdAt)}</p>
                     <button className="view-items" onClick={viewItems}>{ fetchItems ? "Hide items" : "View items"}</button>
-                    <div id={`items-${id}`} className="items">
-                        {renderItems()}
-                    </div>
+                    {renderItems()}
                 </div>
             </div>
             <div className="order-footer">
