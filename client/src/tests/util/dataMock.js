@@ -197,3 +197,36 @@ export const categories = [
     "snacks",
     "vegetables"
 ];
+
+// Orders
+export const orders = [{
+        id: "1257125257",
+        createdAt: "2023-01-22T21:56:29.000Z",
+        status: "cancelled"
+    },
+    {
+        id: "4477103814",
+        createdAt: "2023-01-22T02:30:46.000Z",
+        status: "cancelled"
+    },
+    {
+        id: "7547456339",
+        createdAt: "2023-01-19T21:10:13.000Z",
+        status: "pending"
+    },
+    {
+        id: "8641443594",
+        createdAt: "2023-01-19T15:51:50.000Z",
+        status: "acknowledged"
+    },
+    {
+        id: "4378625166",
+        createdAt: "2023-01-05T06:53:38.000Z",
+        status: "acknowledged"
+    },
+    {
+        id: "0059574716",
+        createdAt: "2023-01-05T06:49:27.000Z",
+        status: "fulfilled"
+    }
+];
