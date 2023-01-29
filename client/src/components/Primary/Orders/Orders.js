@@ -99,7 +99,7 @@ const Orders = props => {
     // Component
     return (
         <>
-            <div className="orders">
+            <div className="orders" data-testid="orders">
                 <div className="sort">
                     <StatusSelect handleChange={changeStatus} />
                     <p id="status"></p>
