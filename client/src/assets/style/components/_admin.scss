@@ -100,12 +100,13 @@
                             margin-bottom: 0.25rem;
                         }
                         .view-items {
+                            display: block;
                             background-color: unset;
                             border: unset;
                             color: adjust-color($darkgray, $lightness: -5%);
                             font-family: $font-body;
                             font-size: 1rem;
-                            margin: 0.25rem 0 0.5rem;
+                            margin: 0.25rem 0 0;
                             padding: unset;
                             transition: opacity 0.1s ease-in-out;
                             &:hover,
@@ -115,13 +116,15 @@
                                 transition: opacity 0.1s ease-in-out;
                             }
                         }
+                        .react-loading-skeleton {
+                            width: 100%;
+                            margin-top: 0.5rem;
+                        }
                         .items {
                             display: none;
                             &.show {
                                 display: block;
-                            }
-                            .react-loading-skeleton {
-                                width: 100%;
+                                margin-top: 0.5rem;
                             }
                             .item {
                                 display: flex;
