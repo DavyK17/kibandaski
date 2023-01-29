@@ -155,7 +155,7 @@ const Menu = props => {
             // Return menu item
             return (
                 <li key={i}>
-                    <Item id={id} name={name} description={description} price={price} category={category} windowWidth={windowWidth} iconHeight={iconHeight} addToCart={addToCart} />
+                    <Item details={{ id, name, description, price, category }} windowWidth={windowWidth} iconHeight={iconHeight} addToCart={addToCart} />
                 </li>
             )
         });

@@ -1,8 +1,9 @@
 import capitalise from "../../../util/capitalise";
 
 const Item = props => {
-    // Destructure props
-    const { id, name, description, price, category, windowWidth, iconHeight, addToCart } = props;
+    // Destructure props and details
+    const { details, windowWidth, iconHeight, addToCart } = props;
+    const { id, name, description, price, category } = details;
 
     // Define add to cart icon
     const CartAdd = (
