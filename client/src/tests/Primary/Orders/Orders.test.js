@@ -13,15 +13,13 @@ const Server = Customer.orders;
 describe("Orders component", () => {
     const mockGetOrders = jest.spyOn(Server, "getOrders");
 
-    test("renders loading skeleton during API call", () => {
+    test("renders loading skeleton during API call", async() => {
         render(
             <Router>
                 <Orders />
             </Router>
         );
-
-        let skeleton = screen.getByTestId("orders-loading");
-        expect(skeleton).toBeInTheDocument();
+        await waitForElementToBeRemoved(() => screen.queryByTestId("orders-loading"));
     });
 
     test("renders error message if API call fails", async() => {
