@@ -190,7 +190,7 @@ const Cart = props => {
                     </ul>
                 )
             }
-            <p id="status"></p>
+            <p id="status" data-testid="status"></p>
         </div>
     )
 }

@@ -39,7 +39,7 @@ const EditProduct = props => {
                     <button onClick={handleBack}>Back to products</button>
                 </div>
             </form>
-            <p id="status"></p>
+            <p id="status" data-testid="status"></p>
         </>
     )
 

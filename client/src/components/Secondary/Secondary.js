@@ -41,7 +41,7 @@ const Secondary = props => {
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
             {ctpr ? null : <Nav user={user} activeClassName={activeClassName} />}
             {ctpr ? <ConfirmThirdPartyRegistration setUser={setUser} /> : renderView(view, "component")}
-            <p id="status"></p>
+            <p id="status" data-testid="status"></p>
         </section>
     )
 }

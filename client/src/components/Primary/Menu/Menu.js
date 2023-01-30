@@ -175,7 +175,7 @@ const Menu = props => {
                 <div className="sort">
                     {categories ? <CategorySelect categories={categories} category={category} handleChange={changeCategory} /> : null}
                     {categories && items.length > 1 ? <ItemSort handleSortChange={sortItems} /> : null}
-                    <p id="status"></p>
+                    <p id="status" data-testid="status"></p>
                 </div>
                 {renderItems()}
             </div>

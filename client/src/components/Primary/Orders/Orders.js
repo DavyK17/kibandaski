@@ -102,7 +102,7 @@ const Orders = props => {
             <div className="orders" data-testid="orders">
                 <div className="sort">
                     <StatusSelect handleChange={changeStatus} />
-                    <p id="status"></p>
+                    <p id="status" data-testid="status"></p>
                 </div>
                 <ul>
                     {renderOrders()}

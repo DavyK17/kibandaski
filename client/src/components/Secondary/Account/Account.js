@@ -161,7 +161,7 @@ const Account = props => {
     return (
         <div className="account">
             {renderBody()}
-            <p id="status"></p>
+            <p id="status" data-testid="status"></p>
         </div>
     );
 }

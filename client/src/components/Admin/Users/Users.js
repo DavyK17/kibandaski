@@ -107,7 +107,7 @@ const Users = props => {
             <div className="users">
                 <div className="sort">
                     <RoleSelect role={role} handleChange={changeRole} />
-                    <p id="status"></p>
+                    <p id="status" data-testid="status"></p>
                 </div>
                 {renderUsers()}
             </div>

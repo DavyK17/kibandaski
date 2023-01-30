@@ -240,7 +240,7 @@ const Products = props => {
                     {categories ? <CategorySelect categories={categories} category={category} handleChange={changeCategory} /> : null}
                     {categories && items.length > 1 ? <ItemSort handleSortChange={sortItems} /> : null}
                     <button onClick={() => setEdit({ id: "new" })}>Create product</button>
-                    <p id="status"></p>
+                    <p id="status" data-testid="status"></p>
                 </div>
                 {renderItems()}
             </div>
