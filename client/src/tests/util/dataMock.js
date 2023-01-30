@@ -11,6 +11,19 @@ export const user = (role, ctpr = false) => ({
     }]
 });
 
+export const account = (ctpr = false) => ({
+    id: "7355234",
+    firstName: "Mwenyeji",
+    lastName: "Mkenya",
+    phone: 254712345678,
+    email: "thisisan@email.com",
+    federatedCredentials: [{
+        id: "1234567890",
+        provider: "google",
+        confirm: ctpr
+    }]
+});
+
 // Products
 export const products = [{
         id: "01075",
