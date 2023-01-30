@@ -1,12 +1,29 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 
 import Menu from "../../../components/Primary/Menu/Menu";
 
 import { Customer as Server } from "../../../api/Server";
 import { products, categories } from "../../util/dataMock";
 
+// Define setup function
+const setup = type => {
+    const mockGetProducts = jest.spyOn(Server.products, "getProducts");
+    if (type === "resolved") mockGetProducts.mockResolvedValue(products);
+    if (type === "rejected") mockGetProducts.mockRejectedValue(new Error("No products found."));
+
+    const mockGetCategories = jest.spyOn(Server.products, "getCategories");
+    if (type === "resolved") mockGetCategories.mockResolvedValue(categories);
+    if (type === "rejected") mockGetCategories.mockRejectedValue(new Error("No categories found."));
+
+    render(
+        <Router>
+            <Menu />
+        </Router>
+    );
+}
+
+// Define tests
 describe("Menu component", () => {
     test("renders loading skeleton during API call", () => {
         render(
@@ -20,38 +37,16 @@ describe("Menu component", () => {
     });
 
     test("renders error message if API call fails", async () => {
-        await act(async() => {
-            const mockGetProducts = jest.spyOn(Server.products, "getProducts");
-            mockGetProducts.mockRejectedValue("Error: No products found.");
-
-            const mockGetCategories = jest.spyOn(Server.products, "getCategories");
-            mockGetCategories.mockRejectedValue("Error: No categories found.");
-
-            render(
-                <Router>
-                    <Menu />
-                </Router>
-            );
-        });
+        setup("rejected");
+        await waitForElementToBeRemoved(() => screen.queryByTestId("menu-loading"));
 
         let error = screen.getByText("An error occurred loading the menu. Kindly refresh the page and try again.");
         expect(error).toBeInTheDocument();
     });
 
     test("renders items if API call succeeds", async() => {
-        await act(async() => {
-            const mockGetProducts = jest.spyOn(Server.products, "getProducts");
-            mockGetProducts.mockResolvedValue(products);
-
-            const mockGetCategories = jest.spyOn(Server.products, "getCategories");
-            mockGetCategories.mockResolvedValue(categories);
-
-            render(
-                <Router>
-                    <Menu />
-                </Router>
-            );
-        });
+        setup("resolved");
+        await waitForElementToBeRemoved(() => screen.queryByTestId("menu-loading"));
 
         let items = await screen.findByRole("list");
         expect(items).toBeInTheDocument();

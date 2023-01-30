@@ -1,14 +1,15 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ItemSort from "../../../components/Primary/Menu/ItemSort";
 
 describe("Menu item sort", () => {
     test("calls handleSortChange when option is selected", () => {
         const changeMock = jest.fn();
 
-        const { getByLabelText } = render(<ItemSort handleSortChange={changeMock} />);
-        let menuSort = getByLabelText("Sort items");
+        render(<ItemSort handleSortChange={changeMock} />);
+        let menuSort = screen.getByLabelText("Sort items");
 
-        fireEvent.change(menuSort, { target: { value: "name-ascending" }});
+        userEvent.selectOptions(menuSort, ["name-ascending"]);
         expect(changeMock).toBeCalled(); 
     });
 });

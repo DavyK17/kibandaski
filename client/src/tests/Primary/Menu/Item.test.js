@@ -1,4 +1,6 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import Item from "../../../components/Primary/Menu/Item";
 import { products } from "../../util/dataMock";
 
@@ -6,10 +8,10 @@ describe("Menu item", () => {
     test("calls addToCart when button is clicked", () => {
         const clickMock = jest.fn();
 
-        const { getByRole } = render(<Item details={products[0]} addToCart={clickMock} />);
-        let button = getByRole("button");
+        render(<Item details={products[0]} addToCart={clickMock} />);
+        let button = screen.getByRole("button");
 
-        fireEvent.click(button);
+        userEvent.click(button);
         expect(clickMock).toBeCalled();
     });
 });
