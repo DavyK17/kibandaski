@@ -33,11 +33,12 @@ const Order = props => {
         try {
             let order = await Server.getOrders(id);
             setItems(order.items);
-            setIsLoadingItems(false);
         } catch (err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoadingItems(false);
     }
 
     useEffect(() => {

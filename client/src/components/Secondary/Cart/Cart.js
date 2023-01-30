@@ -32,11 +32,12 @@ const Cart = props => {
         try {
             let data = await Server.getCart();
             setCart(data);
-            setIsLoading(false);
         } catch(err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {

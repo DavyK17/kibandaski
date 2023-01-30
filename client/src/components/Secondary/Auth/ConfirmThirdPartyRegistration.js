@@ -26,11 +26,12 @@ const ConfirmThirdPartyRegistration = props => {
         try {
             let data = await Customer.users.getAccount();
             setFederatedDetails(data);
-            setIsLoading(false);
         } catch (err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {

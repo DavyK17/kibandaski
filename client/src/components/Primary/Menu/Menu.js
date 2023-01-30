@@ -49,13 +49,14 @@ const Menu = props => {
                     });
                     
                     setCategories(sorted);
-                    setIsLoading(false);
                 }
             }
         } catch (err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {

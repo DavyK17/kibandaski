@@ -30,12 +30,13 @@ const Orders = props => {
             if (orders) {
                 setOrders(orders);
                 setRenderedOrders(orders);
-                setIsLoading(false);
             }
         } catch (err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {

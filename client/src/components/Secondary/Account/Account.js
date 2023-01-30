@@ -29,11 +29,12 @@ const Account = props => {
         try {
             let data = await Server.getAccount();
             setDetails(data);
-            setIsLoading(false);
         } catch (err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {

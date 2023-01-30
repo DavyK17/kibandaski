@@ -34,12 +34,13 @@ const Users = props => {
 
                 if (params.role) list = list.filter(user => user.role === params.role);
                 setRenderedUsers(list);
-                setIsLoading(false);
             }
         } catch (err) {
             setError(true);
             console.log(err);
         }
+
+        setIsLoading(false);
     }
 
     useEffect(() => {
