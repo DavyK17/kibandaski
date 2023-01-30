@@ -11,6 +11,8 @@ const Server = Customer.orders;
 
 // Define tests
 describe("Orders component", () => {
+    const mockGetOrders = jest.spyOn(Server, "getOrders");
+
     test("renders loading skeleton during API call", () => {
         render(
             <Router>
@@ -23,9 +25,7 @@ describe("Orders component", () => {
     });
 
     test("renders error message if API call fails", async() => {
-        const mockGetOrders = jest.spyOn(Server, "getOrders");
         mockGetOrders.mockRejectedValue(new Error("No orders found."));
-
         render(
             <Router>
                 <Orders />
@@ -38,9 +38,7 @@ describe("Orders component", () => {
     });
 
     test("renders orders if API call succeeds", async() => {
-        const mockGetOrders = jest.spyOn(Server, "getOrders");
         mockGetOrders.mockResolvedValue(orders);
-
         render(
             <Router>
                 <Orders />
