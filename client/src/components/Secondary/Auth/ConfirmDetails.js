@@ -6,7 +6,7 @@ const ConfirmDetails = props => {
 
     // Return component
     return (
-        <form className="account" onSubmit={handleSubmit} autoComplete="off" data-testid="account-edit">
+        <form className="account" onSubmit={handleSubmit} autoComplete="off" data-testid="confirm-third-party-registration">
             <div className="phone">
                 <h3>Phone number</h3>
                 <div className="input">
