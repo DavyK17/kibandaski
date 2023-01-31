@@ -55,6 +55,7 @@ describe("Account component", () => {
             beforeEach(async() => {
                 let data = account(false);
                 mockGetAccount.mockResolvedValue(data);
+
                 render(
                     <Router>
                         <Account />
