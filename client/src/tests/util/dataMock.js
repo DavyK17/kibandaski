@@ -24,11 +24,29 @@ export const account = (ctpr = false) => ({
     }]
 });
 
-export const cart = {
+export const cart = (empty = true) => ({
     id: "3599584",
     userId: "7355234",
-    items: []
-}
+    items: empty ? [] : [{
+            productId: "19821",
+            name: "Fish",
+            quantity: 1,
+            totalCost: 40
+        },
+        {
+            productId: "83132",
+            name: "Sukuma wiki",
+            quantity: 1,
+            totalCost: 20
+        },
+        {
+            productId: "08053",
+            name: "Ugali",
+            quantity: 1,
+            totalCost: 30
+        }
+    ]
+});
 
 // Products
 export const products = [{
