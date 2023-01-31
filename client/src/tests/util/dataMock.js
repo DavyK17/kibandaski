@@ -24,6 +24,12 @@ export const account = (ctpr = false) => ({
     }]
 });
 
+export const cart = {
+    id: "3599584",
+    userId: "7355234",
+    items: []
+}
+
 // Products
 export const products = [{
         id: "01075",
