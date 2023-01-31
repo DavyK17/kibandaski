@@ -156,7 +156,7 @@ const Cart = props => {
 
             // Return cart items
             return (
-                <>
+                <ul data-testid="cart-items">
                     <li>
                         <div className="item header" id={`cart-${cartId}-header`}>
                             <p className="name">Name</p>
@@ -176,7 +176,7 @@ const Cart = props => {
                             <CartCheckout iconHeight={iconHeight} handleClick={toggleCheckout} />
                         </div>
                     </li>
-                </>
+                </ul>
             )
         }
     }
@@ -184,13 +184,7 @@ const Cart = props => {
     // Component
     return (
         <div className="cart">
-            {
-                checkout ? <Checkout phone={phone} handleBack={toggleCheckout} handleSubmit={completeCheckout} /> : (
-                    <ul>
-                        {renderItems()}
-                    </ul>
-                )
-            }
+            {checkout ? <Checkout phone={phone} handleBack={toggleCheckout} handleSubmit={completeCheckout} /> : renderItems()}
             <p id="status" data-testid="status"></p>
         </div>
     )
