@@ -102,7 +102,7 @@ const Account = props => {
             // Define function to update details
             const updateDetails = async e => {
                 e.preventDefault();
-                
+
                 let currentPassword = e.target[4].value;
                 let newPassword = e.target[5].value;
                 let confirmPassword = e.target[6].value;
@@ -112,7 +112,7 @@ const Account = props => {
                     if (!newPassword || !confirmPassword) return status.textContent = "No new password provided.";
                     if (newPassword !== confirmPassword) return status.textContent = "New passwords do not match.";
                 }
-                
+
                 let firstName = e.target[0].value;
                 let lastName = e.target[1].value;
                 let phone = e.target[2].value;
@@ -135,15 +135,15 @@ const Account = props => {
             // Return details
             return (
                 <>
-                    <div className="names">
+                    <div className="names" data-testid="account-names">
                         <h3>Name</h3>
                         <p>{firstName} {lastName}</p>
                     </div>
-                    <div className="phone">
+                    <div className="phone" data-testid="account-phone">
                         <h3>Phone number</h3>
                         <p>{phone}</p>
                     </div>
-                    <div className="email">
+                    <div className="email" data-testid="account-email">
                         <h3>Email address</h3>
                         <p>{email}</p>
                     </div>
