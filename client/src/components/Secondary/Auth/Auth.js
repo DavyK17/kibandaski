@@ -1,18 +1,11 @@
-import { useNavigate } from "react-router-dom";
-
 import FacebookIcon from "../../../assets/icons/facebook.svg";
 import GoogleIcon from "../../../assets/icons/google.svg";
 
-import { Auth as Server } from "../../../api/Server";
 import capitalise from "../../../util/capitalise";
-import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Auth = props => {
     // Destructure props
-    const { view, setUser } = props;
-
-    // Define useNavigate()
-    let navigate = useNavigate();
+    const { view, handleSubmit } = props;
 
     // Define third-party icons
     const icons = { google: GoogleIcon, facebook: FacebookIcon };
@@ -68,46 +61,6 @@ const Auth = props => {
                 <img src={icons[provider]} alt={`${capitalise(provider)} icon`} />
             </a>
         )
-    }
-
-    // Define form submit function
-    const handleSubmit = async e => {
-        e.preventDefault();
-        const status = document.getElementById("status");
-
-        if (view === "login") {
-            let email = e.target[0].value;
-            let password = e.target[1].value;
-            status.textContent = "Logging in…";
-
-            let response = await Server.login(email, password);
-            if (typeof response !== "object") return displayErrorMessage(response);
-
-            setUser(response);
-            status.textContent = null;
-            e.target.reset();
-            navigate("/cart");
-        }
-
-        if (view === "register") {
-            status.textContent = "Creating account…";
-
-            let password = e.target[4].value;
-            let confirmPassword = e.target[5].value;
-            if (password && !confirmPassword) return status.textContent = "Kindly confirm your password.";
-            if (password !== confirmPassword) return status.textContent = "Passwords do not match.";
-            
-            let firstName = e.target[0].value;
-            let lastName = e.target[1].value;
-            let phone = e.target[2].value;
-            let email = e.target[3].value;
-            let response = await Server.register(firstName, lastName, phone, email, confirmPassword);
-            if (!response.includes("User created")) return displayErrorMessage(response);
-
-            status.textContent = "Account created. Kindly log in.";
-            e.target.reset();
-            setTimeout(() => status.textContent = null, 3000);
-        }
     }
 
     // Return component
