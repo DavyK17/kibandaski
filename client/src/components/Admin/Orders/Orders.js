@@ -92,10 +92,10 @@ const Orders = props => {
     // Orders
     const renderOrders = () => {
         // Return error message if error
-        if (error) return <p className="error">An error occurred loading your orders. Kindly refresh the page and try again.</p>;
+        if (error) return <p className="error">An error occurred loading orders. Kindly refresh the page and try again.</p>;
 
         // Return skeleton if loading
-        if (isLoading) return <Skeleton containerTestId="orders-loading" />;
+        if (isLoading) return <Skeleton containerTestId="admin-orders-loading" />;
 
         // Return message if no orders, otherwise return orders
         return renderedOrders.length === 0 ? <p>No orders to show.</p> : renderedOrders.map(({ id, userId, createdAt, status }, i) => {
