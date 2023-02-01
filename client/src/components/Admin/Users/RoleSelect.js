@@ -13,15 +13,13 @@ const RoleSelect = props => {
 
         // Return dropdown
         return (
-            <>
-                <div className="category-select" data-testid="category-select">
-                    <label htmlFor="user-role" className="sr-only">User role</label>
-                    <select id="user-role" onChange={handleChange} defaultValue={role}>
-                        <option value="all">All users</option>
-                        {renderOptions()}
-                    </select>
-                </div>
-            </>
+            <div className="category-select" data-testid="users-role-select">
+                <label htmlFor="user-role" className="sr-only">User role</label>
+                <select id="user-role" onChange={handleChange} defaultValue={role}>
+                    <option value="all">All users</option>
+                    {renderOptions()}
+                </select>
+            </div>
         )
     }
 
