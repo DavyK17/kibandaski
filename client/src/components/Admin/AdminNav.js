@@ -3,7 +3,7 @@ import capitalise from "../../util/capitalise";
 
 const AdminNav = props => {
     // Destructure props
-    const { activeClassName } = props;
+    const { user, activeClassName } = props;
 
     // Define useLocation()
     let location = useLocation();
@@ -20,7 +20,7 @@ const AdminNav = props => {
     }
 
     // Return component
-    return (
+    return user && user.role === "admin" ? (
         <nav>
             <ul>
                 {renderMenuItem("orders")}
@@ -28,7 +28,7 @@ const AdminNav = props => {
                 {renderMenuItem("users")}
             </ul>
         </nav>
-    )
+    ) : null
 }
 
 export default AdminNav;
