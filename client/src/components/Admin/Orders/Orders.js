@@ -145,18 +145,16 @@ const Orders = props => {
 
     // Component
     return (
-        <>
-            <div className="orders">
-                <div className="sort">
-                    <StatusSelect handleChange={changeStatus} />
-                    <UserSearch handleSubmit={showOrdersByUser} />
-                    <p id="status" data-testid="status"></p>
-                </div>
-                <ul>
-                    {renderOrders()}
-                </ul>
+        <div className="orders" data-testid="admin-orders">
+            <div className="sort">
+                <StatusSelect handleChange={changeStatus} />
+                <UserSearch handleSubmit={showOrdersByUser} />
+                <p id="status" data-testid="status"></p>
             </div>
-        </>
+            <ul>
+                {renderOrders()}
+            </ul>
+        </div>
     )
 }
 

@@ -104,15 +104,13 @@ const Users = props => {
 
     // Component
     return (
-        <>
-            <div className="users">
-                <div className="sort">
-                    <RoleSelect role={role} handleChange={changeRole} />
-                    <p id="status" data-testid="status"></p>
-                </div>
-                {renderUsers()}
+        <div className="users" data-testid="admin-users">
+            <div className="sort">
+                <RoleSelect role={role} handleChange={changeRole} />
+                <p id="status" data-testid="status"></p>
             </div>
-        </>
+            {renderUsers()}
+        </div>
     )
 }
 
