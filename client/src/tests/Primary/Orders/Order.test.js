@@ -9,19 +9,20 @@ import { orders, order } from "../../util/dataMock";
 // Define server
 const Server = Customer.orders;
 
-// Define setup function
-const setup = () => {
-    render(<Order details={orders[2]} />);
-
-    const button = screen.getAllByRole("button")[0];
-    userEvent.click(button);
-}
-
 // Define tests
 describe("Order", () => {
     describe("View items button", () => {
         const mockGetOrders = jest.spyOn(Server, "getOrders");
 
+        // Define setup function
+        const setup = () => {
+            render(<Order details={orders[2]} />);
+        
+            const button = screen.getAllByRole("button")[0];
+            userEvent.click(button);
+        }
+
+        // Define tests
         test("triggers API call when clicked", async() => {
             setup();
             await waitForElementToBeRemoved(() => screen.queryByTestId("order-items-loading"));
