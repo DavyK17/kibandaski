@@ -41,7 +41,7 @@ const Admin = props => {
     return (
         <section className="admin">
             <h2 className="sr-only">{capitalise(renderView(view, "string"))}</h2>
-            <Nav activeClassName={activeClassName} />
+            <Nav user={user} activeClassName={activeClassName} />
             {renderView(view, "component")}
         </section>
     )
