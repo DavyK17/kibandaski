@@ -54,7 +54,7 @@ describe("Order", () => {
     test("calls cancelOrder when button is clicked", () => {
         const clickMock = jest.fn();
 
-        render(<Order details={orders[2]} cancelOrder={clickMock} />);
+        render(<Order details={orders[0]} cancelOrder={clickMock} />);
         let button = screen.getAllByRole("button")[1];
 
         userEvent.click(button);
