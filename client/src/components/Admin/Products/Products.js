@@ -130,7 +130,7 @@ const Products = props => {
         if (error) return <p className="error">An error occurred loading products. Kindly refresh the page and try again.</p>;
 
         // Return skeleton if loading
-        if (isLoading) return <Skeleton containerTestId="products-loading" />;
+        if (isLoading) return <Skeleton containerTestId="admin-products-loading" />;
 
         // Get menu items
         let list = () => items.map(({ id, name, description, price, category }, i) => {
