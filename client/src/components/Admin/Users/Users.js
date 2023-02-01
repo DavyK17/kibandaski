@@ -76,7 +76,7 @@ const Users = props => {
         if (error) return <p className="error">An error occurred loading users. Kindly refresh the page and try again.</p>;
 
         // Return skeleton if loading
-        if (isLoading) return <Skeleton containerTestId="users-loading" />;
+        if (isLoading) return <Skeleton containerTestId="admin-users-loading" />;
 
         // Get user list
         let list = () => renderedUsers.map(({ id, firstName, lastName, phone, email, role }, i) => {
