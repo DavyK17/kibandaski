@@ -11,6 +11,24 @@ export const user = (role, ctpr = false) => ({
     }]
 });
 
+export const users = [{
+        id: "3532335",
+        firstName: "Bigman",
+        lastName: "Bazu",
+        phone: 254202345678,
+        email: "thisisanother@email.com",
+        role: "admin"
+    },
+    {
+        id: "7355234",
+        firstName: "Mwenyeji",
+        lastName: "Mkenya",
+        phone: 254712345678,
+        email: "thisisan@email.com",
+        role: "customer"
+    }
+];
+
 export const account = (ctpr = false) => ({
     id: "7355234",
     firstName: "Mwenyeji",
