@@ -1619,8 +1619,10 @@
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/customer/orders/cancel": {
+            "get": {
                 "tags": ["Customer", "Orders"],
                 "description": "Cancel order",
                 "security": [{
