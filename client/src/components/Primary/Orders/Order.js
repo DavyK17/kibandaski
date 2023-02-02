@@ -106,13 +106,21 @@ const Order = props => {
                 <div className="info">
                     <p className="id">#{id}</p>
                     <p className="time">{renderOrderTime(createdAt)}</p>
-                    <button className="view-items" onClick={viewItems}>{ fetchItems ? "Hide items" : "View items"}</button>
+                    <button className="view-items" onClick={viewItems} aria-label={fetchItems ? "Hide items" : "View items"}>
+                        {fetchItems ? "Hide items" : "View items"}
+                    </button>
                     {renderItems()}
                 </div>
             </div>
             <div className="order-footer">
                 <p className="status" id={`order-${id}-status`}>{capitalise(status)}</p>
-                {status === "pending" ? <button className="cancel-order" onClick={cancelOrder}>{windowWidth > 991 ? "Cancel order" : OrderCancel}</button> : null}
+                {
+                    status === "pending" ?
+                        <button className="cancel-order" onClick={cancelOrder} aria-label="Cancel order">
+                            {windowWidth > 991 ? "Cancel order" : OrderCancel}
+                        </button> :
+                        null
+                }
             </div>
         </>
     )

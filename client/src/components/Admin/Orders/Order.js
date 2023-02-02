@@ -111,7 +111,7 @@ const Order = props => {
         const logic = (acknowledge, fulfill) => status === "pending" ? acknowledge : status === "acknowledged" ? fulfill : null;
 
         return !(status === "pending" || status === "acknowledged") ? null : (
-            <button className="order-action" onClick={logic(acknowledgeOrder, fulfillOrder)}>
+            <button className="order-action" onClick={logic(acknowledgeOrder, fulfillOrder)} aria-label={logic("Acknowledge order", "Fulfill order")}>
                 {windowWidth > 991 ? logic("Acknowledge order", "Fulfill order") : logic(OrderAcknowledge, OrderFulfill)}
             </button>
         )
@@ -124,7 +124,9 @@ const Order = props => {
                 <div className="info">
                     <p className="id"><span>{userId}</span><span className="separator"> | </span><span>#{id}</span></p>
                     <p className="time">{renderOrderTime(createdAt)}</p>
-                    <button className="view-items" onClick={viewItems}>{ fetchItems ? "Hide items" : "View items"}</button>
+                    <button className="view-items" onClick={viewItems} aria-label={fetchItems ? "Hide items" : "View items"}>
+                        {fetchItems ? "Hide items" : "View items"}
+                    </button>
                     {renderItems()}
                 </div>
             </div>

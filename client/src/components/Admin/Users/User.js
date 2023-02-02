@@ -25,7 +25,7 @@ const User = props => {
             <div className="user-footer">
                 <p className="id">#{id}</p>
                 <p className="role" id={`user-${id}-status`}>{capitalise(role)}</p>
-                <button className="view-orders" onClick={viewOrders}>{windowWidth > 991 ? "View orders" : UserOrdersView}</button>
+                <button className="view-orders" onClick={viewOrders} aria-label="View orders">{windowWidth > 991 ? "View orders" : UserOrdersView}</button>
             </div>
         </>
     )

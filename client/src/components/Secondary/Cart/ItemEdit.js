@@ -14,7 +14,7 @@ const ItemEdit = props => {
         <form className="quantity" onSubmit={handleSubmit}>
             <label className="sr-only" htmlFor="item-quantity">Quantity</label>
             <input type="number" id="item-quantity" defaultValue={quantity}></input>
-            <button type="submit">{ItemEdit}</button>
+            <button type="submit" aria-label="Update item quantity">{ItemEdit}</button>
         </form>
     )
 }

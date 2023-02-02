@@ -13,7 +13,7 @@ const UserSearch = props => {
         <form className="user-search" onSubmit={handleSubmit} autoComplete="off" data-testid="user-search">
             <label className="sr-only" htmlFor="search">User ID</label>
             <input type="text" id="search" placeholder="User ID" />
-            <button type="submit">{Search}</button>
+            <button type="submit" aria-label="Search orders by user ID">{Search}</button>
         </form>
     );
 }

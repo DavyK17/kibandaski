@@ -35,8 +35,8 @@ const Item = props => {
                 <p className="id">#{id}</p>
                 <p className="category" id={`item-${id}-status`}>{capitalise(category)}</p>
                 <div className="buttons">
-                    <button className="button" onClick={editProduct}>{windowWidth > 991 ? "Edit" : ProductEdit}</button>
-                    <button className="button" onClick={deleteProduct}>{windowWidth > 991 ? "Delete" : ProductDelete}</button>
+                    <button className="button" onClick={editProduct} aria-label="Edit product">{windowWidth > 991 ? "Edit" : ProductEdit}</button>
+                    <button className="button" onClick={deleteProduct} aria-label="Delete product">{windowWidth > 991 ? "Delete" : ProductDelete}</button>
                 </div>
             </div>
         </>
