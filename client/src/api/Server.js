@@ -171,9 +171,7 @@ export const Admin = {
         },
         getUsers: async function(role = null) {
             try {
-                let url = role ? `
-                $ { this.url }
-                /${role}` : this.url;
+                let url = role ? `${this.url}/${role}` : this.url;
                 let response = await fetch(`${url}`);
                 if (response.ok) return response.json();
             } catch (err) {
@@ -231,10 +229,10 @@ export const Customer = {
         },
         cancelOrder: async function(id) {
             try {
-                let url = new URL(this.url, window.location);
+                let url = new URL(`${this.url}/cancel`, window.location);
                 url.search = new URLSearchParams({ id }).toString();
 
-                let response = await fetch(url, { method: "DELETE" });
+                let response = await fetch(url);
                 if (response.status !== 503) {
                     if (!response.ok) return response.text();
                     return;
