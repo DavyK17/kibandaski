@@ -1,12 +1,9 @@
 # Kibandaski
 
-This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is a Node.js REST API that allows the user to buy food from a local street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth in recent years).
+This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is an e-commerce app that allows the user to buy food from a local street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth in recent years), as well as perform functions on orders and products as an administrator. Users may view products without authorisation, but all other available functionality requires authorisation.
 
 ![A "kibandaski" in Kenya](https://global.discourse-cdn.com/codecademy/original/5X/e/8/f/1/e8f11e906dcfb4d83d09230efc9cad6a57b5d3dc.jpeg "")
 
-## Links
-- Repository: [github.com/DavyK17/kibandaski](https://github.com/DavyK17/kibandaski)
-- Live link: [kibandaski.up.railway.app](https://kibandaski.up.railway.app/)
 
 ## Server
 ### Requirements
@@ -40,7 +37,8 @@ This is a portfolio project I did as part of my full stack engineer course on [C
   - [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) - Express.js interface for Swagger UI  
 - [Validator.js](https://github.com/validatorjs/validator.js) - Library of string validators and sanitisers
 
-## Client (Part Two)
+
+## Client
 ### Requirements
 - Build a functioning e-commerce application using React, Node.js, and Postgres by extending your existing e-commerce REST API with an interactive client
 - Use Git version control
@@ -53,8 +51,111 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 - Enable users to view order history
 - Publish the application to Heroku
 
+### How it was built
+#### Base libraries/techonolgies
+- [React](https://reactjs.org/) - JavaScript user interface library
+
+#### Additional libraries/techonolgies
+- [Jest](https://jestjs.io/) - JavaScript testing framework
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React testing utility
+- [Sass](https://github.com/sass/dart-sass) - CSS pre-processor
+- [Validator.js](https://github.com/validatorjs/validator.js) - Library of string validators and sanitisers
+
+
+## Features
+Kibandaski is a multi-page app (MPA) with a basic design that is accessible from desktop, tablet and mobile devices with all modern browsers, with Lighthouse scores of 70 for performance, 97 for accessibility, 92 for best practices, and 100 for SEO (full report can be viewed by [clicking here](./client/readme/wpt-lighthouse.pdf), while a JSON of the app's [WebPageTest](https://www.webpagetest.org/) run can be viewed by [clicking here](./client/readme/wpt-result.json)).
+
+The app's home page is the menu page, on which users may browse through all the products as rendered, or view products by category and sort them either in alphabetical order or by price (both ascending or descending).
+
+![Menu page](./client/readme/screenshots/customer/screenshot-menu.png)
+![Menu page showing carbohydrate products in descending alphabetical order](./client/readme/screenshots/customer/screenshot-menu-sorted.png)
+
+
+### Authorisation
+In order to successfully add items to their shopping cart and place orders, users must first register an account or log in if already registered. authorisation is available either through a standard email/password combination, or via open authorisation (OAuth) using Google or Facebook.
+
+![Login page](./client/readme/screenshots/auth/screenshot-login.png)
+![Registration page](./client/readme/screenshots/auth/screenshot-register.png)
+
+There are two roles available to registered users on the app: **customer** and **admin**. All users are automatically assigned the customer role, whereas admin roles must be manually set from the database.
+
+
+### Customer
+Once logged in, customers are automatically redirected to their cart, which is initialised as empty. Users may view their account details and link their Google and/or Facebook accounts via the navigation below the header, or go back to view the menu by clicking the home icon in the header.
+
+![Cart page](./client/readme/screenshots/customer/screenshot-cart-empty.png)
+![Account page](./client/readme/screenshots/customer/screenshot-account.png)
+
+#### Placing an order
+Back in the menu page, users may notice that they now have access to the orders page, which displays all their orders and their status (more on that a bit later). Users are also now able to add items to their cart by clicking on the "Add to cart" button below the product description. Once added, the app will briefly replace the product's category text with a notification, before restoring the category text. Adding an item already in the cart will increment its quantity by one.
+
+![Menu page showing item added to cart](./client/readme/screenshots/customer/screenshot-menu-added.png)
+
+Once items are added to the cart, users are able to update their quantities (and see updated costs as a result), remove items from the cart, empty the cart or begin checkout. In the screenshot below, all the items initially added to the cart have had their quantities tripled.
+
+![Cart page showing items in cart](./client/readme/screenshots/customer/screenshot-cart-added.png)
+
+Users are able to make payments via [M-Pesa](https://www.safaricom.co.ke/personal/m-pesa), a mobile money transfer service available in Kenya. Upon confirming their phone number, the user will receive a prompt on their mobile phone to enter their M-Pesa PIN and complete the payment (though for the sake of demonstration, those steps are skipped and payment is confirmed on the app by default).
+
+![Checkout page](./client/readme/screenshots/customer/screenshot-checkout.png)
+![Checkout page showing order placed successfully](./client/readme/screenshots/customer/screenshot-checkout-complete.png)
+
+#### Viewing orders
+Once an order has been placed, the user is able to view its details in the orders page, including ID, time of placement and items, which are hidden by default.
+
+![Orders page](./client/readme/screenshots/customer/screenshot-orders.png)
+![Orders page showing items on a single order](./client/readme/screenshots/customer/screenshot-orders-items.png)
+
+Users may also cancel an order if it is still pending. However, the option is no longer available once an order is acknowledged by an admin.
+
+![Orders page showing an order has been acknowledged](./client/readme/screenshots/customer/screenshot-orders-acknowledged.png)
+
+Similar to the menu page, users may also view their orders by status. The screenshot below shows orders that have been cancelled.
+
+![Orders page showing cancelled orders](./client/readme/screenshots/customer/screenshot-orders-cancelled.png)
+
+
+### Admin
+In addition to all the functionality available to customers, admins are also able to view a list of all registered users, as well as perform administrative functions on orders and products. In the menu page, users may notice that the admin page is available to select in the navigation below the header, unlike for customers.
+
+![Menu page showing admin option in navigation](./client/readme/screenshots/admin/screenshot-menu.png)
+
+#### Orders
+Admins may use the orders page to view a list of all orders, as well as acknowledge pending orders and fulfill acknowledged orders. Like with the customers' orders page, admins may view orders by status, as well as view orders by user ID (all or by status).
+
+![Orders page](./client/readme/screenshots/admin/screenshot-orders.png)
+![Orders page showing orders placed by user with ID 3532335](./client/readme/screenshots/admin/screenshot-orders-user.png)
+![Orders page showing acknowledged orders (to be fulfilled)](./client/readme/screenshots/admin/screenshot-orders-acknowledged.png)
+
+#### Products
+The products page allows admins to view, update and delete existing products, as well as create new ones, with the same categorisation and sorting functionality as the customers' menu page.
+
+![Products page](./client/readme/screenshots/admin/screenshot-products.png)
+![Creating a new product](./client/readme/screenshots/admin/screenshot-products-create.png)
+![Orders page showing newly-created product in its category](./client/readme/screenshots/admin/screenshot-products-added.png)
+
+#### Users
+As previously mentioned, admins are also able to view a list of all registered users. Just like with other list-based pages, admins may view a list of users by role.
+
+![Users page](./client/readme/screenshots/admin/screenshot-users.png)
+![Users page showing customers](./client/readme/screenshots/admin/screenshot-users-customer.png)
+
+
+## Links
+- Repository: [github.com/DavyK17/kibandaski](https://github.com/DavyK17/kibandaski)
+- Live link: [kibandaski.up.railway.app](https://kibandaski.up.railway.app/)
+  - API documentation [kibandaski.up.railway.app/api](https://kibandaski.up.railway.app/api)
+
+### Use it yourself
+- Customer credentials:
+  - Email: **thisisan@email.com**
+  - Password: **kibandaskiCustomer**
+- Admin credentials:
+  - Email: **thisisanother@email.com**
+  - Password: **kibandaskiAdmin**
+
 ## Future work
-None planned at the moment, but additional features could potentially be added in the future such as:
+Additional work to be done on this project will include expanding on testing, specifically integration and end-to-end testing on the client side, as well as writing server tests. Additional features could potentially also be added in the future, such as:
 - Adding more third-party login operations
 - Adding more payment options
 
