@@ -8,11 +8,9 @@ import { users } from "../../util/dataMock";
 describe("Admin user component", () => {
     test("calls viewOrders when button is clicked", () => {
         const clickMock = jest.fn();
-
         render(<User details={users[0]} viewOrders={clickMock} />);
-        let button = screen.getAllByRole("button")[0];
 
-        userEvent.click(button);
+        userEvent.click(screen.getByRole("button", { name: /view orders/i}));
         expect(clickMock).toBeCalled();
     });
 });
