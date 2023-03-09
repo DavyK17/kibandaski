@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { render, screen, act, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import Order from "../../../../components/Primary/Orders/Order";
@@ -17,9 +17,7 @@ describe("Order", () => {
         // Define setup function
         const setup = () => {
             render(<Order details={orders[2]} />);
-        
-            const button = screen.getAllByRole("button")[0];
-            userEvent.click(button);
+            act(() => userEvent.click(screen.getByRole("button", { name: /view items/i})));
         }
 
         // Define tests
@@ -53,11 +51,9 @@ describe("Order", () => {
 
     test("calls cancelOrder when button is clicked", () => {
         const clickMock = jest.fn();
-
         render(<Order details={orders[0]} cancelOrder={clickMock} />);
-        let button = screen.getAllByRole("button")[1];
 
-        userEvent.click(button);
+        userEvent.click(screen.getByRole("button", { name: /cancel order/i}));
         expect(clickMock).toBeCalled();
     });
 });

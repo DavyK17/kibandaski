@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { render, screen, act, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import Order from "../../../../components/Admin/Orders/Order";
@@ -20,9 +20,7 @@ describe("Order", () => {
         // Define setup function
         const setup = () => {
             render(<Order details={orders[2]} />);
-        
-            const button = screen.getAllByRole("button")[0];
-            userEvent.click(button);
+            act(() => userEvent.click(screen.getByRole("button", { name: /view items/i})));
         }
 
         // Define tests
@@ -57,17 +55,13 @@ describe("Order", () => {
     describe("Footer buttons", () => {
         test("calls acknowledgeOrder when button is clicked", () => {
             render(<Order details={orders[0]} acknowledgeOrder={clickMock} />);
-            let button = screen.getAllByRole("button")[1];
-    
-            userEvent.click(button);
+            userEvent.click(screen.getByRole("button", { name: /acknowledge order/i}));
             expect(clickMock).toBeCalled();
         });
 
         test("calls fulfillOrder when button is clicked", () => {
             render(<Order details={orders[1]} fulfillOrder={clickMock} />);
-            let button = screen.getAllByRole("button")[1];
-    
-            userEvent.click(button);
+            userEvent.click(screen.getByRole("button", { name: /fulfill order/i}));
             expect(clickMock).toBeCalled();
         });
     });
