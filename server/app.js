@@ -4,6 +4,7 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const { clientPort, getServerPort } = require("../src/util/port");
 
 // App
 const app = express();
@@ -17,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // CORS
 if (app.get("env") === "development") {
     const cors = require("cors");
-    const origin = "http://localhost:3000";
+    const origin = `http://localhost:${clientPort}`;
     app.use(cors({ origin }));
 }
 
@@ -61,9 +62,9 @@ app.use("/api", apiRouter);
 
 // Client
 app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.join(__dirname, "../public"));
 });
 
 
-/* EXPORT */
-module.exports = app;
+/* LISTENER */
+getServerPort().then(port => app.listen(port));

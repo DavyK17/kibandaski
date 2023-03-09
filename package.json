@@ -2,20 +2,18 @@
     "name": "kibandaski",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon",
-        "test": "cross-env NODE_ENV=test jest --testTimeout=5000"
-    },
     "author": "Davy Kamanzi",
     "license": "ISC",
     "dependencies": {
+        "@testing-library/jest-dom": "^5.16.5",
+        "@testing-library/react": "^13.4.0",
+        "@testing-library/user-event": "^13.5.0",
         "axios": "^1.2.3",
         "bcrypt": "^5.0.1",
         "connect-pg-simple": "^8.0.0",
         "cors": "^2.8.5",
         "cross-env": "^7.0.3",
+        "detect-port": "^1.5.1",
         "dotenv": "^16.0.1",
         "express": "^4.18.1",
         "express-session": "^1.17.3",
@@ -26,13 +24,50 @@
         "passport-google-oauth": "^2.0.0",
         "passport-local": "^1.0.0",
         "pg": "^8.7.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-loading-skeleton": "^3.1.0",
+        "react-router-dom": "^6.6.1",
+        "react-scripts": "5.0.1",
         "request-ip": "^3.3.0",
         "sanitize-html": "^2.8.1",
+        "sass": "^1.57.1",
         "supertest": "^6.3.3",
         "swagger-ui-express": "^4.6.0",
-        "validator": "^13.7.0"
+        "validator": "^13.7.0",
+        "web-vitals": "^2.1.4"
     },
-    "jest": {
-        "modulePathIgnorePatterns": ["client"]
+    "devDependencies": {
+        "@testing-library/cypress": "^9.0.0",
+        "concurrently": "^7.6.0",
+        "cypress": "^12.7.0"
+    },
+    "scripts": {
+        "dev": "cross-env NODE_ENV=development concurrently npm:start:client npm:start:api:watch",
+        "start": "cross-env NODE_ENV=development concurrently npm:start:client npm:start:api",
+        "start:client": "react-scripts start",
+        "start:api": "node server/app.js",
+        "start:api:watch": "nodemon --watch 'server' server/app.js",
+        "test:unit": "react-scripts test",
+        "build": "react-scripts build",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
 }

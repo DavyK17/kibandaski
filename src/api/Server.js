@@ -1,4 +1,4 @@
-const root = "/api";
+const root = `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/api`;
 
 export const Auth = {
     _url: `${root}/auth`,
