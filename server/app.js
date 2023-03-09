@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS
-if (app.get("env") === "development") {
+if (process.env.NODE_ENV === "development") {
     const cors = require("cors");
     const origin = `http://localhost:${clientPort}`;
     app.use(cors({ origin }));
@@ -43,7 +43,7 @@ const sessionConfig = {
     }
 }
 
-if (app.get("env") === "production") {
+if (process.env.NODE_ENV === "production") {
     app.set("trust proxy", 1);
     sessionConfig.cookie.secure = true;
 }
