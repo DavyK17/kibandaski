@@ -83,7 +83,7 @@ const Order = props => {
 
         // Return order items
         return (
-            <div id={`items-${id}`} className={`items${items.length === 0 ? null : " show"}`} data-testid="order-items">
+            <div id={`items-${id}`} className={`items${items.length === 0 ? "" : " show"}`} data-testid="order-items">
                 {list}
                 {
                     items.length === 0 ? null : (
