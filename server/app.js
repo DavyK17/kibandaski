@@ -3,12 +3,12 @@
 // General
 require("dotenv").config();
 const express = require("express");
-const path = require("path");
+const { join } = require("path");
 const { clientPort, getServerPort } = require("../src/util/port");
 
 // App
 const app = express();
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(join(__dirname, "../build")));
 
 // Body Parser
 const bodyParser = require("body-parser");
@@ -18,8 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // CORS
 if (process.env.NODE_ENV === "development") {
     const cors = require("cors");
-    const origin = `http://localhost:${clientPort}`;
-    app.use(cors({ origin }));
+    app.use(cors({ origin: `http://localhost:${clientPort}` }));
 }
 
 // Helmet
@@ -39,14 +38,11 @@ const sessionConfig = {
     saveUninitialized: false,
     cookie: {
         sameSite: "lax", // necessary to enable access to req.user during Passport authentication for linking third-party accounts
-        secure: false
+        secure: process.env.NODE_ENV === "production"
     }
 }
 
-if (process.env.NODE_ENV === "production") {
-    app.set("trust proxy", 1);
-    sessionConfig.cookie.secure = true;
-}
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
 app.use(session(sessionConfig));
 
 // Passport.js
@@ -62,7 +58,7 @@ app.use("/api", apiRouter);
 
 // Client
 app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public"));
+    res.sendFile(join(__dirname, "../build", "index.html"));
 });
 
 
