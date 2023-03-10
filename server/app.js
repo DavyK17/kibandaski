@@ -4,7 +4,6 @@
 require("dotenv").config();
 const express = require("express");
 const { join } = require("path");
-const { clientPort, getServerPort } = require("../src/util/port");
 
 // App
 const app = express();
@@ -16,9 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS
-if (process.env.NODE_ENV === "development") {
+if (app.get("env") === "development") {
     const cors = require("cors");
-    app.use(cors({ origin: `http://localhost:${clientPort}` }));
+    app.use(cors({ origin: "http://localhost:3000" }));
 }
 
 // Helmet
@@ -38,11 +37,11 @@ const sessionConfig = {
     saveUninitialized: false,
     cookie: {
         sameSite: "lax", // necessary to enable access to req.user during Passport authentication for linking third-party accounts
-        secure: process.env.NODE_ENV === "production"
+        secure: app.get("env") === "production",
     }
 }
 
-if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
+if (app.get("env") === "production") app.set("trust proxy", 1);
 app.use(session(sessionConfig));
 
 // Passport.js
@@ -63,4 +62,7 @@ app.get("/*", (req, res) => {
 
 
 /* LISTENER */
-getServerPort().then(port => app.listen(port));
+const port = process.env.PORT || 8000;
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}.`)
+});
