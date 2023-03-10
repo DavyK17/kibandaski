@@ -12,7 +12,6 @@
         "bcrypt": "^5.0.1",
         "connect-pg-simple": "^8.0.0",
         "cors": "^2.8.5",
-        "cross-env": "^7.0.3",
         "detect-port": "^1.5.1",
         "dotenv": "^16.0.1",
         "express": "^4.18.1",
@@ -39,16 +38,13 @@
     },
     "devDependencies": {
         "@testing-library/cypress": "^9.0.0",
-        "concurrently": "^7.6.0",
         "cypress": "^12.7.0"
     },
     "scripts": {
-        "dev": "cross-env NODE_ENV=development concurrently npm:start:client npm:start:api:watch",
-        "start": "cross-env NODE_ENV=development node server/app.js",
+        "dev": "nodemon --watch server server/app.js",
+        "start": "node server/app.js",
         "start:client": "react-scripts start",
-        "start:api": "node server/app.js",
-        "start:api:watch": "nodemon --watch server server/app.js",
-        "test:unit": "react-scripts test --runInBand",
+        "test:client:unit": "react-scripts test --runInBand",
         "build": "react-scripts build",
         "eject": "react-scripts eject"
     },
