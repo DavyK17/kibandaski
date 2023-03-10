@@ -44,7 +44,7 @@
     },
     "scripts": {
         "dev": "cross-env NODE_ENV=development concurrently npm:start:client npm:start:api:watch",
-        "start": "cross-env NODE_ENV=development concurrently npm:start:client npm:start:api",
+        "start": "cross-env NODE_ENV=development node server/app.js",
         "start:client": "react-scripts start",
         "start:api": "node server/app.js",
         "start:api:watch": "nodemon --watch server server/app.js",
