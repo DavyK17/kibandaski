@@ -141,8 +141,8 @@ const Cart = props => {
     
                 // Return cart item
                 return (
-                    <li key={i}>
-                        <div className="item" id={`cart-${cartId}-item-${productId}`}>
+                    <li id={`cart-item-${productId}`} key={i}>
+                        <div className="item">
                             <p className="name">{name}</p>
                             <ItemEdit quantity={quantity} iconHeight={iconHeight} handleSubmit={changeItemQuantity} />
                             <p className="price">
@@ -156,9 +156,9 @@ const Cart = props => {
 
             // Return cart items
             return (
-                <ul data-testid="cart-items">
+                <ul id="cart-items" data-testid="cart-items">
                     <li>
-                        <div className="item header" id={`cart-${cartId}-header`}>
+                        <div className="item header" id="cart-header">
                             <p className="name">Name</p>
                             <p className="quantity">Quantity</p>
                             <p className="price">Price</p>
@@ -167,7 +167,7 @@ const Cart = props => {
                     </li>
                     {list()}
                     <li>
-                        <div className="item total" id={`cart-${cartId}-total`}>
+                        <div className="item total" id="cart-total">
                             <p className="name">Total</p>
                             <p className="price">
                                 <span className="currency">Ksh</span><span>{total()}</span>

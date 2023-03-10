@@ -143,11 +143,15 @@ const Menu = props => {
                 addStatus.textContent = "Adding to cart…";
 
                 let response = await Server.cart.addToCart(id);
-                if (!response.includes("Added to cart")) {
+                if (!response.includes("Added to cart") && !response.includes("Quantity updated in cart")) {
                     displayErrorMessage(response);
                     addStatus.textContent = "Error";
                 } else {
-                    addStatus.textContent = "Item added to cart";
+                    if (response.includes("Quantity updated in cart")) {
+                        addStatus.textContent = "Item updated in cart";
+                    } else {
+                        addStatus.textContent = "Item added to cart";
+                    }
                 }
 
                 setTimeout(() => addStatus.textContent = capitalise(category), 3000);
@@ -155,7 +159,7 @@ const Menu = props => {
 
             // Return menu item
             return (
-                <li key={i}>
+                <li id={`item-${id}`} key={i}>
                     <Item details={{ id, name, description, price, category }} windowWidth={windowWidth} iconHeight={iconHeight} addToCart={addToCart} />
                 </li>
             )
