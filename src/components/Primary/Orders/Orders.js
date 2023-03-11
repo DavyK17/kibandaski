@@ -99,17 +99,15 @@ const Orders = props => {
 
     // Component
     return (
-        <>
-            <div className="orders" data-testid="orders">
-                <div className="sort">
-                    <StatusSelect handleChange={changeStatus} />
-                    <p id="status" data-testid="status"></p>
-                </div>
-                <ul>
-                    {renderOrders()}
-                </ul>
+        <div className="orders" data-testid="orders">
+            <div className="sort">
+                <StatusSelect handleChange={changeStatus} />
+                <p id="status" data-testid="status"></p>
             </div>
-        </>
+            <ul>
+                {renderOrders()}
+            </ul>
+        </div>
     )
 }
 
