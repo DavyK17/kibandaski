@@ -1,0 +1,263 @@
+{
+    "users": [
+        {
+            "id": "3532335",
+            "first_name": "Bigman",
+            "last_name": "Bazu",
+            "email": "thisisanother@email.com",
+            "password": "$2b$17$Y19K7a3VVPJ.42OPSw9y/ubm4xOKKbtZyhRDyN9bCbprx7YF50dwO",
+            "created_at": "2023-01-05T03:59:46.000Z",
+            "role": "admin",
+            "phone": "254202345678",
+            "protected": true
+        },
+        {
+            "id": "7355234",
+            "first_name": "Mwenyeji",
+            "last_name": "Mkenya",
+            "email": "thisisan@email.com",
+            "password": "$2b$17$qi3axjliAXh21CZL5ACC6e1izLn60TiGB6eSVQNO49rH7sThnh/Iq",
+            "created_at": "2023-01-04T15:55:39.000Z",
+            "role": "customer",
+            "phone": "254712345678",
+            "protected": true
+        }
+    ],
+    "carts": [
+        {
+            "id": "3599584",
+            "user_id": "7355234"
+        },
+        {
+            "id": "3180603",
+            "user_id": "3532335"
+        }
+    ],
+    "products": [
+        {
+            "id": "19821",
+            "name": "Fish",
+            "price": 40,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:55:43.000Z",
+            "description": "Deep fried whole fish straight from the pan.",
+            "protected": true
+        },
+        {
+            "id": "31072",
+            "name": "Tilapia",
+            "price": 100,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:55:51.000Z",
+            "description": "Delicious tilapia served stewed or deep fried.",
+            "protected": true
+        },
+        {
+            "id": "32512",
+            "name": "Ndengu",
+            "price": 20,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:55:30.000Z",
+            "description": "Nutritious green grams made with tomatoes, carrots and spices.",
+            "protected": true
+        },
+        {
+            "id": "60256",
+            "name": "Scrambled eggs",
+            "price": 30,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:56:04.000Z",
+            "description": "Classic scrambled eggs made with onions, salt and black pepper.",
+            "protected": true
+        },
+        {
+            "id": "63509",
+            "name": "Githeri",
+            "price": 40,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:55:01.000Z",
+            "description": "A one-pot mix of beans and maize made with tomatoes, onions, carrots and spices.",
+            "protected": true
+        },
+        {
+            "id": "64212",
+            "name": "Beans",
+            "price": 20,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:55:34.000Z",
+            "description": "Red beans stewed with tomatoes, onions and spices.",
+            "protected": true
+        },
+        {
+            "id": "72398",
+            "name": "Omena",
+            "price": 30,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:58:40.000Z",
+            "description": "Silver cyprinid dish made with tomatoes, onions, green bell pepper and spices.",
+            "protected": true
+        },
+        {
+            "id": "68472",
+            "name": "Mandazi",
+            "price": 5,
+            "category": "snacks",
+            "created_at": "2023-01-04T18:56:34.000Z",
+            "description": "Soft mandazi that goes well with our delicious tea.",
+            "protected": true
+        },
+        {
+            "id": "01075",
+            "name": "Water",
+            "price": 5,
+            "category": "drinks",
+            "created_at": "2023-01-04T19:02:48.000Z",
+            "description": "Just a good old glass of water.",
+            "protected": true
+        },
+        {
+            "id": "46621",
+            "name": "Mchicha",
+            "price": 30,
+            "category": "vegetables",
+            "created_at": "2023-01-04T18:54:32.000Z",
+            "description": "A healthy portion of amaranth.",
+            "protected": true
+        },
+        {
+            "id": "83132",
+            "name": "Sukuma wiki",
+            "price": 20,
+            "category": "vegetables",
+            "created_at": "2023-01-04T18:54:17.000Z",
+            "description": "Collard greens made with onions and spices.",
+            "protected": true
+        },
+        {
+            "id": "86543",
+            "name": "Cabbage",
+            "price": 20,
+            "category": "vegetables",
+            "created_at": "2023-01-04T18:54:12.000Z",
+            "description": "Cabbage made with onions and spices.",
+            "protected": true
+        },
+        {
+            "id": "43193",
+            "name": "Beef stew",
+            "price": 80,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:53:16.000Z",
+            "description": "Delicious beef stew made with tomatoes, onions and spices.",
+            "protected": true
+        },
+        {
+            "id": "33249",
+            "name": "Soda",
+            "price": 30,
+            "category": "drinks",
+            "created_at": "2023-01-04T18:56:16.000Z",
+            "description": "Coca-Cola, Sprite and Fanta (orange or blackcurrant) available.",
+            "protected": true
+        },
+        {
+            "id": "08053",
+            "name": "Ugali",
+            "price": 30,
+            "category": "carbohydrates",
+            "created_at": "2023-01-04T18:54:42.000Z",
+            "description": "The maize flour delicacy you know and love.",
+            "protected": true
+        },
+        {
+            "id": "33688",
+            "name": "Chapati",
+            "price": 10,
+            "category": "carbohydrates",
+            "created_at": "2023-01-04T18:55:21.000Z",
+            "description": "White and brown chapati available.",
+            "protected": true
+        },
+        {
+            "id": "72663",
+            "name": "Rice",
+            "price": 30,
+            "category": "carbohydrates",
+            "created_at": "2023-01-04T18:58:31.000Z",
+            "description": "Plain, steamed rice.",
+            "protected": true
+        },
+        {
+            "id": "74144",
+            "name": "Chips",
+            "price": 50,
+            "category": "carbohydrates",
+            "created_at": "2023-01-04T18:56:24.000Z",
+            "description": "Freshly cut potato fries straight from the pan.",
+            "protected": true
+        },
+        {
+            "id": "84756",
+            "name": "Pilau",
+            "price": 100,
+            "category": "carbohydrates",
+            "created_at": "2023-01-04T18:54:00.000Z",
+            "description": "Steamed rice mixed with tender beef, cooked in beef broth with an array of spices.",
+            "protected": true
+        },
+        {
+            "id": "53653",
+            "name": "Coffee",
+            "price": 20,
+            "category": "beverages",
+            "created_at": "2023-01-04T19:03:04.000Z",
+            "description": "Freshly brewed black coffee.",
+            "protected": true
+        },
+        {
+            "id": "52743",
+            "name": "Tea",
+            "price": 20,
+            "category": "beverages",
+            "created_at": "2023-01-04T18:58:10.000Z",
+            "description": "Freshly brewed black tea (served with milk if desired).",
+            "protected": true
+        },
+        {
+            "id": "14659",
+            "name": "Githeri special",
+            "price": 70,
+            "category": "proteins",
+            "created_at": "2023-01-04T18:55:11.000Z",
+            "description": "A delicious mix of githeri and beef stew.",
+            "protected": true
+        },
+        {
+            "id": "25352",
+            "name": "Samosa",
+            "price": 30,
+            "category": "snacks",
+            "created_at": "2023-01-24T22:19:44.000Z",
+            "description": "Tasty beef samosa that goes well with fresh juice.",
+            "protected": true
+        },
+        {
+            "id": "11540",
+            "name": "Fresh juice",
+            "price": 30,
+            "category": "drinks",
+            "created_at": "2023-01-04T18:58:49.000Z",
+            "description": "Freshly squeezed orange, mango, pineapple or tamarind juice.",
+            "protected": true
+        },
+        {
+            "id": "97676",
+            "name": "Matumbo",
+            "price": 40,
+            "category": "proteins",
+            "created_at": "2023-01-25T06:46:39.000Z",
+            "description": "Scrumptious intestines made with garlic, bell peppers, onions and spices.",
+            "protected": true
+        }
+    ]
+}
