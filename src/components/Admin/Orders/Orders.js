@@ -133,7 +133,7 @@ const Orders = props => {
 
             // Return order
             return (
-                <li key={i}>
+                <li id={`order-${id}`} key={i}>
                     <Order
                         details={{ id, userId, createdAt, status }} windowWidth={windowWidth} iconHeight={iconHeight}
                         acknowledgeOrder={orderAction(1)} fulfillOrder={orderAction(2)}

@@ -58,7 +58,7 @@ const Order = props => {
         e.preventDefault();
         setFetchItems(fetchItems ? false : true);
 
-        const items = document.getElementById(`items-${id}`);
+        const items = document.getElementById(`order-${id}-items`);
         items.classList.toggle("show");
     }
 
@@ -90,7 +90,7 @@ const Order = props => {
 
         // Return order items
         return (
-            <div id={`items-${id}`} className={`items${items.length === 0 ? "" : " show"}`} data-testid="admin-order-items">
+            <div id={`order-${id}-items`} className={`items${items.length === 0 ? "" : " show"}`} data-testid="admin-order-items">
                 {list}
                 {
                     items.length === 0 ? null : (
