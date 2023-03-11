@@ -1,7 +1,7 @@
 const displayErrorMessage = response => {
     const status = document.getElementById("status");
 
-    if (response.includes("undefined")) {
+    if (response.includes("undefined") || response === "An unknown error occurred. Kindly try again.") {
         // Display generic error message
         status.textContent = "An unknown error occurred. Kindly try again.";
     } else {
