@@ -48,7 +48,7 @@ const getCategories = async(req, res) => {
         let categories = [];
 
         // Get categories
-        let result = await pool.query("SELECT category FROM products GROUP BY 1 ORDER BY 1;");
+        let result = await pool.query("SELECT category FROM products GROUP BY 1 ORDER BY 1");
 
         // Send error if (somehow) no categories found
         if (result.rows.length === 0) return res.status(404).send("Error: No categories found.");
