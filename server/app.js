@@ -55,6 +55,17 @@ app.use(passport.session());
 const apiRouter = require("./routers/index");
 app.use("/api", apiRouter);
 
+// Database seeding
+const seedDatabase = require("./db/seed/seed");
+app.get("/test/db/seed", async(req, res) => {
+    try {
+        const result = await seedDatabase();
+        if (result === "Database seeded successfully") res.send(result);
+    } catch(err) {
+        res.status(500).send(err);
+    }
+});
+
 // Client
 app.get("/*", (req, res) => {
     res.sendFile(join(__dirname, "../build", "index.html"));
