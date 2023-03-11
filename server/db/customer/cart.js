@@ -230,9 +230,7 @@ const getPaymentToken = async(req, res, next) => {
     const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
     // Generate Base64-encoded string with consumer key and consumer secret
-    const key = process.env.MPESA_CONSUMER_KEY;
-    const secret = process.env.MPESA_CONSUMER_SECRET;
-    const auth = new Buffer.from(`${key}:${secret}`).toString("base64");
+    const auth = new Buffer.from(`${process.env.MPESA_CONSUMER_KEY}:${process.env.MPESA_CONSUMER_SECRET}`).toString("base64");
 
     try { // Get access token
         let response = await axios.get(url, { headers: { Authorization: `Basic ${auth}` } });
@@ -247,7 +245,7 @@ const getPaymentToken = async(req, res, next) => {
             let { status, data } = err.response;
 
             // Send error
-            return res.status(status).send(`Error: ${data.errorMessage} (M-Pesa)`);
+            if (data.errorMessage) return res.status(status).send(`Error: ${data.errorMessage} (M-Pesa)`);
         }
 
         // Send generic error message
@@ -337,7 +335,7 @@ const completeCheckout = async(req, res) => {
             let { status, data } = err.response;
 
             // Send error
-            return res.status(status).send(`Error: ${data.errorMessage} (M-Pesa)`);
+            if (data.errorMessage) return res.status(status).send(`Error: ${data.errorMessage} (M-Pesa)`);
         }
 
         // Send generic error message
