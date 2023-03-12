@@ -13,8 +13,7 @@ import displayErrorMessage from "../../../util/displayErrorMessage";
 
 const Cart = props => {
     // Destructure props and user
-    const { user, iconHeight } = props;
-    const { cartId } = user;
+    const { iconHeight } = props;
 
     // Define server and status
     const Server = Customer.cart;
