@@ -7,7 +7,7 @@ const { join } = require("path");
 
 // App
 const app = express();
-app.use(express.static(join(__dirname, "../build")));
+app.use(express.static(join(__dirname, "..", "build")));
 
 // Body Parser
 const bodyParser = require("body-parser");
@@ -68,7 +68,7 @@ app.get("/test/db/seed", async(req, res) => {
 
 // Client
 app.get("/*", (req, res) => {
-    res.sendFile(join(__dirname, "../build", "index.html"));
+    res.sendFile(join(__dirname, "..", "build", "index.html"));
 });
 
 
