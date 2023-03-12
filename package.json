@@ -44,6 +44,7 @@
         "dev": "nodemon --watch server server/app.js",
         "start": "node server/app.js",
         "start:client": "react-scripts start",
+        "test:client": "npm run test:client:unit && npm run test:client:e2e",
         "test:client:unit": "react-scripts test --runInBand",
         "test:client:e2e": "start-server-and-test start http://localhost:8000 'npx cypress run'",
         "build": "react-scripts build",
