@@ -16,7 +16,10 @@ jobs:
       - name: Create .env file
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
-      - run: npm run build
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm run build
       - name: Cypress run
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v4
