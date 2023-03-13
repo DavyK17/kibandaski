@@ -35,7 +35,7 @@ const Order = props => {
             setItems(order.items);
         } catch (err) {
             setError(true);
-            console.log(err);
+            console.error(err);
         }
 
         setIsLoadingItems(false);

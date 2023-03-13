@@ -33,7 +33,7 @@ const Cart = props => {
             setCart(data);
         } catch(err) {
             setError(true);
-            console.log(err);
+            console.error(err);
         }
 
         setIsLoading(false);
@@ -51,7 +51,7 @@ const Cart = props => {
             let data = await Customer.users.getAccount();
             setPhone(data.phone);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 

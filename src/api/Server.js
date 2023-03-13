@@ -10,7 +10,7 @@ export const Auth = {
             let response = await fetch(`${this.url}/user`);
             if (response.ok) return response.json();
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     },
     register: async function(firstName, lastName, phone, email, password) {
@@ -23,7 +23,7 @@ export const Auth = {
 
             if (response.status !== 503) return response.text();
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     },
     confirmThirdPartyRegistration: async function(phone, password) {
@@ -39,7 +39,7 @@ export const Auth = {
                 return response.json();
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     },
     login: async function(email, password) {
@@ -55,7 +55,7 @@ export const Auth = {
                 return response.json();
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     },
     logout: async function() {
@@ -63,7 +63,7 @@ export const Auth = {
             let response = await fetch(`${this.url}/logout`);
             if (response.ok) return response.text();
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 };
@@ -91,7 +91,7 @@ export const Admin = {
                 response = await fetch(`${url}`);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         acknowledgeOrder: async function(id) {
@@ -102,7 +102,7 @@ export const Admin = {
                 let response = await fetch(url);
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         fulfillOrder: async function(id) {
@@ -113,7 +113,7 @@ export const Admin = {
                 let response = await fetch(url);
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
     },
@@ -131,7 +131,7 @@ export const Admin = {
                 });
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         updateProduct: async function(id, name, description, price, category) {
@@ -146,7 +146,7 @@ export const Admin = {
                 });
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         deleteProduct: async function(id) {
@@ -160,7 +160,7 @@ export const Admin = {
                     return;
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
     },
@@ -175,7 +175,7 @@ export const Admin = {
                 let response = await fetch(`${url}`);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
     }
@@ -192,7 +192,7 @@ export const Customer = {
                 let response = await fetch(this.url);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         getCategories: async function() {
@@ -200,7 +200,7 @@ export const Customer = {
                 let response = await fetch(`${this.url}/categories`);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
     },
@@ -224,7 +224,7 @@ export const Customer = {
                 response = await fetch(this.url);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         cancelOrder: async function(id) {
@@ -238,7 +238,7 @@ export const Customer = {
                     return;
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
     },
@@ -252,7 +252,7 @@ export const Customer = {
                 let response = await fetch(this.url);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         addToCart: async function(id, quantity = 1) {
@@ -265,7 +265,7 @@ export const Customer = {
 
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         emptyCart: async function(id) {
@@ -276,7 +276,7 @@ export const Customer = {
                     return;
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         checkout: async function(phone) {
@@ -288,7 +288,7 @@ export const Customer = {
                 });
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         item: {
@@ -308,7 +308,7 @@ export const Customer = {
                     });
                     if (response.status !== 503) return response.text();
                 } catch (err) {
-                    console.log(err);
+                    console.error(err);
                 }
             },
             removeItem: async function(id) {
@@ -322,7 +322,7 @@ export const Customer = {
                         return;
                     }
                 } catch (err) {
-                    console.log(err);
+                    console.error(err);
                 }
             }
         }
@@ -337,7 +337,7 @@ export const Customer = {
                 let response = await fetch(this.url);
                 if (response.ok) return response.json();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         updateAccount: async function(firstName = null, lastName = null, phone = null, email = null, currentPassword = null, newPassword = null) {
@@ -349,7 +349,7 @@ export const Customer = {
                 });
                 if (response.status !== 503) return response.text();
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         deleteAccount: async function() {
@@ -360,7 +360,7 @@ export const Customer = {
                     return;
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         unlinkThirdParty: async function(provider) {
@@ -374,7 +374,7 @@ export const Customer = {
                     return;
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         }
     }

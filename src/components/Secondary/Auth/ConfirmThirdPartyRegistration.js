@@ -28,7 +28,7 @@ const ConfirmThirdPartyRegistration = props => {
             setFederatedDetails(data);
         } catch (err) {
             setError(true);
-            console.log(err);
+            console.error(err);
         }
 
         setIsLoading(false);

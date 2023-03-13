@@ -53,7 +53,7 @@ const Menu = props => {
             }
         } catch (err) {
             setError(true);
-            console.log(err);
+            console.error(err);
         }
 
         setIsLoading(false);
