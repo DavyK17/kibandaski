@@ -16,10 +16,10 @@ const seedDatabase = async() => {
 
         // Insert seed data to tables
         for (const user of parsedData.users) {
-            const { id, first_name, last_name, phone, email, password, created_at, role, protected } = user;
+            const { id, first_name, last_name, phone, email, password, created_at, role, locked } = user;
 
-            let text = `INSERT INTO users (id, first_name, last_name, phone, email, password, created_at, role, protected) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`;
-            let values = [id, first_name, last_name, phone, email, password, created_at, role, protected];
+            let text = `INSERT INTO users (id, first_name, last_name, phone, email, password, created_at, role, locked) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`;
+            let values = [id, first_name, last_name, phone, email, password, created_at, role, locked];
 
             await pool.query(text, values);
         }
@@ -34,10 +34,10 @@ const seedDatabase = async() => {
         }
 
         for (const product of parsedData.products) {
-            const { id, name, price, category, created_at, description, protected } = product;
+            const { id, name, price, category, created_at, description, locked } = product;
 
-            let text = `INSERT INTO products (id, name, price, category, created_at, description, protected) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`;
-            let values = [id, name, price, category, created_at, description, protected];
+            let text = `INSERT INTO products (id, name, price, category, created_at, description, locked) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`;
+            let values = [id, name, price, category, created_at, description, locked];
 
             await pool.query(text, values);
         }

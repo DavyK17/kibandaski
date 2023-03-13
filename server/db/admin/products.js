@@ -73,13 +73,13 @@ const updateProduct = async(req, res) => {
     if (!isNumeric(id, { no_symbols: true }) || !isLength(id, { min: 5, max: 5 })) return res.status(400).send("Error: Invalid product ID provided.");
 
     try { // Get product
-        let result = await pool.query("SELECT name, description, price, category, protected FROM products WHERE id = $1", [id]);
+        let result = await pool.query("SELECT name, description, price, category, locked FROM products WHERE id = $1", [id]);
 
         // Send error if product does not exist
         if (result.rows.length === 0) return res.status(404).send("Error: This product does not exist.");
 
-        // Send error if product is protected for demonstration purposes
-        if (result.rows[0].protected) return res.status(403).send("Error: This product cannot be updated.");
+        // Send error if product is locked for demonstration purposes
+        if (result.rows[0].locked) return res.status(403).send("Error: This product cannot be updated.");
 
         // Save existing details to object
         let old = {...result.rows[0] };
@@ -125,8 +125,8 @@ const deleteProduct = async(req, res) => {
         // Send error if product does not exist
         if (result.rows.length === 0) return res.status(404).send("Error: This product does not exist.");
 
-        // Send error if product is protected for demonstration purposes
-        if (result.rows[0].protected) return res.status(403).send("Error: This product cannot be deleted.");
+        // Send error if product is locked for demonstration purposes
+        if (result.rows[0].locked) return res.status(403).send("Error: This product cannot be deleted.");
 
         // Delete product
         result = await pool.query("DELETE FROM products WHERE id = $1", [id]);
