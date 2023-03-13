@@ -42,8 +42,8 @@
         "supertest": "^6.3.3"
     },
     "scripts": {
-        "dev": "nodemon --watch server server/app.js",
-        "start": "node server/app.js",
+        "dev": "nodemon --watch server server/index.js",
+        "start": "node server/index.js",
         "start:client": "react-scripts start",
         "test:client": "npm run test:client:unit && npm run test:client:e2e",
         "test:client:unit": "react-scripts test --runInBand",
