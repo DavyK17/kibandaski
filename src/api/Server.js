@@ -5,7 +5,7 @@ export const Auth = {
     get url() {
         return this._url;
     },
-    getUser: async function() {
+    getUser: async function () {
         try {
             let response = await fetch(`${this.url}/user`);
             if (response.ok) return response.json();
@@ -13,7 +13,7 @@ export const Auth = {
             console.error(err);
         }
     },
-    register: async function(firstName, lastName, phone, email, password) {
+    register: async function (firstName, lastName, phone, email, password) {
         try {
             let response = await fetch(`${this.url}/register`, {
                 method: "POST",
@@ -26,9 +26,9 @@ export const Auth = {
             console.error(err);
         }
     },
-    confirmThirdPartyRegistration: async function(phone, password) {
+    confirmThirdPartyRegistration: async function (phone, password) {
         try {
-            let response = await fetch(`${this.url}/register/confirm-federated`, {
+            let response = await fetch(`${this.url}/register/ctpr`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone, password })
@@ -42,7 +42,7 @@ export const Auth = {
             console.error(err);
         }
     },
-    login: async function(email, password) {
+    login: async function (email, password) {
         try {
             let response = await fetch(`${this.url}/login`, {
                 method: "POST",
@@ -58,7 +58,7 @@ export const Auth = {
             console.error(err);
         }
     },
-    logout: async function() {
+    logout: async function () {
         try {
             let response = await fetch(`${this.url}/logout`);
             if (response.ok) return response.text();
@@ -74,7 +74,7 @@ export const Admin = {
         get url() {
             return this._url;
         },
-        getOrders: async function(id = null, userId = null) {
+        getOrders: async function (id = null, userId = null) {
             try {
                 let url;
                 let response;
@@ -94,7 +94,7 @@ export const Admin = {
                 console.error(err);
             }
         },
-        acknowledgeOrder: async function(id) {
+        acknowledgeOrder: async function (id) {
             try {
                 let url = new URL(`${this.url}/acknowledge`, window.location);
                 url.search = new URLSearchParams({ id }).toString();
@@ -105,7 +105,7 @@ export const Admin = {
                 console.error(err);
             }
         },
-        fulfillOrder: async function(id) {
+        fulfillOrder: async function (id) {
             try {
                 let url = new URL(`${this.url}/fulfill`, window.location);
                 url.search = new URLSearchParams({ id }).toString();
@@ -122,7 +122,7 @@ export const Admin = {
         get url() {
             return this._url;
         },
-        createProduct: async function(name, description, price, category) {
+        createProduct: async function (name, description, price, category) {
             try {
                 let response = await fetch(this.url, {
                     method: "POST",
@@ -134,7 +134,7 @@ export const Admin = {
                 console.error(err);
             }
         },
-        updateProduct: async function(id, name, description, price, category) {
+        updateProduct: async function (id, name, description, price, category) {
             try {
                 let url = new URL(this.url, window.location);
                 url.search = new URLSearchParams({ id }).toString();
@@ -149,7 +149,7 @@ export const Admin = {
                 console.error(err);
             }
         },
-        deleteProduct: async function(id) {
+        deleteProduct: async function (id) {
             try {
                 let url = new URL(this.url, window.location);
                 url.search = new URLSearchParams({ id }).toString();
@@ -169,7 +169,7 @@ export const Admin = {
         get url() {
             return this._url;
         },
-        getUsers: async function(role = null) {
+        getUsers: async function (role = null) {
             try {
                 let url = role ? `${this.url}/${role}` : this.url;
                 let response = await fetch(`${url}`);
@@ -187,7 +187,7 @@ export const Customer = {
         get url() {
             return this._url;
         },
-        getProducts: async function() {
+        getProducts: async function () {
             try {
                 let response = await fetch(this.url);
                 if (response.ok) return response.json();
@@ -195,7 +195,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        getCategories: async function() {
+        getCategories: async function () {
             try {
                 let response = await fetch(`${this.url}/categories`);
                 if (response.ok) return response.json();
@@ -209,7 +209,7 @@ export const Customer = {
         get url() {
             return this._url;
         },
-        getOrders: async function(id = null) {
+        getOrders: async function (id = null) {
             try {
                 let response;
 
@@ -227,7 +227,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        cancelOrder: async function(id) {
+        cancelOrder: async function (id) {
             try {
                 let url = new URL(`${this.url}/cancel`, window.location);
                 url.search = new URLSearchParams({ id }).toString();
@@ -247,7 +247,7 @@ export const Customer = {
         get url() {
             return this._url;
         },
-        getCart: async function() {
+        getCart: async function () {
             try {
                 let response = await fetch(this.url);
                 if (response.ok) return response.json();
@@ -255,7 +255,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        addToCart: async function(id, quantity = 1) {
+        addToCart: async function (id, quantity = 1) {
             try {
                 let response = await fetch(this.url, {
                     method: "POST",
@@ -268,7 +268,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        emptyCart: async function(id) {
+        emptyCart: async function (id) {
             try {
                 let response = await fetch(this.url, { method: "DELETE" });
                 if (response.status !== 503) {
@@ -279,7 +279,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        checkout: async function(phone) {
+        checkout: async function (phone) {
             try {
                 let response = await fetch(`${this.url}/checkout`, {
                     method: "POST",
@@ -296,7 +296,7 @@ export const Customer = {
             get url() {
                 return this._url;
             },
-            updateItem: async function(id, quantity) {
+            updateItem: async function (id, quantity) {
                 try {
                     let url = new URL(this.url, window.location);
                     url.search = new URLSearchParams({ id }).toString();
@@ -311,7 +311,7 @@ export const Customer = {
                     console.error(err);
                 }
             },
-            removeItem: async function(id) {
+            removeItem: async function (id) {
                 try {
                     let url = new URL(this.url, window.location);
                     url.search = new URLSearchParams({ id }).toString();
@@ -332,7 +332,7 @@ export const Customer = {
         get url() {
             return this._url;
         },
-        getAccount: async function() {
+        getAccount: async function () {
             try {
                 let response = await fetch(this.url);
                 if (response.ok) return response.json();
@@ -340,7 +340,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        updateAccount: async function(firstName = null, lastName = null, phone = null, email = null, currentPassword = null, newPassword = null) {
+        updateAccount: async function (firstName = null, lastName = null, phone = null, email = null, currentPassword = null, newPassword = null) {
             try {
                 let response = await fetch(this.url, {
                     method: "PUT",
@@ -352,7 +352,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        deleteAccount: async function() {
+        deleteAccount: async function () {
             try {
                 let response = await fetch(this.url, { method: "DELETE" });
                 if (response.status !== 503) {
@@ -363,7 +363,7 @@ export const Customer = {
                 console.error(err);
             }
         },
-        unlinkThirdParty: async function(provider) {
+        unlinkThirdParty: async function (provider) {
             try {
                 let url = new URL(`${this.url}/unlink`, window.location);
                 url.search = new URLSearchParams({ provider }).toString();
