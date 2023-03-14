@@ -35,10 +35,11 @@ passport.use(new FacebookStrategy({
 }, db.third.login));
 
 // Serialize and Deserealize
-passport.serializeUser(async(user, done) => {
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser(async(id, done) => {
     try {
         // Get user details
-        let result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [user.id]);
+        let result = await pool.query("SELECT users.id AS id, users.email AS email, users.role AS role, carts.id AS cart_id FROM users JOIN carts ON carts.user_id = users.id WHERE users.id = $1", [id]);
 
         // Return false if details not found
         if (result.rows.length === 0) return done(null, false);
@@ -48,7 +49,7 @@ passport.serializeUser(async(user, done) => {
         let federatedCredentials = [];
 
         // Get all third-party credentials
-        result = await pool.query("SELECT id, provider, confirmed FROM federated_credentials WHERE user_id = $1", [user.id]);
+        result = await pool.query("SELECT id, provider, confirmed FROM federated_credentials WHERE user_id = $1", [id]);
 
         // Add each credential to array if present
         if (result.rows.length > 0) result.rows.forEach(({ id, provider, confirmed }) => federatedCredentials.push({ id, provider, confirm: !confirmed }));
@@ -59,7 +60,6 @@ passport.serializeUser(async(user, done) => {
         return done(err);
     }
 });
-passport.deserializeUser((user, done) => done(null, user));
 
 
 /* IMPLEMENTATION */
