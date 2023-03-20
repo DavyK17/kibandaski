@@ -155,7 +155,9 @@ As previously mentioned, admins are also able to view a list of all registered u
   - Password: **kibandaskiAdmin**
 
 ## Future work
-Additional work to be done on this project will include expanding on testing, specifically integration and end-to-end testing on the client side, as well as writing server tests. Additional features could potentially also be added in the future, such as:
+The primary work remaining to be done on this project is writing server tests (which I continue to procrastinate on because I really struggle with mocking authentication to test protected routes).
+
+Additional features could potentially be added in the future, such as:
 - Adding more third-party login operations
 - Adding more payment options
 
