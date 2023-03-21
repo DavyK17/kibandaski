@@ -88,7 +88,7 @@ const login = async(req, accessToken, refreshToken, profile, done) => {
         result.rows.forEach(({ id, provider, confirmed }) => federatedCredentials.push({ id, provider, confirm: !confirmed }));
 
         // Log login attempt
-        await loginAttempt(attemptId, ip, profile.emails[0].value, "google", true);
+        await loginAttempt(attemptId, ip, profile.emails[0].value, profile.provider, true);
 
         // Add user to session
         return done(null, {...data, federatedCredentials });
