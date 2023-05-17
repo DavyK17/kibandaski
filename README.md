@@ -1,6 +1,6 @@
 # Kibandaski
 
-This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is an e-commerce app that allows the user to buy food from a Kenyan street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth), as well as perform functions on orders and products as an administrator. Users may view products without authorisation, but all other available functionality requires authorisation.
+This is a portfolio project I did as part of my full stack engineer course on [Codecademy](https://codecademy.com). It is an e-commerce app that allows the user to buy food from a Kenyan street restaurant (called a "kibanda" in Kiswahili; remixed to "kibandaski" by local youth), as well as perform functions on orders and products as an administrator. Users may view products without authentication, but all other available functionality requires authentication.
 
 ![A "kibandaski" in Kenya](https://global.discourse-cdn.com/codecademy/original/5X/e/8/f/1/e8f11e906dcfb4d83d09230efc9cad6a57b5d3dc.jpeg "")
 
