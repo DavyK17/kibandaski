@@ -56,6 +56,7 @@ This is a portfolio project I did as part of my full stack engineer course on [C
 - [React](https://reactjs.org/) - JavaScript user interface library
 
 #### Additional libraries/techonolgies
+- [Cypress](https://www.cypress.io/) - JavaScript testing framework
 - [Jest](https://jestjs.io/) - JavaScript testing framework
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React testing utility
 - [Sass](https://github.com/sass/dart-sass) - CSS pre-processor
