@@ -1,6 +1,6 @@
 /* IMPORTS */
 
-@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&family=Gantari:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&family=Gantari:wght@300;400;500;600;700&display=swap");
 @import "helper/variables";
 @import "components/admin";
 @import "components/auth";
@@ -40,6 +40,7 @@ a {
     color: $header-bg-color;
     text-decoration: none;
     transition: color 0.1s ease-in-out;
+
     &:hover,
     &:focus {
         color: adjust-color($color: $header-bg-color, $lightness: 20%);
